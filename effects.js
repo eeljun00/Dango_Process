@@ -215,7 +215,10 @@
  function activate(node,action){node.setAttribute('role','button');node.tabIndex=0;const run=e=>{e.preventDefault();e.stopPropagation();action();};node.addEventListener('click',run);node.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' ')run(e);});}
  const go=id=>q('#'+id)?.scrollIntoView({behavior:reduced.matches?'instant':'smooth',block:'start'});
  qa('.original-section p').forEach(n=>{const text=n.textContent.trim();if(destinations[text])activate(n,()=>go(destinations[text]));else if(/^(카카오 로그인|네이버 로그인|Google 로그인|이메일 로그인|가입하기)$/.test(text))activate(n,()=>go('profile-setup'));});
- if(feedback){const labels=qa('p',feedback).filter(n=>['별로','보통','만족'].includes(n.textContent.trim()));labels.forEach(n=>activate(n,()=>{labels.forEach(x=>{x.setAttribute('aria-pressed',String(x===n));x.style.fontWeight=x===n?'700':'500';x.style.color=x===n?'#ff6f6f':'#888';});feedback.dataset.rating=n.textContent.trim();}));
-  qa('p',feedback).filter(n=>['저장','닫기','다음에 할게요'].includes(n.textContent.trim())).forEach(n=>activate(n,()=>{if(n.textContent.trim()==='저장'){try{localStorage.setItem('dango-process:v1:rating',feedback.dataset.rating||'만족');}catch{}if(typeof toast==='function')toast('산책 후기를 저장했어요');}else go('walk-summary');}));}
+ if(feedback){
+  // refinements.js owns rating selection and saving; retain keyboard semantics here.
+  qa('p',feedback).filter(n=>['별로','보통','만족','저장'].includes(n.textContent.trim())).forEach(n=>{n.setAttribute('role','button');n.tabIndex=0;});
+  qa('p',feedback).filter(n=>['닫기','다음에 할게요'].includes(n.textContent.trim())).forEach(n=>activate(n,()=>go('walk-summary')));
+ }
  reduced.addEventListener('change',()=>{if(reduced.matches)observers.forEach(({observer,reveal})=>{reveal();observer.disconnect();});});
 })();

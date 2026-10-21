@@ -104,18 +104,29 @@
   const measure=()=>{marker.style.animation='none';const a=marker.getBoundingClientRect(),b=bar.getBoundingClientRect(),s=parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--page-scale'))||1;marker.style.setProperty('--rhythm-min',`${(b.left-a.left)/s+16}px`);marker.style.setProperty('--rhythm-max',`${(b.right-a.left)/s-16}px`);marker.style.animation='';};
   measure();window.addEventListener('resize',measure,{passive:true});marker.classList.add('rhythm-marker');watch(bar,()=>marker.classList.add('in-view'),()=>marker.classList.remove('in-view'));
  }
- // A 20% black tint moves between the original masked faces; clicks pause the demonstration.
+ // A 20% black tint cycles between the original faces until a user selection locks it.
  const feedback=byId('148:3118');
  if(feedback){
   qa('div',feedback).filter(n=>getComputedStyle(n).backgroundColor==='rgba(0, 0, 0, 0.2)').forEach(n=>n.style.backgroundColor='transparent');
   const names=['별로','보통','만족'],labels=names.map(t=>qa('p',feedback).find(n=>n.textContent.trim()===t));
   // The third source mask is 108px at (534.6, 156.6), not the 102.6px faces' origin.
   const specs=[[135,159.3,102.6],[345.6,159.3,102.6],[534.6,156.6,108]];
-  let selected=0,timer=null,visible=false,pauseUntil=0;
-  const choices=specs.map(([x,y,size],i)=>{const n=document.createElement('button');n.type='button';n.tabIndex=-1;n.setAttribute('aria-hidden','true');n.className='feedback-choice';Object.assign(n.style,{left:x+'px',top:y+'px',width:size+'px',height:size+'px'});feedback.append(n);n.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();pauseUntil=Date.now()+5000;select(i);});return n;});
-  function select(i){selected=i;feedback.dataset.rating=names[i];choices.forEach((n,j)=>n.classList.toggle('is-dimmed',i!==j));labels.forEach((n,j)=>{if(!n)return;n.setAttribute('aria-pressed',String(i===j));n.style.color=i===j?'#111':'#999';});}
-  labels.forEach((n,i)=>{if(!n)return;const activate=e=>{if(e.type==='keydown'&&!['Enter',' '].includes(e.key))return;e.preventDefault();e.stopImmediatePropagation();pauseUntil=Date.now()+5000;select(i);};n.addEventListener('click',activate,true);n.addEventListener('keydown',activate,true);});
-  function sync(){clearInterval(timer);timer=null;if(visible&&!reduced.matches&&!document.hidden)timer=setInterval(()=>{if(Date.now()>pauseUntil)select((selected+1)%3);},1200);}
-  select(0);watch(feedback,()=>{visible=true;sync();},()=>{visible=false;sync();});reduced.addEventListener('change',sync);document.addEventListener('visibilitychange',sync);
+  const ratingKey='dango-process:v1:rating';
+  let displayed=0,userChoice=null,timer=null,visible=false;
+  const choices=specs.map(([x,y,size],i)=>{const n=document.createElement('button');n.type='button';n.tabIndex=-1;n.setAttribute('aria-hidden','true');n.className='feedback-choice';Object.assign(n.style,{left:x+'px',top:y+'px',width:size+'px',height:size+'px'});feedback.append(n);n.addEventListener('pointerdown',e=>{if(e.button===0){e.preventDefault();labels[i]?.focus({preventScroll:true});}});n.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();choose(i);});return n;});
+  function show(i){displayed=i;feedback.dataset.rating=names[i];choices.forEach((n,j)=>n.classList.toggle('is-dimmed',i!==j));labels.forEach((n,j)=>{if(!n)return;n.setAttribute('aria-pressed',String(i===j));n.style.color=i===j?'#111':'#999';});}
+  // The demonstration may change the display only until a person chooses or saves.
+  function sync(){clearInterval(timer);timer=null;if(userChoice===null&&visible&&!reduced.matches&&!document.hidden)timer=setInterval(()=>{if(userChoice===null)show((displayed+1)%3);},1200);}
+  function choose(i){userChoice=i;show(i);sync();}
+  function bind(node,action){if(!node)return;const run=e=>{if(e.type==='keydown'&&(!['Enter',' '].includes(e.key)||e.repeat||e.isComposing))return;e.preventDefault();e.stopImmediatePropagation();action();};node.addEventListener('click',run);node.addEventListener('keydown',run);}
+  labels.forEach((node,i)=>bind(node,()=>choose(i)));
+  // This is the sole save handler; keep the existing key and plain-text value.
+  qa('p',feedback).filter(n=>n.textContent.trim()==='저장').forEach(node=>bind(node,()=>{
+   choose(userChoice??displayed);const value=names[userChoice];
+   try{if(localStorage.getItem(ratingKey)!==value)localStorage.setItem(ratingKey,value);if(typeof toast==='function')toast('산책 후기를 저장했어요');}
+   catch{if(typeof toast==='function')toast('산책 후기를 저장하지 못했어요. 브라우저 저장 공간·권한을 확인해 주세요');}
+  }));
+  try{const saved=names.indexOf(localStorage.getItem(ratingKey));if(saved>=0)userChoice=saved;}catch{}
+  show(userChoice??0);watch(feedback,()=>{visible=true;sync();},()=>{visible=false;sync();});reduced.addEventListener('change',sync);document.addEventListener('visibilitychange',sync);
  }
 })();
