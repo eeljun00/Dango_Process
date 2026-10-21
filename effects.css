@@ -1,0 +1,60 @@
+/* Motion uses independent translate/scale so Figma's authored transforms stay intact. */
+/* STEP 3-A: no width/height/top/transform changes; pending decoration cannot intercept clicks. */
+.entry-motion-pending{pointer-events:none}
+.entry-motion-pending[data-entry-kind="cover"]{opacity:0;translate:0 28px;scale:.92;transform-origin:center}
+#intro .overview-capsule{pointer-events:none}
+#intro .overview-capsule.overview-waiting{opacity:0}
+@media(prefers-reduced-motion:reduce){#intro .overview-capsule{translate:none!important;opacity:1!important}#intro .overview-capsule>div{rotate:none!important}}
+@media print{#intro .overview-capsule{translate:none!important;opacity:1!important}#intro .overview-capsule>div{rotate:none!important}}
+.entry-motion-pending[data-entry-kind="keyword"]{opacity:0;translate:0 12px}
+.entry-motion-pending[data-entry-kind="type-row"]{opacity:0;translate:0 -12px}
+.entry-motion-pending[data-entry-kind="positioning-app"]{opacity:0;translate:0 var(--positioning-rise,24px)}
+.step3b-scroll-trigger{position:absolute;width:1px;height:1px;visibility:hidden;pointer-events:none}
+#color .entry-motion-pending[data-entry-kind="color"]{opacity:0;translate:-10px 0}
+#color .entry-motion-pending[data-entry-state="running"]{pointer-events:auto}
+.entry-motion-pending[data-entry-kind="bar"],.entry-motion-pending[data-entry-kind="divider"]{clip-path:inset(0 100% 0 0)}
+.entry-motion-pending[data-entry-kind="divider"][data-node-id="148:7479"]{clip-path:inset(0 0 0 100%)}
+.research-count{text-align:right}
+@media(prefers-reduced-motion:reduce){.entry-motion-pending{opacity:1;translate:none;scale:1;clip-path:none;pointer-events:auto}}
+@media(prefers-reduced-motion:reduce){.entry-motion-pending[data-entry-kind="positioning-app"],#color .entry-motion-pending[data-entry-kind="color"]{opacity:1!important;translate:none!important}}
+@media print{.entry-motion-pending{opacity:1;translate:none;scale:1;clip-path:none;pointer-events:auto}}
+.reveal-text{--motion-x:0px;--motion-y:16px;translate:var(--motion-x) var(--motion-y);transition:none}
+.reveal-text[data-reveal="soft"]{--motion-y:0px;filter:blur(3px)}
+.reveal-text[data-reveal="left"]{--motion-x:-18px;--motion-y:0px}
+.reveal-text[data-reveal="down"]{--motion-y:-14px}
+.reveal-text[data-reveal="scale"]{--motion-y:0px;scale:.985;transform-origin:center}
+.reveal-text.is-revealed{translate:0 0;filter:blur(0);scale:1;transition:opacity .7s cubic-bezier(.2,.65,.3,1) var(--reveal-delay,0ms),translate .8s cubic-bezier(.2,.65,.3,1) var(--reveal-delay,0ms),filter .7s ease var(--reveal-delay,0ms),scale .8s ease var(--reveal-delay,0ms)}
+.motion-item{opacity:0;translate:var(--enter-x,0px) var(--enter-y,12px);scale:var(--enter-scale,1)}
+.motion-item.motion-visible{opacity:var(--motion-opacity,1);translate:0 0;scale:1;transition:opacity .65s ease var(--motion-delay,0ms),translate .8s cubic-bezier(.16,1,.3,1) var(--motion-delay,0ms),scale .8s cubic-bezier(.16,1,.3,1) var(--motion-delay,0ms)}
+.paw-step{--enter-x:64px;--enter-y:0px}
+.paw-step.motion-visible{transition-duration:.975s,1.2s,1.2s}
+.interview-row{position:absolute;left:0;right:0;overflow:clip;padding:5px 0;isolation:isolate}
+.interview-track{display:flex;gap:20px;width:max-content;animation:interview-right var(--marquee-duration,64s) linear infinite;will-change:transform}
+.interview-row[data-direction="left"] .interview-track{animation-direction:reverse}
+.interview-group{display:flex;gap:20px;align-items:stretch;flex:none}
+.interview-card{position:relative!important;left:auto!important;top:auto!important;transform:none!important;flex:0 0 684px;width:684px!important;height:202px!important;padding:40px 60px;gap:10px;box-sizing:border-box}
+.interview-card .reveal-text{opacity:var(--reveal-opacity,1);translate:none;filter:none;scale:1}
+.interview-row:hover .interview-track,.interview-row:focus-within .interview-track{animation-play-state:paused}
+@keyframes interview-right{from{transform:translateX(calc(-2 * var(--interview-period) + var(--marquee-start,0px)))}to{transform:translateX(calc(-1 * var(--interview-period) + var(--marquee-start,0px)))}}
+.ppippo-pop p{font-family:Impact,'Arial Black',sans-serif!important;font-style:italic;font-weight:900!important;text-transform:uppercase;-webkit-text-stroke:1.5px #ff6f6f;paint-order:stroke fill;text-shadow:2px 3px 0 #ff6f6f;transform-origin:30% 80%;animation:ppippo-cheer 3.8s cubic-bezier(.22,1,.36,1) infinite}
+@keyframes ppippo-cheer{0%,55%,100%{translate:0 0;rotate:0deg;scale:1}8%{translate:0 -7px;rotate:-7deg;scale:1.12}17%{translate:0 1px;rotate:4deg;scale:1.02}26%{translate:0 -3px;rotate:-3deg;scale:1.07}36%{translate:0 0;rotate:0deg;scale:1}}
+.phone{background:#111!important;box-shadow:0 9px 24px #0000001f,0 0 0 2px #333!important}
+.case-heading.align-left .case-description{margin-left:0;margin-right:0}
+#walk-log [data-node-id="148:3118"]{left:50%;top:632px;transform:translateX(-50%);z-index:3}
+#walk-log [data-node-id="148:3116"]{border-color:transparent}
+#walk-log [data-node-id="I148:3116;1418:22729"]{visibility:hidden}
+.reveal-text[data-reveal="down"]{transition-delay:var(--type-delay,0ms)}
+.original-section p[role="button"]:focus-visible{outline:2px solid #ff6f6f;outline-offset:4px}
+.original-section .source-button{appearance:none;background:transparent;color:inherit;text-align:inherit;font:inherit;padding:0;cursor:pointer}
+.original-section [role="button"]{cursor:pointer}
+.nav-brand span{letter-spacing:.7px}
+@media(max-width:1023px){
+ .original-section{height:calc(var(--section-height) * var(--page-scale))!important;overflow:clip}
+ .original-section>.design-canvas{display:block!important;width:1920.375px;height:var(--section-height);position:absolute;left:50%;top:0;transform:translateX(-50%) scale(var(--page-scale));transform-origin:top center}
+ #interview.has-reading,#system.has-reading{height:calc(var(--section-height) * var(--page-scale))!important}
+ #interview.has-reading>.design-canvas,#system.has-reading>.design-canvas{display:block!important}
+ #interview .mobile-reading,#system .mobile-reading{display:none!important}
+ .interview-track{--marquee-duration:46s}
+}
+@media(prefers-reduced-motion:reduce){.reveal-text,.motion-item{opacity:var(--motion-opacity,var(--reveal-opacity,1));translate:none!important;scale:1!important;filter:none!important;transition:none!important}.interview-track,.ppippo-pop p{animation:none!important}.interview-track{transform:translateX(var(--marquee-start,0px));will-change:auto}}
+@media print{.reveal-text,.motion-item{opacity:1;translate:none;scale:1;filter:none}.interview-track,.ppippo-pop p{animation:none}}

@@ -1,0 +1,46 @@
+/* STEP 3-C: scoped section connections; authored artwork and final layout stay in place. */
+/* Keep the original canvas crop; a three-pixel plane straddles the fractional join
+   so two separately antialiased section edges cannot expose the white page below. */
+#convenience{overflow-x:clip;overflow-y:visible}
+#convenience>.design-canvas{overflow:clip}
+#convenience::after{
+ content:"";position:absolute;left:0;right:0;bottom:-1px;height:3px;
+ background:#ffd6d6;pointer-events:none;z-index:1;
+}
+#convenience [data-node-id="148:5460"]{
+ /* Extend behind content rather than washing out the phone/card with an overlay. */
+ background-image:linear-gradient(to bottom,#f9f9f9 calc(100% - 460px),#ffecec calc(100% - 147.2px),#ffd6d6);
+}
+/* Only the extended list below the existing black device needs an outline. */
+#community .community-list-source [data-node-id="148:6460"]::after{
+ content:"";position:absolute;left:0;right:0;top:661.681px;bottom:0;
+ border:1px solid #e5e5e5;border-top:0;border-radius:0 0 17.911px 17.911px;
+ pointer-events:none;
+}
+.connection-route{pointer-events:none}
+/* Preserve the original flat yellow rectangle and crop. Only the foreground settles
+   with scrolling; no wash or mask can make the preceding phone look faded/cut out. */
+#easy-save .connection-save-character,#easy-save .connection-save-copy{
+ position:absolute;inset:0;pointer-events:none;
+}
+#easy-save .connection-save-character{
+ transform-origin:79.17% 55%;scale:var(--connection-save-scale,1);
+ translate:0 var(--connection-save-rise,0px);
+}
+#easy-save .connection-save-copy{z-index:1;translate:0 var(--connection-copy-rise,0px)}
+/* Finite entrances use independent translate/scale; Figma transforms stay authored. */
+#active-walk .connection-track-character{position:absolute;inset:0;pointer-events:none;transform-origin:73.3% 86%}
+#active-walk .closing-motion-waiting,#walk-archive .closing-motion-waiting,#thank-you .closing-motion-waiting{opacity:0;pointer-events:none}
+#active-walk .closing-motion-running,#walk-archive .closing-motion-running,#thank-you .closing-motion-running{
+ pointer-events:none;will-change:opacity,translate,scale,rotate;
+}
+@media(prefers-reduced-motion:reduce){
+ .connection-route{mask-image:none!important}
+ .closing-motion-waiting{opacity:var(--closing-opacity,1)!important}
+ #easy-save .connection-save-character,#easy-save .connection-save-copy{translate:none!important;scale:1!important}
+}
+@media print{
+ .connection-route{mask-image:none!important}
+ .closing-motion-waiting{opacity:var(--closing-opacity,1)!important}
+ #easy-save .connection-save-character,#easy-save .connection-save-copy{translate:none!important;scale:1!important}
+}

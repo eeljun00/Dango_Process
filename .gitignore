@@ -1,0 +1,27 @@
+# Current original PNG exports are unused; review this rule before adding a new PNG.
+assets/*.png
+assets/manifest.json
+assets/source-export-notes.json
+
+# Credentials, caches, backups and local QA artifacts
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+node_modules/
+.cache/
+__pycache__/
+*.pyc
+*.log
+*.bak
+*.tmp
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+playwright-report/
+test-results/
+screenshots/
+recordings/
+backups/
