@@ -20,20 +20,18 @@
   'information-architecture':[['h3','148:3926'],['h2','148:3927']],wireframe:[['h3','148:3929']],
   'app-home':[['h3','148:3486'],['h2','148:3487'],['p','148:3488'],['h3','148:3494'],['p','148:3492'],['h3','148:3505'],['p','148:3506'],['h3','148:3498'],['p','148:3496'],['h3','148:3502'],['p','148:3500'],['h3','148:3510'],['p','148:3508']],
   onboarding:[['h3','148:4743'],['h2','148:4745'],['p','148:4744']],
-  'profile-setup':[['h3','148:3220'],['h2','148:3222'],['p','148:3221']],
   'walk-planning':[['h3','148:3198'],['h2','148:3199'],['p','212:5098'],['p','148:3200'],['p','148:3203'],['p','148:3206']],
   'active-walk':[['h3','148:3179'],['h2','148:3180'],['p','148:3184']],
   'walk-log':[['h3','148:3113'],['h2','148:3114'],['p','148:3115']],
   'easy-save':[['h2','148:3174']],
   'walk-summary':[['h3','148:3153'],['h2','148:3154'],['p','148:3155']],
   'walk-archive':[['h3','148:2969'],['h2','148:2970'],['p','148:2971'],['h3','148:2980'],['p','148:2981']],
-  community:[],convenience:[['h3','148:5471'],['h2','148:5472'],['p','148:5473'],['h3','148:5485'],['p','148:5484'],['h3','148:5630'],['p','148:5629']],
+  community:[],
   'thank-you':[['p','148:4757'],['p','148:4758'],['p','148:4759']]
  };
  const heading=q('#community .case-heading');definitions.community=all('p,h2',heading).map(n=>[n.classList.contains('eyebrow')?'h3':n.tagName==='H2'?'h2':'p',n]);
  // Keep connected artwork adjacent: planning and the yellow banner are explained below it.
  for(const [id,parts]of Object.entries(definitions)){const box=copy(id,parts,{after:['thank-you','walk-planning','easy-save'].includes(id)});if(id==='thank-you')all('p',box).forEach(n=>n.classList.add('mobile-credit'));}
- const steps=el('ol');[['3246','3244'],['3234','3232'],['3240','3238'],['3261','3259'],['3252','3250'],['3257','3256']].forEach(ids=>{steps.append(el('li','',ids.map(id=>sourceText('148:'+id)).join(' — ')));});q('#profile-setup>.mobile-copy').append(steps);
  q('#components>.mobile-copy').append(el('p','', ['2499','2513','2510','2579','2581','2614','2650','2652'].map(id=>sourceText('148:'+id)).join(' · ')));
  // Interview words are copied from unique authored cards, not the marquee duplicates.
  const interview=copy('interview',[['h3','148:4954'],['h2','148:4953'],['p','148:4952']]);
@@ -61,15 +59,13 @@
  // Overview statements retain their original cream capsule and red text colors.
  const capsules=el('ul','mobile-capsules');capsules.setAttribute('aria-label','Overview 산책 문제 키워드');
  ['148:7506','148:7511','148:7513','148:7515','148:7517','148:7519'].forEach((id,i)=>{const li=el('li','',sourceText(id));li.style.setProperty('--capsule-delay',i*90+'ms');capsules.append(li);});q('#intro').append(capsules);expanded.add(q('#intro'));
- function panel(id,title){const section=q('#'+id),host=el('div','mobile-panel');host.append(el('h3','mobile-label',title));if(['profile-setup','walk-log','convenience'].includes(id))section.insertBefore(host,q(':scope>.design-canvas',section));else section.append(host);expanded.add(section);return host;}
+ function panel(id,title){const section=q('#'+id),host=el('div','mobile-panel');host.append(el('h3','mobile-label',title));if(['walk-log'].includes(id))section.insertBefore(host,q(':scope>.design-canvas',section));else section.append(host);expanded.add(section);return host;}
  function button(label,run,cls=''){const b=el('button','mobile-button '+cls,label);b.type='button';b.addEventListener('click',run);return b;}
  const color=panel('color',sourceText('148:2342')),grid=el('div','mobile-swatch-grid');all('.swatch-button',q('#color .design-canvas')).forEach(source=>{const hex='#'+text(source).replace('#','').toUpperCase(),b=button(hex,()=>source.click()),chip=el('i');chip.style.backgroundColor=hex;chip.setAttribute('aria-hidden','true');b.prepend(chip);grid.append(b);});color.append(grid);
  const feedback=node('148:3118'),rating=panel('walk-log',sourceText('148:3122')),ratingChoices=el('div','mobile-actions');
  ratingChoices.setAttribute('role','group');ratingChoices.setAttribute('aria-label',sourceText('148:3122'));
  const labels=['148:3123','148:3124','148:3125'].map(node);const ratingButtons=labels.map(source=>button(text(source),()=>source.click()));ratingChoices.append(...ratingButtons);rating.append(ratingChoices,button('저장',()=>q('p[role="button"]',node('148:3119')).click(),'mobile-primary'));
  const syncRating=()=>ratingButtons.forEach((b,i)=>b.setAttribute('aria-pressed',String(labels[i].getAttribute('aria-pressed')==='true')));new MutationObserver(syncRating).observe(feedback,{subtree:true,attributes:true,attributeFilter:['aria-pressed','data-rating']});syncRating();
- const quick=panel('convenience','Quick Actions'),qgrid=el('div','mobile-quick-grid');let quickOpener;
- all('.quick-demo-trigger',q('#convenience')).forEach(source=>{const label=source.getAttribute('aria-label').replace(' 데모 열기',''),b=button(label,()=>{quickOpener=b;source.click();});const sourceImg=q('img',source);if(sourceImg){const img=el('img');img.src=sourceImg.getAttribute('src');img.alt='';img.style.backgroundColor=getComputedStyle(q('.r1307,.r1322',source)).backgroundColor;b.prepend(img);}qgrid.append(b);});quick.append(qgrid);q('.quick-demo-dialog').addEventListener('close',()=>{if(media.matches)quickOpener?.focus({preventScroll:true});});
  // Move live editors/actions, not copies: the existing Community controller keeps all handlers/state.
  const community=panel('community','Community 데모'),filters=el('div','mobile-actions'),posts=el('div','mobile-posts'),detail=el('article'),write=el('div');
  const detailTitle=el('h3'),detailBody=el('div','mobile-detail-body'),likeWrap=el('div','mobile-actions');detail.append(detailTitle,detailBody,likeWrap,el('label','','댓글 초안'));community.append(el('h3','','게시글 목록'),filters,posts,button('새 글 작성하기',()=>go(write)),detail,write);write.append(el('h3','','새 글 작성하기'));
@@ -79,7 +75,7 @@
  [['148:7391','주제',''],['148:7384','제목','mobile-edit'],['148:7386','본문','mobile-edit'],['148:7394','장소','mobile-edit']].forEach(([id,label,cls])=>{write.append(el('label','',label));slot(node(id),write,cls);});
  write.append(el('div','mobile-actions'));const uploads=write.lastElementChild;uploads.append(button('사진 추가',()=>node('148:7379').click()),button('장소 확인',()=>node('148:7395').click()));slot(node('148:7397'),write,'mobile-primary');
  // Preserve the existing navigation actions without leaving miniature duplicate hit targets.
- all('main section').forEach(section=>{if(['community','convenience','color'].includes(section.id))return;const actions=new Map();all('.design-canvas [role="button"]',section).filter(n=>!n.closest('[aria-hidden="true"]')&&(!feedback.contains(n)||['닫기','다음에 할게요'].includes(text(n)))).forEach(source=>{const label=text(source);if(label&&!actions.has(label))actions.set(label,source);});if(!actions.size)return;const host=panel(section.id,'화면 이동'),row=el('div','mobile-actions');actions.forEach((source,label)=>row.append(button(label,()=>source.click())));host.append(row);});
+ all('main section').forEach(section=>{if(['community','convenience','profile-setup','color'].includes(section.id))return;const actions=new Map();all('.design-canvas [role="button"]',section).filter(n=>!n.closest('[aria-hidden="true"]')&&(!feedback.contains(n)||['닫기','다음에 할게요'].includes(text(n)))).forEach(source=>{const label=text(source);if(label&&!actions.has(label))actions.set(label,source);});if(!actions.size)return;const host=panel(section.id,'화면 이동'),row=el('div','mobile-actions');actions.forEach((source,label)=>row.append(button(label,()=>source.click())));host.append(row);});
  let knownPostId=null;
  function syncCommunity(){if(!mounted)return;
   const list=node('148:6599'),firstId=q('[data-post-id]',list)?.dataset.postId||'';posts.replaceChildren();all('[data-name="목록글"]',list).filter(n=>!n.hidden).forEach(source=>{const title=q('.cn47',source),topic=q('.cn45',source),b=button(text(title),()=>{source.click();refreshDetail();go(detail);});b.append(el('small','',text(topic)));posts.append(b);});refreshDetail();
@@ -96,7 +92,7 @@
   if(start>=0&&end>start){removed=[...strategy.children].slice(start,end).map(n=>{const marker=document.createComment('mobile comparison source');n.before(marker);n.remove();return{n,marker};});strategy.insertBefore(comparison,removed[end-start-1].marker.nextSibling);}
   moves.forEach(m=>{m.marker=document.createComment('mobile live control');m.clone=strip(m.source.cloneNode(true));m.source.before(m.marker,m.clone);m.target.append(m.source);m.source.classList.add('mobile-live',...m.cls.split(' ').filter(Boolean));});
   // Static miniature copies must not compete with the accessible full-size controls.
-  all('.design-canvas',q('main')).forEach(canvas=>{canvases.set(canvas,canvas.inert);canvas.inert=true;});
+  all('.design-canvas',q('main')).filter(canvas=>!['profile-setup','convenience'].includes(canvas.parentElement.id)).forEach(canvas=>{canvases.set(canvas,canvas.inert);canvas.inert=true;});
   syncCommunity();
   if(!reduced.matches&&'IntersectionObserver'in window){observer=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('capsule-enter');observer.unobserve(e.target);}}),{threshold:0});all('li',capsules).forEach(n=>observer.observe(n));}
  }
