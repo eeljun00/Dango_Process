@@ -73,6 +73,36 @@
  qa('#strategy li').forEach(n=>{
   if(/환경 정보 확인 과정 분산|반려견별 코스 선택 기준 필요|산책 기록과 활동 목표의 연계 필요|반려견별 활동 추이 확인 필요/.test(n.textContent))n.classList.add('opportunity-bullet');
  });
+ // The original confetti is a separate transparent asset. Split it with CSS clips,
+ // so its eleven existing colored pieces burst while the character remains still.
+ const confettiBoxes=[[453,38,506,92],[237,79,282,140],[803,107,841,169],[547,110,609,144],[374,168,435,212],[111,191,155,253],[703,210,750,269],[877,247,939,291],[70,407,121,464],[905,482,959,536],[148,587,192,648]];
+ for(const id of ['I148:3230;1288:21796','I148:3160;1189:19653']){
+  const target=byId(id),image=target&&q('img',target);if(!image||reduced.matches)continue;
+  const width=target.clientWidth,height=target.clientHeight,cover=Math.max(width,height),crop=(cover-width)/2;
+  const pieces=confettiBoxes.map(([x1,y1,x2,y2],i)=>{
+   const left=(x1/1024*cover-crop)/width*100,right=(x2/1024*cover-crop)/width*100;
+   const top=y1/1024*cover/height*100,bottom=y2/1024*cover/height*100;
+   const cx=(left+right)/200,cy=(top+bottom)/200,node=document.createElement('span');
+   node.className='confetti-piece';node.setAttribute('aria-hidden','true');
+   node.style.clipPath=`inset(${top}% ${100-right}% ${100-bottom}% ${left}%)`;
+   node.style.transformOrigin=`${cx*100}% ${cy*100}%`;const copy=image.cloneNode(true);copy.loading='eager';node.append(copy);target.append(node);
+   return{node,cx,cy,i};
+  });
+  image.classList.add('confetti-source-hidden');let animations=[],armed=true;
+  const finish=()=>{animations.forEach(a=>{a.onfinish=null;a.cancel();});animations=[];target.dataset.burstState='done';};
+  const play=()=>{
+   if(!armed||reduced.matches)return;armed=false;target.dataset.burstState='running';
+   animations=pieces.map(({node,cx,cy,i})=>{
+    const x=(.5-cx)*width*.42,y=(.5-cy)*height*.4;
+    const a=node.animate([{opacity:0,translate:`${x}px ${y}px`,scale:.3,rotate:`${i%2?24:-24}deg`},
+     {opacity:1,translate:`${-x*.16}px ${-Math.abs(y)*.15-6}px`,scale:1,rotate:`${i%2?-12:12}deg`,offset:.42},
+     {opacity:1,translate:'0 0',scale:1,rotate:'0deg'}],
+     {duration:dangoMotionTime(1050),delay:dangoMotionTime(i%4*35),easing:'cubic-bezier(.2,.7,.3,1)',fill:'both'});
+    a.onfinish=()=>{if(animations.every(a=>a.playState==='finished'))finish();};return a;
+   });
+  };
+  watch(target,play,()=>{finish();armed=true;});reduced.addEventListener('change',()=>{if(reduced.matches)finish();});window.addEventListener('beforeprint',finish);
+ }
  // Figma graph branches cascade from the common menu row down their own columns.
  const ia=q('#information-architecture .design-canvas');
  if(ia){

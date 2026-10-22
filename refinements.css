@@ -164,3 +164,11 @@
 #walk-planning :is([data-node-id="148:3210"],[data-node-id="148:3211"]) :is(.r795,.r798,.r802){overflow:visible}
 #walk-planning :is([data-node-id="148:3210"],[data-node-id="148:3211"]) :is(.r795,.r798,.r802) .r794{display:none}
 #walk-planning :is([data-node-id="148:3210"],[data-node-id="148:3211"]) :is(.r795,.r798,.r802)::after{content:"";position:absolute;top:0;bottom:0;left:0;width:calc(1px / var(--page-scale));background:#ccc;transform:translateX(-50%);pointer-events:none}
+
+/* The missing loading-glyph font must not expose its source placeholder. */
+#app-home [data-node-id="I148:3512;1128:12418;612:1315"] .r210{display:none}
+/* Keep the rotated cheer inside the existing yellow balloon with breathing room. */
+#onboarding [data-node-id="I148:4740;1258:22646"]{left:107.5px;top:342px;width:42px;height:18px}
+#onboarding [data-node-id="I148:4740;1258:22646"] p{width:42px;font-size:11px;-webkit-text-stroke:.45px #ff6f6f;text-shadow:.3px .4px 0 #ff6f6f}
+.confetti-piece{position:absolute;inset:0;pointer-events:none;will-change:translate,rotate,scale,opacity}
+.confetti-source-hidden{visibility:hidden}

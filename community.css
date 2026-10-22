@@ -269,3 +269,7 @@
 #community .community-source-layer:not(.community-device-source) .community-original-device{z-index:4}
 #community .community-list-source,#community .community-detail-source{z-index:2}
 #community .community-source-layer.community-device-source .community-original-device{z-index:4}
+
+/* Retain scrolling/editing for long drafts without a flashing scrollbar. */
+#community .community-write-source,#community .community-write-source *{scrollbar-width:none;-ms-overflow-style:none}
+#community .community-write-source::-webkit-scrollbar,#community .community-write-source *::-webkit-scrollbar{display:none;width:0;height:0}

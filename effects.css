@@ -63,3 +63,6 @@
  .entry-motion-pending[data-entry-kind="onboarding-line"]{clip-path:inset(0 100% 0 0)}
  .entry-motion-pending[data-entry-kind="onboarding-dot"]{opacity:0}
 }
+
+/* Dim the complete authored phone surface, including the navigation strip. */
+#walk-log [data-node-id="I148:3116;1418:22726"]{inset:-1.8px;width:calc(100% + 3.6px);height:calc(100% + 3.6px);border-radius:inherit}

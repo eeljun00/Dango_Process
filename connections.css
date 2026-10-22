@@ -46,3 +46,7 @@
 }
 
 #easy-save [data-node-id="148:3170"]{transform-origin:50% 80%}
+
+/* This continuous background strip is visible as one composition. Individual
+   text/character entrances remain independent, but the gradients never fade late. */
+:is(#convenience,#screens-overview,#thank-you).reveal-section>.design-canvas{opacity:1;transition:none}

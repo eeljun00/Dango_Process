@@ -405,4 +405,4 @@
 #wireframe .wireframe-home-indicator{position:absolute;left:1244.8203125px;top:938.40332px;width:240px;height:19.5px;pointer-events:none}#wireframe .wireframe-home-indicator span{position:absolute;left:calc(50% - 54px);bottom:5.5px;width:108px;height:3.75px;background:#666;border-radius:75px}
 
 /* Native screens share the restored instances' light-gray outer outline. */
-#wireframe :is([data-node-id="148:4369"],[data-node-id="148:4497"]){border-color:#d9d9d9}
+#wireframe .reference-child:not(.wireframe-screen)>[data-node-id]{border-color:#d9d9d9}
