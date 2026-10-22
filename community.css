@@ -276,6 +276,6 @@
 
 #community .community-flower{animation:community-flower-drift calc(var(--flower-duration,22s) / var(--motion-rate)) ease-in-out var(--flower-delay,0s) infinite;animation-play-state:paused;pointer-events:none}
 #community .community-flower.flower-moving{animation-play-state:running}
-@keyframes community-flower-drift{0%,100%{translate:0 0}38%{translate:var(--flower-x) var(--flower-y)}72%{translate:calc(var(--flower-x) * -.6) calc(var(--flower-y) * -.45)}}
+@keyframes community-flower-drift{0%,100%{translate:0 0}25%{translate:var(--flower-x) calc(var(--flower-y) * .45)}50%{translate:calc(var(--flower-x) * .45) var(--flower-y)}75%{translate:calc(var(--flower-x) * -.6) calc(var(--flower-y) * .35)}}
 @media(prefers-reduced-motion:reduce){#community .community-flower{animation:none;translate:none}}
 @media print{#community .community-flower{animation:none;translate:none}}

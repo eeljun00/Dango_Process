@@ -156,3 +156,6 @@
 #walk-archive [data-node-id="148:3052"]{position:absolute;left:-3.342621px;top:-25.885242px;width:57.600002px;height:76.800003px}
 #walk-archive [data-node-id="148:3063"]{position:absolute;left:-.942619px;top:-21.418081px;width:52.799999px;height:93.750923px}
 #walk-archive [data-node-id="148:3066"]{position:absolute;left:-7.342619px;top:-18.235495px;width:65.599998px;height:87.38575px}
+
+/* Tuck the pink page beneath the device shell at both top corners. */
+#walk-archive [data-node-id="148:2991"]{border-radius:88px 88px 20px 20px}

@@ -146,7 +146,7 @@
  });
  window.addEventListener('beforeprint',()=>{printing=true;scrollGroups.forEach(g=>g.finish());});
  window.addEventListener('afterprint',()=>{printing=false;refreshStep3B();});
- // Only the seven app shells in the right Positioning panel move.
+ // The chart starts all app entrances together as its panel enters the viewport.
  // Their original centering transforms, coordinates, axes and rings remain authored.
  const panel=q('#strategy [data-node-id="148:4855"]');
  const halo=q('#strategy [data-node-id="148:4871"]');
@@ -162,10 +162,10 @@
   };
   const apps=['148:4880','148:4882','148:4888','148:4884','148:4890','148:4886','148:4872'].map(id=>q(`[data-node-id="${id}"]`,panel)).filter(Boolean);
   apps.forEach((app,i)=>{
-   const dango=app.dataset.nodeId==='148:4872',rise=dango?24:12;
-   ownEntrance(app);app.style.setProperty('--positioning-rise',`${rise}px`);
-   scrollEntrance([app],{kind:'positioning-app',duration:dango?560:420,delays:[dango?0:i*35],timingRate:1,
-    frames:[{opacity:0,translate:`0 ${rise}px`},{opacity:1,translate:'0 0'}],
+   const dango=app.dataset.nodeId==='148:4872';ownEntrance(app);app.style.setProperty('--positioning-rise','0px');
+   // Dango blooms into place; competitors use a short fade on the same panel clock.
+   entrance([app],{kind:'positioning-app',anchor:panel,duration:dango?620:280,delays:[dango?100:i*25],
+    frames:dango?[{opacity:0,scale:.72,rotate:'-8deg'},{opacity:1,scale:1,rotate:'0deg'}]:[{opacity:0},{opacity:1}],
     onStart:dango?playHalo:undefined,onSettle:dango?settleHalo:undefined});
   });
   reduced.addEventListener('change',()=>{if(reduced.matches)settleHalo();});
@@ -204,15 +204,13 @@
  });
  refreshStep3B();
  q('[data-node-id="148:2319"]')?.classList.add('ppippo-pop');
- // Keep the original cards, portraits and real HTML text. A B C B avoids adjacent duplicates even at the loop seam.
+ // Keep each distinct interview once per period; repeat the complete row for a seamless marquee.
  const interview=q('#interview .design-canvas');
  const cards=qa('[data-node-id]',interview).filter(n=>getComputedStyle(n).position==='absolute'&&getComputedStyle(n).display==='flex'&&getComputedStyle(n).backgroundColor==='rgb(255, 255, 255)'&&parseFloat(getComputedStyle(n).top)>400);
  const rows=new Map();cards.forEach(n=>{const top=parseFloat(getComputedStyle(n).top);if(!rows.has(top))rows.set(top,[]);rows.get(top).push(n);});
  [...rows].sort((a,b)=>a[0]-b[0]).forEach(([top,nodes],rowIndex)=>{
   nodes.sort((a,b)=>parseFloat(getComputedStyle(a).left)-parseFloat(getComputedStyle(b).left));
-  const initialX=parseFloat(getComputedStyle(nodes[0]).left);
-  const clone=n=>{const c=n.cloneNode(true);qa('[id],[data-node-id]',c).forEach(x=>{x.removeAttribute('id');x.removeAttribute('data-node-id');});c.removeAttribute('data-node-id');return c;};
-  if(nodes.length===3)nodes.push(clone(nodes[1]));
+  const initialX=rowIndex?parseFloat(getComputedStyle(nodes[0]).left):-182;
   const row=document.createElement('div');row.className='interview-row';row.style.top=`${top}px`;row.style.setProperty('--marquee-start',`${initialX}px`);row.style.setProperty('--marquee-duration',rowIndex?'78s':'64s');row.setAttribute('aria-label',`보호자 인터뷰 ${rowIndex+1}번째 줄`);
   row.style.setProperty('--interview-period',`${nodes.length*(684+20)}px`);
   row.dataset.direction=rowIndex?'left':'right';
@@ -229,10 +227,8 @@
  const go=id=>q('#'+id)?.scrollIntoView({behavior:reduced.matches?'instant':'smooth',block:'start'});
  qa('.original-section p').forEach(n=>{if(n.closest('#walk-log'))return;const text=n.textContent.trim();if(destinations[text])activate(n,()=>go(destinations[text]));else if(/^(카카오 로그인|네이버 로그인|Google 로그인|이메일 로그인|가입하기)$/.test(text))activate(n,()=>go('profile-setup'));});
  if(feedback){
-  // refinements.js owns rating selection and saving; retain keyboard semantics here.
-  qa('p',feedback).filter(n=>['별로','보통','만족','저장'].includes(n.textContent.trim())).forEach(n=>{n.setAttribute('role','button');n.tabIndex=0;});
-  // This presentation panel never navigates away; selection and saving remain owned by refinements.js.
-  qa('p',feedback).filter(n=>['닫기','다음에 할게요'].includes(n.textContent.trim())).forEach(n=>{n.removeAttribute('role');n.removeAttribute('tabindex');n.style.cursor='default';});
+  // Ratings are an automatic visual demonstration, without click or keyboard selection.
+  qa('p',feedback).filter(n=>['별로','보통','만족','저장','닫기','다음에 할게요'].includes(n.textContent.trim())).forEach(n=>{n.removeAttribute('role');n.removeAttribute('tabindex');n.style.cursor='default';});
  }
  reduced.addEventListener('change',()=>{if(reduced.matches)observers.forEach(({observer,reveal})=>{reveal();observer.disconnect();});});
 })();

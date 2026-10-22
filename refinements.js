@@ -77,7 +77,7 @@
  if(logShade&&logMap)logMap.append(logShade);
  // Keep the three authored background flowers separate and pause their gentle drift offscreen.
  const flowers=qa('#community .community-flower');
- flowers.forEach((node,i)=>{node.style.setProperty('--flower-duration',`${[18,22,26][i]}s`);node.style.setProperty('--flower-delay',`${[-4,-11,-18][i]}s`);node.style.setProperty('--flower-x',`${[24,-20,18][i]}px`);node.style.setProperty('--flower-y',`${[-22,26,-28][i]}px`);});
+ flowers.forEach((node,i)=>{node.style.setProperty('--flower-duration',`${[14,18,22][i]}s`);node.style.setProperty('--flower-delay',`${[-4,-11,-18][i]}s`);node.style.setProperty('--flower-x',`${[100,-120,90][i]}px`);node.style.setProperty('--flower-y',`${[-60,72,-68][i]}px`);});
  watch(q('#community'),()=>flowers.forEach(n=>n.classList.add('flower-moving')),()=>flowers.forEach(n=>n.classList.remove('flower-moving')));
  // Keep bullet markers attached to the text, even inside the original centred text blocks.
  qa('#strategy li').forEach(n=>{
@@ -87,7 +87,7 @@
  // so its eleven existing colored pieces burst while the character remains still.
  const confettiBoxes=[[453,38,506,92],[237,79,282,140],[803,107,841,169],[547,110,609,144],[374,168,435,212],[111,191,155,253],[703,210,750,269],[877,247,939,291],[70,407,121,464],[905,482,959,536],[148,587,192,648]];
  for(const id of ['I148:3230;1288:21796','I148:3160;1189:19653']){
-  const target=byId(id),image=target&&q('img',target);if(!image||reduced.matches)continue;
+  const target=byId(id),image=target&&q('img',target);if(!image||!Element.prototype.animate)continue;
   const width=target.clientWidth,height=target.clientHeight,cover=Math.max(width,height),crop=(cover-width)/2;
   const pieces=confettiBoxes.map(([x1,y1,x2,y2],i)=>{
    const left=(x1/1024*cover-crop)/width*100,right=(x2/1024*cover-crop)/width*100;
@@ -98,7 +98,7 @@
    node.style.transformOrigin=`${cx*100}% ${cy*100}%`;const copy=image.cloneNode(true);copy.loading='eager';node.append(copy);target.append(node);
    return{node,cx,cy,i};
   });
-  image.classList.add('confetti-source-hidden');let animations=[],armed=true;
+  image.classList.add('confetti-source-hidden');let animations=[],armed=true,visible=false;
   const finish=()=>{animations.forEach(a=>{a.onfinish=null;a.cancel();});animations=[];target.dataset.burstState='done';};
   const play=()=>{
    if(!armed||reduced.matches)return;armed=false;target.dataset.burstState='running';
@@ -106,12 +106,14 @@
     const x=(.5-cx)*width*.42,y=(.5-cy)*height*.4;
     const a=node.animate([{opacity:0,translate:`${x}px ${y}px`,scale:.3,rotate:`${i%2?24:-24}deg`},
      {opacity:1,translate:`${-x*.16}px ${-Math.abs(y)*.15-6}px`,scale:1,rotate:`${i%2?-12:12}deg`,offset:.42},
-     {opacity:1,translate:'0 0',scale:1,rotate:'0deg'}],
-     {duration:dangoMotionTime(1050),delay:dangoMotionTime(i%4*35),easing:'cubic-bezier(.2,.7,.3,1)',fill:'both'});
-    a.onfinish=()=>{if(animations.every(a=>a.playState==='finished'))finish();};return a;
+     {opacity:1,translate:'0 0',scale:1,rotate:'0deg',offset:.78},
+     {opacity:0,translate:`0 ${height*.12}px`,scale:.8,rotate:`${i%2?18:-18}deg`}],
+     {duration:dangoMotionTime(2100),delay:dangoMotionTime(i%4*35),iterations:Infinity,easing:'cubic-bezier(.2,.7,.3,1)',fill:'both'});
+    return a;
    });
   };
-  watch(target,play,()=>{finish();armed=true;});reduced.addEventListener('change',()=>{if(reduced.matches)finish();});window.addEventListener('beforeprint',finish);
+  watch(target,()=>{visible=true;play();},()=>{visible=false;finish();armed=true;});
+  reduced.addEventListener('change',()=>{finish();armed=true;if(visible)play();});window.addEventListener('beforeprint',finish);
  }
  // Figma graph branches cascade from the common menu row down their own columns.
  const ia=q('#information-architecture .design-canvas');
@@ -197,29 +199,23 @@
   const measure=()=>{marker.style.animation='none';const a=marker.getBoundingClientRect(),b=bar.getBoundingClientRect(),s=parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--page-scale'))||1;marker.style.setProperty('--rhythm-min',`${(b.left-a.left)/s+16}px`);marker.style.setProperty('--rhythm-max',`${(b.right-a.left)/s-16}px`);marker.style.animation='';};
   measure();window.addEventListener('resize',measure,{passive:true});marker.classList.add('rhythm-marker');watch(bar,()=>marker.classList.add('in-view'),()=>marker.classList.remove('in-view'));
  }
- // A 20% black tint cycles between the original faces until a user selection locks it.
+ // Loop the three authored faces automatically; saved ratings never lock this demonstration.
  const feedback=byId('148:3118');
  if(feedback){
   qa('div',feedback).filter(n=>getComputedStyle(n).backgroundColor==='rgba(0, 0, 0, 0.2)').forEach(n=>n.style.backgroundColor='transparent');
   const names=['별로','보통','만족'],labels=names.map(t=>qa('p',feedback).find(n=>n.textContent.trim()===t));
-  // The third source mask is 108px at (534.6, 156.6), not the 102.6px faces' origin.
   const specs=[[135,159.3,102.6],[345.6,159.3,102.6],[534.6,156.6,108]];
-  const ratingKey='dango-process:v1:rating';
-  let displayed=0,userChoice=null,timer=null,visible=false;
-  const choices=specs.map(([x,y,size],i)=>{const n=document.createElement('button');n.type='button';n.tabIndex=-1;n.setAttribute('aria-hidden','true');n.className='feedback-choice';Object.assign(n.style,{left:x+'px',top:y+'px',width:size+'px',height:size+'px'});feedback.append(n);n.addEventListener('pointerdown',e=>{if(e.button===0){e.preventDefault();labels[i]?.focus({preventScroll:true});}});n.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();choose(i);});return n;});
-  function show(i){displayed=i;feedback.dataset.rating=names[i];choices.forEach((n,j)=>n.classList.toggle('is-dimmed',i!==j));labels.forEach((n,j)=>{if(!n)return;n.setAttribute('aria-pressed',String(i===j));n.style.color=i===j?'#111':'#999';});}
-  // The demonstration may change the display only until a person chooses or saves.
-  function sync(){clearInterval(timer);timer=null;if(userChoice===null&&visible&&!reduced.matches&&!document.hidden)timer=setInterval(()=>{if(userChoice===null)show((displayed+1)%3);},dangoMotionTime(1200));}
-  function choose(i){userChoice=i;show(i);sync();}
-  function bind(node,action){if(!node)return;const run=e=>{if(e.type==='keydown'&&(!['Enter',' '].includes(e.key)||e.repeat||e.isComposing))return;e.preventDefault();e.stopImmediatePropagation();action();};node.addEventListener('click',run);node.addEventListener('keydown',run);}
-  labels.forEach((node,i)=>bind(node,()=>choose(i)));
-  // This is the sole save handler; keep the existing key and plain-text value.
-  qa('p',feedback).filter(n=>n.textContent.trim()==='저장').forEach(node=>bind(node,()=>{
-   choose(userChoice??displayed);const value=names[userChoice];
-   try{if(localStorage.getItem(ratingKey)!==value)localStorage.setItem(ratingKey,value);if(typeof toast==='function')toast('산책 후기를 저장했어요');}
-   catch{if(typeof toast==='function')toast('산책 후기를 저장하지 못했어요. 브라우저 저장 공간·권한을 확인해 주세요');}
-  }));
-  try{const saved=names.indexOf(localStorage.getItem(ratingKey));if(saved>=0)userChoice=saved;}catch{}
-  show(userChoice??0);watch(feedback,()=>{visible=true;sync();},()=>{visible=false;sync();});reduced.addEventListener('change',sync);document.addEventListener('visibilitychange',sync);
+  let displayed=0,timer=null,visible=false;
+  const choices=specs.map(([x,y,size])=>{const n=document.createElement('span');n.setAttribute('aria-hidden','true');n.className='feedback-choice';Object.assign(n.style,{left:x+'px',top:y+'px',width:size+'px',height:size+'px'});feedback.append(n);return n;});
+  function show(i){displayed=i;feedback.dataset.rating=names[i];choices.forEach((n,j)=>n.classList.toggle('is-dimmed',i!==j));labels.forEach((n,j)=>{if(n)n.style.color=i===j?'#111':'#999';});}
+  function sync(){clearInterval(timer);timer=null;if(visible&&!reduced.matches&&!document.hidden)timer=setInterval(()=>show((displayed+1)%3),dangoMotionTime(1200));}
+  show(0);watch(feedback,()=>{visible=true;sync();},()=>{visible=false;sync();});reduced.addEventListener('change',sync);document.addEventListener('visibilitychange',sync);
  }
+ // The candy character hops continuously while its separate ground shadow follows the landing.
+ const candy=byId('148:2978'),candyShadow=byId('148:2977');
+ if(candy&&candyShadow){
+  candy.classList.add('archive-jump-character');candyShadow.classList.add('archive-jump-shadow');
+  watch(candy,()=>{candy.classList.add('jumping');candyShadow.classList.add('jumping');},()=>{candy.classList.remove('jumping');candyShadow.classList.remove('jumping');});
+ }
+
 })();
