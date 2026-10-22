@@ -64,5 +64,8 @@
  .entry-motion-pending[data-entry-kind="onboarding-dot"]{opacity:0}
 }
 
-/* Dim the complete authored phone surface, including the navigation strip. */
-#walk-log [data-node-id="I148:3116;1418:22726"]{inset:-1.8px;width:calc(100% + 3.6px);height:calc(100% + 3.6px);border-radius:inherit}
+/* Dim only the map; leave the authored status/navigation strip bright. */
+#walk-log [data-node-id="I148:3116;1418:22726"]{inset:0;width:100%;height:100%;border-radius:0;pointer-events:none}
+
+/* Alpha masks fade both moving interview rows into the surrounding background. */
+#interview .interview-row{-webkit-mask-image:linear-gradient(to right,transparent,#000 13%,#000 87%,transparent);mask-image:linear-gradient(to right,transparent,#000 13%,#000 87%,transparent)}

@@ -172,3 +172,11 @@
 #onboarding [data-node-id="I148:4740;1258:22646"] p{width:42px;font-size:11px;-webkit-text-stroke:.45px #ff6f6f;text-shadow:.3px .4px 0 #ff6f6f}
 .confetti-piece{position:absolute;inset:0;pointer-events:none;will-change:translate,rotate,scale,opacity}
 .confetti-source-hidden{visibility:hidden}
+
+#app-home .home-search-button{gap:9px}
+#app-home .home-search-button p{line-height:1.5}
+#app-home .home-search-spinner{position:relative;left:auto;top:auto;flex:0 0 15.408px;width:15.408px;height:15.408px}
+/* Extend just the guide paths; the logo artwork and panel positions remain authored. */
+#logo-grid{overflow:visible;z-index:1}
+#logo-grid [data-node-id="148:2842"]{border-radius:30px;z-index:2}
+#logo-grid .logo-guide-svg{overflow:visible}

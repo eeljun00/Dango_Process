@@ -31,10 +31,10 @@
  }
  // Animate the 14 original gray SVG paths, without slicing the logo or inventing guide lines.
  const grid=byId('148:2853'),gridImage=grid&&q('img',grid);
- if(gridImage&&!reduced.matches)fetch(gridImage.src).then(response=>{if(!response.ok)throw new Error('guide asset');return response.text();}).then(text=>{
-  if(reduced.matches)return;const source=new DOMParser().parseFromString(text,'image/svg+xml'),svg=source.documentElement;
+ if(gridImage)fetch(gridImage.src).then(response=>{if(!response.ok)throw new Error('guide asset');return response.text();}).then(text=>{
+  const source=new DOMParser().parseFromString(text,'image/svg+xml'),svg=source.documentElement;
   if(svg.localName!=='svg'||source.querySelector('parsererror'))return;
-  const lines=qa('path[stroke="#BFBFBF"]',svg);if(lines.length!==14)return;
+  const lines=qa('path.logo-guide-line',svg);if(lines.length!==14)return;
   svg.classList.add('logo-guide-svg');svg.setAttribute('aria-hidden','true');lines.forEach(n=>n.classList.add('logo-guide-line'));gridImage.replaceWith(document.importNode(svg,true));
   const guides=qa('.logo-guide-line',grid);
   let started=false,timer;const animations=new Set(),offsets=new Map();
@@ -62,13 +62,23 @@
     if(remaining.length)timer=setTimeout(batch,dangoMotionTime(1050));
    };batch();
   };
-  watch(grid,play);
+  watch(grid,play);if(reduced.matches)settle();
   reduced.addEventListener('change',()=>{if(reduced.matches){started=true;settle();}});window.addEventListener('beforeprint',settle);
  }).catch(()=>{}); // Keep the original static image if loading or SVG parsing is unavailable.
  // Preserve each map button's native shell; its existing icon and text share one flex row.
  for(const [buttonId,iconId]of [['I148:3210;1128:12418','I148:3210;1128:12419'],['I148:3211;1128:12486','I148:3211;1128:12491']]){
   const button=byId(buttonId),icon=byId(iconId);if(!button||!icon)continue;button.classList.add('planning-search-button');icon.classList.add('planning-button-icon');button.append(icon);
  }
+ // The Home spinner shares the same flex row as its label, with a real gap.
+ const homeSearch=byId('I148:3512;1128:12418'),homeSpinner=byId('I148:3512;1128:12419');
+ if(homeSearch&&homeSpinner){homeSearch.classList.add('home-search-button');homeSpinner.classList.add('home-search-spinner');homeSearch.append(homeSpinner);}
+ // Keep the dimmer inside the map plane, below the phone's independent UI layers.
+ const logShade=byId('I148:3116;1418:22726'),logMap=byId('I148:3116;1418:22623');
+ if(logShade&&logMap)logMap.append(logShade);
+ // Keep the three authored background flowers separate and pause their gentle drift offscreen.
+ const flowers=qa('#community .community-flower');
+ flowers.forEach((node,i)=>{node.style.setProperty('--flower-duration',`${[18,22,26][i]}s`);node.style.setProperty('--flower-delay',`${[-4,-11,-18][i]}s`);node.style.setProperty('--flower-x',`${[24,-20,18][i]}px`);node.style.setProperty('--flower-y',`${[-22,26,-28][i]}px`);});
+ watch(q('#community'),()=>flowers.forEach(n=>n.classList.add('flower-moving')),()=>flowers.forEach(n=>n.classList.remove('flower-moving')));
  // Keep bullet markers attached to the text, even inside the original centred text blocks.
  qa('#strategy li').forEach(n=>{
   if(/환경 정보 확인 과정 분산|반려견별 코스 선택 기준 필요|산책 기록과 활동 목표의 연계 필요|반려견별 활동 추이 확인 필요/.test(n.textContent))n.classList.add('opportunity-bullet');
