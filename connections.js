@@ -29,7 +29,7 @@
     // The invisible mask follows the original SVG dash centres, including its 90-degree placement.
     const mask=svgElement('mask',{id,maskUnits:'userSpaceOnUse',x:-24,y:-24,width:914,height:1063});
     const stroke=svgElement('path',{d:'M1.5 1013.2V7.25H413.107V1013.2H857.73V8',fill:'none',stroke:'#fff','stroke-width':24,'stroke-linecap':'round','stroke-linejoin':'round',pathLength:1,'stroke-dasharray':'1 1'});
-    mask.append(stroke);defs.append(mask);const group=svgElement('g');paths.forEach(path=>group.append(path));svg.append(group);Object.assign(art,{stroke,group,id});
+    mask.append(stroke);defs.append(mask);const group=svgElement('g');paths.forEach(path=>group.append(path));svg.append(group);stroke.setAttribute('stroke-dashoffset','1');group.setAttribute('mask','url(#'+id+')');Object.assign(art,{stroke,group,id,state:'idle'});
    }
    image.replaceWith(svg);
    if(mode==='track'){
@@ -102,6 +102,8 @@
   try{
    const motions=group.items.map(({node,delay=0,duration=700,scale=1})=>{
     const frames=group.kind==='track-character'?[{opacity:0},{opacity:getComputedStyle(node).opacity}]:
+     group.kind==='ending'&&node.dataset.nodeId==='148:4756'?
+     [{opacity:0,translate:'96px 0',scale:1},{opacity:getComputedStyle(node).opacity,translate:'0 0',scale:1}]:
      [{opacity:0,translate:'0 14px',scale},{opacity:getComputedStyle(node).opacity,translate:'0 0',scale:1}];
     const a=node.animate(frames,
      {delay:dangoMotionTime(delay),duration:dangoMotionTime(duration),easing:'cubic-bezier(.22,1,.36,1)',fill:'both'});
@@ -126,15 +128,33 @@
    settle(group);
   }catch{if(group.run===run)settle(group);}
  }
+ // One timed sweep follows the authored dotted route after it enters view.
+ // Scrolling only triggers it; subsequent scroll events never scrub or restart it.
+ function finishSetup(){
+  if(!dottedArt)return;
+  const art=dottedArt;art.animation?.cancel();art.animation=null;art.state='done';
+  art.stroke.setAttribute('stroke-dashoffset','0');art.group.removeAttribute('mask');
+  art.node.dataset.setupState='done';art.node.dataset.setupProgress='1';
+ }
+ function playSetup(){
+  const art=dottedArt;if(!art||art.state!=='idle')return;
+  if(!Element.prototype.animate){finishSetup();return;}
+  art.state='running';art.node.dataset.setupState='running';art.node.dataset.setupProgress='0';
+  art.animation=art.stroke.animate([{strokeDashoffset:'1'},{strokeDashoffset:'0'}],
+   {duration:dangoMotionTime(1750),easing:'cubic-bezier(.4,0,.2,1)',fill:'both'});
+  art.animation.onfinish=finishSetup;
+ }
  let frame=0,printing=false;
  function render(){
   frame=0;const final=reduced.matches||printing,height=innerHeight;
   // Batch geometry reads before touching styles. The mask never changes these bounds.
   const positions=routes.map(node=>({node,rect:node.getBoundingClientRect()})),banner=yellow?.getBoundingClientRect();
+  const trackRect=document.querySelector('#active-walk')?.getBoundingClientRect(),setupRect=dottedArt?.node.getBoundingClientRect();
   const entrances=closing.map(group=>({group,rect:group.anchor.getBoundingClientRect()}));
   const atEnd=scrollY+height>=document.documentElement.scrollHeight-2;
   positions.forEach(({node,rect})=>{
-   const progress=final?1:rect.height?clamp((height*.70-rect.top)/rect.height):1;
+   const track=node.dataset.nodeId==='148:3177'&&trackRect;
+   const progress=final?1:track?clamp((height*.98-track.top)/(Math.min(track.height,height)*.45)):rect.height?clamp((height*.70-rect.top)/rect.height):1;
    node.dataset.connectionProgress=progress.toFixed(4);node.style.maskImage='none';
    const art=routeArt.get(node);if(!art)return;
    if(art.mode==='flow'){
@@ -145,11 +165,9 @@
     art.paths.forEach(({path,length})=>{path.style.strokeDasharray=progress>=1?'none':`${length} ${length}`;path.style.strokeDashoffset=String(length*(1-progress));path.style.opacity=progress<=0?'0':'';});
    }
   });
-  if(dottedArt){
-   const r=dottedArt.node.getBoundingClientRect(),progress=final?1:r.height?clamp((height*.70-r.top)/r.height):1;
-   dottedArt.node.dataset.setupProgress=progress.toFixed(4);dottedArt.stroke.setAttribute('stroke-dashoffset',String(1-progress));
-   dottedArt.stroke.style.opacity=progress<=0?'0':'1';
-   if(progress>=1)dottedArt.group.removeAttribute('mask');else dottedArt.group.setAttribute('mask','url(#'+dottedArt.id+')');
+  if(dottedArt&&setupRect){
+   if(final||setupRect.bottom<=72)finishSetup();
+   else if(dottedArt.state==='idle'&&setupRect.top<height*.82)playSetup();
   }
   if(yellow&&banner){
    const progress=final?1:clamp((height*.90-(banner.top+banner.height/2))/(height*.42));

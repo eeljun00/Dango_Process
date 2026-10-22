@@ -1,6 +1,6 @@
 /* Wireframe only. Cached Figma CSS values are converted back to native instance units. */
 #wireframe .wireframe-screen{overflow:clip;border-radius:20px}
-#wireframe .wireframe-screen::after{content:"";position:absolute;inset:0;border:1px solid #ccc;border-radius:inherit;pointer-events:none;z-index:20}
+#wireframe .wireframe-screen::after{content:"";position:absolute;inset:0;border:1px solid #d9d9d9;border-radius:inherit;pointer-events:none;z-index:20}
 #wireframe .wireframe-coordinate-space{position:relative;transform:scale(.75);transform-origin:top left}
 #wireframe .wireframe-instance-root{width:100%;height:100%;border:0;border-radius:0;transform:none}
 #wireframe .wf1864{background-color:white;border-width:0;border-color:#999;border-style:solid;overflow:visible;position:relative;border-radius:0;width:100%;height:100%;left:0;top:0;transform:none}
@@ -403,3 +403,6 @@
 #wireframe .wf3462{position:absolute;left:98.853333px;top:141.493333px;width:24px;height:14.666667px;transform:none;font-size:12px;line-height:14.666667px;white-space:nowrap}
 #wireframe .wf3463{overflow-wrap:break-word;position:absolute;font-family:'SUIT', 'Pretendard', sans-serif;font-weight:500;line-height:150%;left:21px;font-style:normal;font-size:11px;color:#999;top:299.52px;letter-spacing:-0.22px;white-space:nowrap;width:114.666667px;height:16px;transform:none}
 #wireframe .wireframe-home-indicator{position:absolute;left:1244.8203125px;top:938.40332px;width:240px;height:19.5px;pointer-events:none}#wireframe .wireframe-home-indicator span{position:absolute;left:calc(50% - 54px);bottom:5.5px;width:108px;height:3.75px;background:#666;border-radius:75px}
+
+/* Native screens share the restored instances' light-gray outer outline. */
+#wireframe :is([data-node-id="148:4369"],[data-node-id="148:4497"]){border-color:#d9d9d9}

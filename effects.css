@@ -58,3 +58,8 @@
 @media(prefers-reduced-motion:no-preference){
  .entry-motion-pending:is([data-entry-kind="logo-application"],[data-entry-kind="logo-photo"],[data-entry-kind="onboarding-phone"]){opacity:0}
 }
+
+@media(prefers-reduced-motion:no-preference){
+ .entry-motion-pending[data-entry-kind="onboarding-line"]{clip-path:inset(0 100% 0 0)}
+ .entry-motion-pending[data-entry-kind="onboarding-dot"]{opacity:0}
+}

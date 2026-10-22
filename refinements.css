@@ -150,3 +150,17 @@
 #community .u61{position:absolute;height:100.02%;left:0px;max-width:none;top:-0.01%;width:100%}
 #community .u63{position:absolute;height:678.681px;left:calc(83.33% - 87.68px);top:1325px;width:325.275px;transform:translate(-50%, 0px)}
 #community .u64{position:absolute;display:contents;left:calc(66.67% + 69.75px);top:1325px}
+
+/* Match the original connector-circle centres without moving the phones. */
+#app-home [data-node-id="148:3501"]{top:1503px}
+#app-home [data-node-id="148:3500"]{top:1558px}
+#app-home [data-node-id="148:3509"]{top:1719px}
+#app-home [data-node-id="148:3508"]{top:1774px}
+/* Weekly title centres on its marker; body follows the recent-record title's 46px gap. */
+#walk-archive [data-node-id="148:2967"]{top:2105.25px}
+#walk-archive [data-node-id="148:2966"]{top:2151.25px}
+/* The exported zero-width SVG rules rasterised below one pixel at common scales.
+   Keep their authored anchors/heights and paint one consistent screen-space rule. */
+#walk-planning :is([data-node-id="148:3210"],[data-node-id="148:3211"]) :is(.r795,.r798,.r802){overflow:visible}
+#walk-planning :is([data-node-id="148:3210"],[data-node-id="148:3211"]) :is(.r795,.r798,.r802) .r794{display:none}
+#walk-planning :is([data-node-id="148:3210"],[data-node-id="148:3211"]) :is(.r795,.r798,.r802)::after{content:"";position:absolute;top:0;bottom:0;left:0;width:calc(1px / var(--page-scale));background:#ccc;transform:translateX(-50%);pointer-events:none}

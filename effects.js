@@ -50,6 +50,11 @@
  const onboarding=['148:4724','148:4725','148:4726','148:4740','148:4741'].map(id=>q('#onboarding [data-node-id="'+id+'"]')).filter(Boolean);
  onboarding.forEach(ownEntrance);
  entrance(onboarding,{kind:'onboarding-phone',duration:640,delays:[0,120,240,360,360],frames:[{opacity:0,translate:'0 18px'},{opacity:1,translate:'0 0'}]});
+ // The exported line's parent has zero height; reveal its three-pixel inner box.
+ const onboardingLine=q('#onboarding [data-node-id="148:4730"] .r520');
+ if(onboardingLine)entrance([onboardingLine],{kind:'onboarding-line',anchor:onboarding[0],duration:650,easing:'linear',frames:[{clipPath:'inset(0 100% 0 0)'},{clipPath:'inset(0 0% 0 0)'}]});
+ const onboardingDots=['148:4732','148:4733','148:4735','148:4736','148:4738','148:4739'].map(id=>q('#onboarding [data-node-id="'+id+'"]')).filter(Boolean);
+ entrance(onboardingDots,{kind:'onboarding-dot',anchor:onboarding[0],duration:130,delays:[91,91,292,292,494,494],frames:[{opacity:0},{opacity:1}]});
  // Overview owns the six leaf capsules; overview.js handles their bounded physics.
  const capsules=['148:7519','148:7517','148:7515','148:7506','148:7511','148:7513'].map(id=>q(`#intro [data-node-id="${id}"]`)).filter(Boolean);
  capsules.forEach(ownEntrance);

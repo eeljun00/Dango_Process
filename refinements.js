@@ -86,14 +86,67 @@
   const rootY=roots[0]?.y||650;
   const texts=qa('p[data-node-id]',ia).filter(n=>{const r=rect(n);return r.y>300&&parseFloat(getComputedStyle(n).fontSize)<=26&&!boxes.some(b=>b.contains(n));});
   const nodes=[...boxes,...texts];
+  const delayAt=r=>{
+   if(r.y<rootY-15)return Math.max(0,(r.y-300)*1.25);
+   const x=r.x+r.w/2,col=roots.length?roots.reduce((best,p,i)=>Math.abs(p.x-x)<Math.abs(roots[best].x-x)?i:best,0):0;
+   return 620+col*65+Math.max(0,Math.round((r.y-rootY)/55))*110;
+  };
   nodes.forEach(n=>{
-   const r=rect(n);let delay;
-   if(r.y<rootY-15)delay=Math.max(0,(r.y-300)*1.25);
-   else {const x=r.x+r.w/2,col=roots.length?roots.reduce((best,p,i)=>Math.abs(p.x-x)<Math.abs(roots[best].x-x)?i:best,0):0;delay=620+col*65+Math.max(0,Math.round((r.y-rootY)/55))*110;}
-   n.classList.add('ia-flow-node');n.style.setProperty('--flow-delay',`${dangoMotionTime(Math.round(delay))}ms`);
+   n.classList.add('ia-flow-node');n.style.setProperty('--flow-delay',`${dangoMotionTime(Math.round(delayAt(rect(n))))}ms`);
   });
+  // Reveal the existing connectors, including their dashes, on the boxes' shared clock.
+  // An SVG mask leaves the authored geometry/colors untouched and works on rotated,
+  // zero-width/height connector containers without clipping their parent boxes.
+  let flowStartedAt=null;const linePlans=[],svgNS='http://www.w3.org/2000/svg';
+  const settleLine=plan=>{
+   plan.animations.forEach(a=>{a.onfinish=null;a.cancel();});plan.animations=[];
+   plan.group.removeAttribute('mask');plan.svg.dataset.iaLineState='done';
+  };
+  const playLine=plan=>{
+   if(reduced.matches||!Element.prototype.animate){settleLine(plan);return;}
+   if(flowStartedAt===null)return;
+   const elapsed=performance.now()-flowStartedAt;plan.svg.dataset.iaLineState='running';
+   plan.strokes.forEach(({stroke,offset,delay,duration})=>{
+    const animation=stroke.animate([{strokeDashoffset:String(offset)},{strokeDashoffset:'0'}],
+     {duration,delay,easing:'linear',fill:'both'});
+    animation.currentTime=elapsed;plan.animations.push(animation);
+    animation.onfinish=()=>{if(plan.animations.every(a=>a.playState==='finished'))settleLine(plan);};
+   });
+  };
+  const lineIds=['148:3713','148:3714','148:3715','148:3716','148:3719','148:3720','148:3722','148:3737','148:3763','148:3769','148:3779','148:3787','148:3797','148:3810','148:3813','148:3834','148:3837','148:3850','148:3851','148:3852','148:3864','148:3866','148:3867','148:3902','148:3911','148:3912','148:3913','148:3914','148:3923'];
+  lineIds.forEach(async id=>{
+   const node=byId(id),image=node&&q('img',node);if(!image)return;let svg;
+   try{
+    const response=await fetch(image.src);if(!response.ok)return;
+    const source=new DOMParser().parseFromString(await response.text(),'image/svg+xml');
+    if(source.documentElement.localName!=='svg'||source.querySelector('parsererror,script,foreignObject'))return;
+    svg=document.importNode(source.documentElement,true);svg.setAttribute('class',(image.getAttribute('class')||'')+' ia-flow-line');svg.setAttribute('aria-hidden','true');
+    qa('[id]',svg).forEach(n=>n.removeAttribute('id'));
+    const group=document.createElementNS(svgNS,'g');[...svg.children].filter(n=>n.localName!=='defs').forEach(n=>group.append(n));svg.append(group);
+    image.replaceWith(svg);const paths=qa('path',group);if(!paths.length){svg.replaceWith(image);return;}
+    const geometry=paths.map(path=>{
+     const r=rect(path),matrix=path.getScreenCTM(),length=path.getTotalLength();
+     const start=path.getPointAtLength(0).matrixTransform(matrix),end=path.getPointAtLength(length).matrixTransform(matrix);
+     const reverse=r.h>r.w?start.y>end.y:start.x>end.x;
+     const delay=dangoMotionTime(Math.round(delayAt(r)));
+     const endDelay=dangoMotionTime(Math.round(delayAt({...r,y:r.y+r.h})));
+     return{offset:reverse?-1:1,delay,duration:Math.max(dangoMotionTime(550),endDelay-delay+dangoMotionTime(450))};
+    });
+    const defs=document.createElementNS(svgNS,'defs'),mask=document.createElementNS(svgNS,'mask'),maskId='dango-ia-'+id.replace(':','-');
+    mask.id=maskId;mask.setAttribute('maskUnits','userSpaceOnUse');const box=group.getBBox();
+    Object.entries({x:box.x-8,y:box.y-8,width:Math.max(1,box.width)+16,height:Math.max(1,box.height)+16}).forEach(([key,value])=>mask.setAttribute(key,value));
+    const contents=group.cloneNode(true);mask.append(contents);defs.append(mask);svg.prepend(defs);
+    const strokes=qa('path',contents).map((stroke,i)=>{
+     stroke.setAttribute('fill','none');stroke.setAttribute('stroke','#fff');stroke.setAttribute('stroke-width','6');stroke.setAttribute('pathLength','1');stroke.setAttribute('stroke-dasharray','1 1');stroke.setAttribute('stroke-dashoffset',geometry[i].offset);return{stroke,...geometry[i]};
+    });
+    group.setAttribute('mask','url(#'+maskId+')');svg.dataset.iaLineState='pending';
+    const plan={svg,group,strokes,animations:[]};linePlans.push(plan);playLine(plan);
+   }catch{if(svg?.isConnected)svg.replaceWith(image);}
+  });
+  reduced.addEventListener('change',()=>{if(reduced.matches)linePlans.forEach(settleLine);});
+  window.addEventListener('beforeprint',()=>linePlans.forEach(settleLine));
   const panel=qa('div',ia).find(n=>{const r=rect(n);return r.w>1400&&r.h>700&&getComputedStyle(n).backgroundColor==='rgb(255, 255, 255)';})||ia;
-  watch(panel,()=>ia.classList.add('flow-visible'));
+  watch(panel,()=>{ia.classList.add('flow-visible');if(flowStartedAt===null){flowStartedAt=performance.now();linePlans.forEach(playLine);}});
  }
  // Animate the two original pet cards in their authored left-to-right order.
  const profiles=[byId('I148:2991;1263:24971'),byId('148:3101')].filter(Boolean);
