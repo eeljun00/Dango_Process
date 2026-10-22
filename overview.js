@@ -5,7 +5,7 @@
  const nodes=['148:7519','148:7517','148:7515','148:7506','148:7511','148:7513'].map(id=>canvas?.querySelector(`[data-node-id="${id}"]`));
  if(!circle||nodes.some(n=>!n)||!window.Matter)return;
  const {Engine,Bodies,Body,Composite,Sleeping}=window.Matter;
- const reduced=matchMedia('(prefers-reduced-motion:reduce)'),step=1000/60;
+ const reduced=dangoReducedMotion,step=1000/60;
  let engine,arena,visibilityObserver,items=[],raf=0,last=0,accumulator=0,elapsed=0,visible=false,started=false,staticOnly=false,pointer=null;
  const clamp=(n,min,max)=>Math.max(min,Math.min(max,n));
  const stop=()=>{cancelAnimationFrame(raf);raf=0;last=0;accumulator=0;};
@@ -69,7 +69,7 @@
   if(!visible||document.hidden||staticOnly){stop();return;}
   accumulator+=last?Math.min(50,now-last):step;last=now;
   while(accumulator>=step){
-   elapsed+=step;
+   elapsed+=step*dangoMotionRate;
    items.forEach(item=>{
     if(!item.released&&elapsed>=item.at){item.released=true;Composite.add(engine.world,item.body);item.node.classList.remove('overview-waiting');}
     if(item.released)hover(item);
@@ -91,7 +91,7 @@
   if(engine||staticOnly||reduced.matches||!nodes[0].getBoundingClientRect().width)return;
   const r=localRect(circle),copy=canvas.querySelector('[data-node-id="148:7523"]'),text=localRect(copy);
   arena={cx:r.x+r.w/2,w:r.w,bottom:r.y+r.h,radius:Math.min(r.w,r.h)/2,left:Math.max(0,r.x),right:Math.min(canvas.offsetWidth,r.x+r.w),top:text.y+text.h+90};
-  engine=Engine.create({enableSleeping:true,positionIterations:8,velocityIterations:8});engine.gravity.y=.75;
+  engine=Engine.create({enableSleeping:true,positionIterations:8,velocityIterations:8});engine.gravity.y=.75;engine.timing.timeScale=dangoMotionRate;
   const walls=[],thickness=80,cy=arena.bottom-arena.radius;
   for(let i=0;i<56;i++){
    const a=i*Math.PI/56,b=(i+1)*Math.PI/56,m=(a+b)/2,rad=arena.radius-8;
@@ -133,7 +133,10 @@
  window.addEventListener('scroll',()=>{pointer=null;},{passive:true});
  document.addEventListener('visibilitychange',()=>{if(document.hidden)stop();else wake();});
  window.addEventListener('resize',()=>{if(!engine)prepare();else if(!nodes[0].getBoundingClientRect().width){visible=false;pointer=null;stop();}});
- reduced.addEventListener('change',()=>{if(reduced.matches)restore();});
+ reduced.addEventListener('change',()=>{
+  if(reduced.matches)restore();
+  else if(staticOnly){engine=null;items=[];staticOnly=false;started=false;visible=false;elapsed=0;prepare();}
+ });
  window.addEventListener('beforeprint',restore);
  if(reduced.matches){restore();return;}
  document.fonts.ready.then(prepare);

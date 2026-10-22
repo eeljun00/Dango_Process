@@ -39,16 +39,7 @@
 #community .community-saved-detail [data-node-id="148:7030"]{overflow:auto}
 #community .community-saved-detail [data-node-id="148:7031"]{width:100%;line-height:14.328px;white-space:pre-wrap;overflow-wrap:anywhere}
 #community .community-saved-detail [data-node-id="148:7031"] img{display:block;width:100%;height:auto;margin-top:8px}
-@media(max-width:1023px){
- #community .case-heading{position:absolute!important;left:0!important;right:0!important;top:147px!important;width:100%;margin:0}
- #community .case-heading .eyebrow{font-size:24px!important;margin-bottom:30px}
- #community .case-heading .case-title{font-size:48px!important;line-height:1.5!important;margin-bottom:10px}
- #community .case-heading .case-description{font-size:24px!important;line-height:1.5!important;max-width:none}
- #community .phone-slot{position:absolute;left:var(--device-x);top:var(--device-y);width:var(--device-w);flex:none;margin:0}
- #community .case-callout{position:absolute;left:var(--callout-x);top:var(--callout-y);width:294px;max-width:none;padding:0;background:none;border-radius:0;text-align:left}
- #community .case-callout h3{font-size:26px;margin-bottom:20px}
- #community .case-callout p{font-size:20px;line-height:30px}
-}
+
 
 #community .cn0{overflow-wrap:break-word;font-family:'SF Pro', 'Pretendard', sans-serif;font-weight:590;line-height:19.702px;position:relative;flex-shrink:0;font-size:14.33px;color:black;text-align:center;white-space:nowrap}
 #community .cn1{align-content:stretch;display:flex;flex:1 0 0;height:19.702px;align-items:center;min-width:1px;padding-top:1.791px;position:relative}

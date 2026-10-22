@@ -7,13 +7,13 @@
  function sizePhones(){
   qa('.lower-section .phone-slot').forEach(slot=>{
    const width=parseFloat(slot.style.getPropertyValue('--device-w'));
-   slot.style.setProperty('--mobile-phone-scale',Math.min(1,(window.innerWidth-48)/width));
+   slot.style.setProperty('--mobile-phone-scale',Math.min(1,(Math.max(768,window.innerWidth)-48)/width));
   });
   qa('.wireframe-grid').forEach(grid=>grid.style.setProperty('--wire-scale',Math.min(1,((grid.clientWidth-12)/2)/235)));
  }
  sizePhones();window.addEventListener('resize',sizePhones,{passive:true});
  const sectionFor={home:'app-home',menu:'convenience',walk:'walk-planning',community:'community',archive:'walk-archive'};
- function go(id){q('#'+id)?.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'instant':'smooth',block:'start'});}
+ function go(id){q('#'+id)?.scrollIntoView({behavior:dangoReducedMotion.matches?'instant':'smooth',block:'start'});}
  function save(key,value){try{localStorage.setItem('dango-process:v1:'+key,JSON.stringify(value));}catch{/* The current view still confirms the save when storage is unavailable. */}}
  function filterPosts(phone,filter){
   if(!phone)return;

@@ -1,7 +1,7 @@
 (() => {
  'use strict';
  const q=(s,r=document)=>r.querySelector(s),qa=(s,r=document)=>[...r.querySelectorAll(s)];
- const reduced=matchMedia('(prefers-reduced-motion:reduce)');
+ const reduced=dangoReducedMotion;
  const variants=['up','soft','left','scale'];
  qa('.design-section').forEach((section,i)=>qa('.reveal-text',section).forEach((n,j)=>{const s=getComputedStyle(n),large=parseFloat(s.fontSize)>=32||qa('*',n).some(c=>parseFloat(getComputedStyle(c).fontSize)>=32),centered=s.textAlign==='center'||s.transform!=='none'&&Math.abs(parseFloat(s.left)-(n.offsetParent?.clientWidth||0)/2)<2;n.dataset.reveal=centered&&large?'down':j===0?'soft':variants[(i+Math.floor(j/3))%variants.length];}));
  // Home artwork and copy share the existing section fade, without a second text entrance.
@@ -16,7 +16,7 @@
  function entrance(nodes,{kind,duration,delay=0,delays,counts=[],anchor=nodes[0],easing='cubic-bezier(.22,1,.36,1)',frames,onStart,onSettle}={}){
   if(!nodes.length||!anchor)return;
   const timing=i=>delays?.[i]??i*delay;
-  nodes.forEach((n,i)=>{n.dataset.entryKind=kind;n.dataset.entryState='pending';n.style.setProperty('--entry-delay',`${timing(i)}ms`);n.classList.add('entry-motion-pending');});
+  nodes.forEach((n,i)=>{n.dataset.entryKind=kind;n.dataset.entryState='pending';n.style.setProperty('--entry-delay',`${dangoMotionTime(timing(i))}ms`);n.classList.add('entry-motion-pending');});
   const group={nodes,anchor,started:false,animations:[],observer:null};entryGroups.push(group);
   const finish=()=>{group.observer?.disconnect();nodes.forEach(n=>{n.classList.remove('entry-motion-pending');n.dataset.entryState='done';});counts.forEach(c=>{c.node.textContent=c.final+'%';c.node.style.removeProperty('width');});group.animations.forEach(a=>a.cancel());onSettle?.();};
   group.finish=finish;
@@ -29,7 +29,7 @@
     n.dataset.entryState='running';
     const counter=counts[i];
     if(counter){counter.node.textContent=counter.final+'%';counter.node.style.removeProperty('width');counter.node.style.width=getComputedStyle(counter.node).width;counter.node.textContent='0%';}
-    const a=n.animate(typeof frames==='function'?frames(n,i):frames,{duration,delay:timing(i),easing,fill:'both'});group.animations.push(a);
+    const a=n.animate(typeof frames==='function'?frames(n,i):frames,{duration:dangoMotionTime(duration),delay:dangoMotionTime(timing(i)),easing,fill:'both'});group.animations.push(a);
     if(counter){const tick=()=>{if(n.dataset.entryState!=='running')return;const progress=Math.min(1,Math.max(0,a.effect.getComputedTiming().progress||0));counter.node.textContent=Math.round(counter.final*progress)+'%';requestAnimationFrame(tick);};requestAnimationFrame(tick);}
     a.onfinish=()=>{n.classList.remove('entry-motion-pending');n.dataset.entryState='done';if(counter){counter.node.textContent=counter.final+'%';counter.node.style.removeProperty('width');}a.cancel();};
    });
@@ -42,6 +42,14 @@
  }
  const cover=q('#intro [data-node-id="148:7503"]');
  if(cover){ownEntrance(cover);entrance([cover],{kind:'cover',duration:950,easing:'cubic-bezier(.18,.85,.28,1.18)',frames:[{opacity:0,translate:'0 28px',scale:.92},{opacity:1,translate:'0 0',scale:1}]});}
+ // These authored artwork groups own their entrance independently of text reveals.
+ const pinkLogo=q('#logo-grid [data-node-id="148:2842"]');
+ if(pinkLogo){ownEntrance(pinkLogo);entrance([pinkLogo],{kind:'logo-application',duration:720,frames:[{opacity:0,translate:'36px 0'},{opacity:1,translate:'0 0'}]});}
+ const photoLogo=q('#logo [data-node-id="148:4748"]');
+ if(photoLogo){ownEntrance(photoLogo);entrance([photoLogo],{kind:'logo-photo',duration:640,frames:[{opacity:0},{opacity:1}]});}
+ const onboarding=['148:4724','148:4725','148:4726','148:4740','148:4741'].map(id=>q('#onboarding [data-node-id="'+id+'"]')).filter(Boolean);
+ onboarding.forEach(ownEntrance);
+ entrance(onboarding,{kind:'onboarding-phone',duration:640,delays:[0,120,240,360,360],frames:[{opacity:0,translate:'0 18px'},{opacity:1,translate:'0 0'}]});
  // Overview owns the six leaf capsules; overview.js handles their bounded physics.
  const capsules=['148:7519','148:7517','148:7515','148:7506','148:7511','148:7513'].map(id=>q(`#intro [data-node-id="${id}"]`)).filter(Boolean);
  capsules.forEach(ownEntrance);
@@ -66,8 +74,8 @@
  // Observe stationary points, not the translated artwork. Vertical IO percentages use root width,
  // so derive the reading band from viewport height in pixels instead.
  const scrollGroups=[],scrollTargets=new Map();let bandObserver,exitObserver,triggerFrame=0,printing=false;
- function scrollEntrance(nodes,{kind,duration,delays,frames,onStart,onSettle}={}){
-  const first=nodes[0];if(!first)return;
+ function scrollEntrance(nodes,{kind,duration,delays,frames,onStart,onSettle,timingRate=dangoMotionRate}={}){
+  const first=nodes[0];if(!first)return;const time=milliseconds=>milliseconds/timingRate;
   const anchor=document.createElement('span'),style=getComputedStyle(first),matrix=new DOMMatrixReadOnly(style.transform==='none'?undefined:style.transform);
   anchor.className='step3b-scroll-trigger';anchor.setAttribute('aria-hidden','true');
   anchor.style.left=`${parseFloat(style.left)+parseFloat(style.width)/2+matrix.m41}px`;
@@ -90,11 +98,11 @@
    cancel();group.armed=false;group.runs++;pending();onStart?.();
    nodes.forEach((n,i)=>{
     n.dataset.entryState='running';n.dataset.scrollRuns=String(group.runs);
-    const a=n.animate(frames,{duration,delay:delays?.[i]||0,easing:'cubic-bezier(.22,1,.36,1)',fill:'both'});group.animations.push(a);
+    const a=n.animate(frames,{duration:time(duration),delay:time(delays?.[i]||0),easing:'cubic-bezier(.22,1,.36,1)',fill:'both'});group.animations.push(a);
     a.onfinish=()=>{n.classList.remove('entry-motion-pending');n.dataset.entryState='done';a.onfinish=null;a.cancel();};
    });
   };
-  nodes.forEach((n,i)=>{n.style.setProperty('--entry-delay',`${delays?.[i]||0}ms`);n.addEventListener('focusin',group.finish);});
+  nodes.forEach((n,i)=>{n.style.setProperty('--entry-delay',`${time(delays?.[i]||0)}ms`);n.addEventListener('focusin',group.finish);});
   pending();if(reduced.matches||!('IntersectionObserver'in window)||!Element.prototype.animate)group.finish();
   return group;
  }
@@ -144,14 +152,14 @@
   const playHalo=()=>{
    if(reduced.matches||!Element.prototype.animate){settleHalo();return;}
    halo.dataset.positioningHalo='running';
-   haloAnimation=halo.animate([{scale:1,opacity:.7},{scale:1.035,opacity:.58},{scale:1,opacity:.7}],{delay:120,duration:1500,iterations:1,easing:'ease-in-out'});
+   haloAnimation=halo.animate([{scale:1,opacity:.7},{scale:1.035,opacity:.58},{scale:1,opacity:.7}],{delay:40,duration:900,iterations:1,easing:'ease-in-out'});
    haloAnimation.onfinish=settleHalo;
   };
   const apps=['148:4880','148:4882','148:4888','148:4884','148:4890','148:4886','148:4872'].map(id=>q(`[data-node-id="${id}"]`,panel)).filter(Boolean);
   apps.forEach((app,i)=>{
    const dango=app.dataset.nodeId==='148:4872',rise=dango?24:12;
    ownEntrance(app);app.style.setProperty('--positioning-rise',`${rise}px`);
-   scrollEntrance([app],{kind:'positioning-app',duration:dango?820:620,delays:[dango?0:i*70],
+   scrollEntrance([app],{kind:'positioning-app',duration:dango?560:420,delays:[dango?0:i*35],timingRate:1,
     frames:[{opacity:0,translate:`0 ${rise}px`},{opacity:1,translate:'0 0'}],
     onStart:dango?playHalo:undefined,onSettle:dango?settleHalo:undefined});
   });
@@ -165,7 +173,7 @@
  reduced.addEventListener('change',()=>{if(reduced.matches)entryGroups.forEach(g=>g.finish());});
  window.addEventListener('beforeprint',()=>entryGroups.forEach(g=>g.finish()));
  function sequence(nodes,{group=1,delay=100,kind=''}={}){
-  nodes.forEach((n,i)=>{n.style.setProperty('--motion-opacity',getComputedStyle(n).opacity);n.style.setProperty('--motion-delay',`${Math.floor(i/group)*delay}ms`);n.classList.add('motion-item');if(kind)n.classList.add(kind);});
+  nodes.forEach((n,i)=>{n.style.setProperty('--motion-opacity',getComputedStyle(n).opacity);n.style.setProperty('--motion-delay',`${dangoMotionTime(Math.floor(i/group)*delay)}ms`);n.classList.add('motion-item');if(kind)n.classList.add(kind);});
   if(!nodes.length)return;
   const reveal=()=>nodes.forEach(n=>n.classList.add('motion-visible'));
   if(reduced.matches||!('IntersectionObserver'in window)){reveal();return;}
@@ -186,7 +194,7 @@
  [...colorRows].sort((a,b)=>a[0]-b[0]).forEach(([,row],rowIndex)=>{
   row.sort((a,b)=>parseFloat(getComputedStyle(a).left)-parseFloat(getComputedStyle(b).left));
   row.forEach((n,i)=>{ownEntrance(n);n.dataset.colorRow=String(rowIndex);n.dataset.colorColumn=String(i);});
-  scrollEntrance(row,{kind:'color',duration:620,delays:row.map((_,i)=>i*85),
+  scrollEntrance(row,{kind:'color',duration:620,delays:row.map((_,i)=>i*85),timingRate:1,
    frames:[{opacity:0,translate:'-10px 0'},{opacity:1,translate:'0 0'}]});
  });
  refreshStep3B();
@@ -214,11 +222,12 @@
  const destinations={'산책하기':'walk-planning','다음':'profile-setup','프로필 생성 완료':'app-home','산책 종료':'walk-log','기록하기':'walk-archive','산책 기록 작성':'walk-log'};
  function activate(node,action){node.setAttribute('role','button');node.tabIndex=0;const run=e=>{e.preventDefault();e.stopPropagation();action();};node.addEventListener('click',run);node.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' ')run(e);});}
  const go=id=>q('#'+id)?.scrollIntoView({behavior:reduced.matches?'instant':'smooth',block:'start'});
- qa('.original-section p').forEach(n=>{const text=n.textContent.trim();if(destinations[text])activate(n,()=>go(destinations[text]));else if(/^(카카오 로그인|네이버 로그인|Google 로그인|이메일 로그인|가입하기)$/.test(text))activate(n,()=>go('profile-setup'));});
+ qa('.original-section p').forEach(n=>{if(n.closest('#walk-log'))return;const text=n.textContent.trim();if(destinations[text])activate(n,()=>go(destinations[text]));else if(/^(카카오 로그인|네이버 로그인|Google 로그인|이메일 로그인|가입하기)$/.test(text))activate(n,()=>go('profile-setup'));});
  if(feedback){
   // refinements.js owns rating selection and saving; retain keyboard semantics here.
   qa('p',feedback).filter(n=>['별로','보통','만족','저장'].includes(n.textContent.trim())).forEach(n=>{n.setAttribute('role','button');n.tabIndex=0;});
-  qa('p',feedback).filter(n=>['닫기','다음에 할게요'].includes(n.textContent.trim())).forEach(n=>activate(n,()=>go('walk-summary')));
+  // This presentation panel never navigates away; selection and saving remain owned by refinements.js.
+  qa('p',feedback).filter(n=>['닫기','다음에 할게요'].includes(n.textContent.trim())).forEach(n=>{n.removeAttribute('role');n.removeAttribute('tabindex');n.style.cursor='default';});
  }
  reduced.addEventListener('change',()=>{if(reduced.matches)observers.forEach(({observer,reveal})=>{reveal();observer.disconnect();});});
 })();

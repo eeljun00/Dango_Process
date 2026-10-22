@@ -1,6 +1,6 @@
 /* Mobile reading and input presentation. Existing demo controllers retain state/storage ownership. */
 (()=>{'use strict';
- const media=matchMedia('(max-width:1023px)'),reduced=matchMedia('(prefers-reduced-motion:reduce)');
+ const media=matchMedia('(max-width:1023px)'),reduced=dangoReducedMotion;
  const q=(s,r=document)=>r.querySelector(s),all=(s,r=document)=>[...r.querySelectorAll(s)],node=id=>q('[data-node-id="'+id+'"]');
  const text=n=>{if(!n)return '';const read=x=>x.nodeType===3?x.textContent:[...x.childNodes].map(read).join(x.nodeName==='BR'?' ':'')+(['BR','P','LI'].includes(x.nodeName)?' ':'');return read(n).replace(/[\u200b-\u200d\ufeff]/g,' ').replace(/\s+/g,' ').trim();};
  const el=(tag,cls,value)=>{const n=document.createElement(tag);if(cls)n.className=cls;if(value)n.textContent=value;return n;};
@@ -58,7 +58,7 @@
  let removed=[];
  // Overview statements retain their original cream capsule and red text colors.
  const capsules=el('ul','mobile-capsules');capsules.setAttribute('aria-label','Overview 산책 문제 키워드');
- ['148:7506','148:7511','148:7513','148:7515','148:7517','148:7519'].forEach((id,i)=>{const li=el('li','',sourceText(id));li.style.setProperty('--capsule-delay',i*90+'ms');capsules.append(li);});q('#intro').append(capsules);expanded.add(q('#intro'));
+ ['148:7506','148:7511','148:7513','148:7515','148:7517','148:7519'].forEach((id,i)=>{const li=el('li','',sourceText(id));li.style.setProperty('--capsule-delay',dangoMotionTime(i*90)+'ms');capsules.append(li);});q('#intro').append(capsules);expanded.add(q('#intro'));
  function panel(id,title){const section=q('#'+id),host=el('div','mobile-panel');host.append(el('h3','mobile-label',title));if(['walk-log'].includes(id))section.insertBefore(host,q(':scope>.design-canvas',section));else section.append(host);expanded.add(section);return host;}
  function button(label,run,cls=''){const b=el('button','mobile-button '+cls,label);b.type='button';b.addEventListener('click',run);return b;}
  const color=panel('color',sourceText('148:2342')),grid=el('div','mobile-swatch-grid');all('.swatch-button',q('#color .design-canvas')).forEach(source=>{const hex='#'+text(source).replace('#','').toUpperCase(),b=button(hex,()=>source.click()),chip=el('i');chip.style.backgroundColor=hex;chip.setAttribute('aria-hidden','true');b.prepend(chip);grid.append(b);});color.append(grid);

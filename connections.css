@@ -30,8 +30,8 @@
 #easy-save .connection-save-copy{z-index:1;translate:0 var(--connection-copy-rise,0px)}
 /* Finite entrances use independent translate/scale; Figma transforms stay authored. */
 #active-walk .connection-track-character{position:absolute;inset:0;pointer-events:none;transform-origin:73.3% 86%}
-#active-walk .closing-motion-waiting,#walk-archive .closing-motion-waiting,#thank-you .closing-motion-waiting{opacity:0;pointer-events:none}
-#active-walk .closing-motion-running,#walk-archive .closing-motion-running,#thank-you .closing-motion-running{
+#active-walk .closing-motion-waiting,#walk-archive .closing-motion-waiting,#easy-save .closing-motion-waiting,#thank-you .closing-motion-waiting{opacity:0;pointer-events:none}
+#active-walk .closing-motion-running,#walk-archive .closing-motion-running,#easy-save .closing-motion-running,#thank-you .closing-motion-running{
  pointer-events:none;will-change:opacity,translate,scale,rotate;
 }
 @media(prefers-reduced-motion:reduce){
@@ -44,3 +44,5 @@
  .closing-motion-waiting{opacity:var(--closing-opacity,1)!important}
  #easy-save .connection-save-character,#easy-save .connection-save-copy{translate:none!important;scale:1!important}
 }
+
+#easy-save [data-node-id="148:3170"]{transform-origin:50% 80%}

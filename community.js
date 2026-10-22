@@ -11,7 +11,7 @@
   const handler=e=>{if(e.type==='keydown'&&(!['Enter',' '].includes(e.key)||e.repeat||e.isComposing))return;e.preventDefault();e.stopPropagation();if(node.getAttribute('aria-disabled')!=='true')run();};
   node.addEventListener('click',handler,true);node.addEventListener('keydown',handler,true);
  };
- const open=node=>node?.scrollIntoView({block:'center',behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'instant':'smooth'});
+ const open=node=>node?.scrollIntoView({block:'center',behavior:dangoReducedMotion.matches?'instant':'smooth'});
  const key='dango-process:v1:community-posts',draftKey='dango-process:v1:community-draft',categories=['추천','자유','동네','병원','전문가'];
  const validPost=p=>p&&typeof p.id==='string'&&typeof p.title==='string'&&clean(p.title)&&typeof p.body==='string'&&clean(p.body)&&(!p.photos||Array.isArray(p.photos));
  let posts=[],storageReadable=true;
