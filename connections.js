@@ -76,7 +76,7 @@
   return group;
  }
  const endingTitle=document.querySelector('#thank-you [data-node-id="148:4760"]');
- const endingItems=[['148:4760',0,750,.985],['148:4754',80,650,1],['148:4755',160,650,1],['148:4756',240,800,.985]]
+ const endingItems=[['148:4754',80,650,1],['148:4755',160,650,1],['148:4756',240,800,.985]]
   .map(([id,delay,duration,scale])=>({node:document.querySelector(`#thank-you [data-node-id="${id}"]`),delay,duration,scale})).filter(item=>item.node);
  closingGroup(endingTitle,endingItems,'ending');
  const sleepyCharacter=document.querySelector('#easy-save [data-node-id="148:3170"]');

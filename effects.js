@@ -6,6 +6,8 @@
  qa('.design-section').forEach((section,i)=>qa('.reveal-text',section).forEach((n,j)=>{const s=getComputedStyle(n),large=parseFloat(s.fontSize)>=32||qa('*',n).some(c=>parseFloat(getComputedStyle(c).fontSize)>=32),centered=s.textAlign==='center'||s.transform!=='none'&&Math.abs(parseFloat(s.left)-(n.offsetParent?.clientWidth||0)/2)<2;n.dataset.reveal=centered&&large?'down':j===0?'soft':variants[(i+Math.floor(j/3))%variants.length];}));
  // Home artwork and copy share the existing section fade, without a second text entrance.
  qa('#app-home .reveal-text').forEach(n=>n.classList.remove('reveal-text','is-revealed'));
+ // Closing-page copy stays static; its decorative flowers move independently.
+ qa('#thank-you .reveal-text').forEach(n=>n.classList.remove('reveal-text','is-revealed'));
  const typeRows=qa('#typography p').filter(n=>parseFloat(getComputedStyle(n).left)>900);
  const observers=[];
  // STEP 3-A: own only these entrances; keep Figma transform/rotation and native layout intact.
@@ -52,9 +54,9 @@
  entrance(onboarding,{kind:'onboarding-phone',duration:640,delays:[0,120,240,360,360],frames:[{opacity:0,translate:'0 18px'},{opacity:1,translate:'0 0'}]});
  // The exported line's parent has zero height; reveal its three-pixel inner box.
  const onboardingLine=q('#onboarding [data-node-id="148:4730"] .r520');
- if(onboardingLine)entrance([onboardingLine],{kind:'onboarding-line',anchor:onboarding[0],duration:650,easing:'linear',frames:[{clipPath:'inset(0 100% 0 0)'},{clipPath:'inset(0 0% 0 0)'}]});
+ if(onboardingLine)entrance([onboardingLine],{kind:'onboarding-line',anchor:onboarding[0],duration:1000,delays:[80],easing:'linear',frames:[{clipPath:'inset(0 100% 0 0)'},{clipPath:'inset(0 0% 0 0)'}]});
  const onboardingDots=['148:4732','148:4733','148:4735','148:4736','148:4738','148:4739'].map(id=>q('#onboarding [data-node-id="'+id+'"]')).filter(Boolean);
- entrance(onboardingDots,{kind:'onboarding-dot',anchor:onboarding[0],duration:130,delays:[91,91,292,292,494,494],frames:[{opacity:0},{opacity:1}]});
+ entrance(onboardingDots,{kind:'onboarding-dot',anchor:onboarding[0],duration:130,delays:[220,220,530,530,840,840],frames:[{opacity:0},{opacity:1}]});
  // Overview owns the six leaf capsules; overview.js handles their bounded physics.
  const capsules=['148:7519','148:7517','148:7515','148:7506','148:7511','148:7513'].map(id=>q(`#intro [data-node-id="${id}"]`)).filter(Boolean);
  capsules.forEach(ownEntrance);

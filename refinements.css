@@ -193,3 +193,28 @@
 @keyframes archive-candy-shadow{0%,100%{scale:1;opacity:1}48%{scale:.78;opacity:.65}80%{scale:1.04;opacity:1}}
 @media(prefers-reduced-motion:reduce){.archive-jump-character,.archive-jump-shadow{animation:none;translate:none;scale:1}}
 @media print{.archive-jump-character,.archive-jump-shadow{animation:none;translate:none;scale:1}}
+
+/* Survey metadata has one lighter gray; the connector has no residual corner edges. */
+#research :is([data-node-id="148:7411"],[data-node-id="148:7412"],[data-node-id="148:7414"],[data-node-id="148:7415"]){color:#999}
+#research .survey-connector-branch{border:0}
+#research .survey-connector-art{display:block;position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
+/* Match the Design System card's 165px outer margin. */
+#logo-grid [data-node-id="148:2842"]{width:795px}
+#logo-grid [data-node-id="148:2844"]{left:calc(50% - 91px)}
+/* Stop the gradient at the first/third onboarding screens' inner side edges. */
+#onboarding [data-node-id="148:4727"]{left:229.24px;width:1037.78px;overflow:clip}
+/* Remove the duplicate source dividers and paint two equal screen-space rules. */
+#walk-archive :is([data-node-id="I148:2991;1263:25110"],[data-node-id="I148:2991;1263:25111"]){visibility:hidden}
+#walk-archive :is([data-node-id="148:3084"],[data-node-id="148:3085"]){overflow:visible}
+#walk-archive :is([data-node-id="148:3084"],[data-node-id="148:3085"]) img{display:none}
+#walk-archive :is([data-node-id="148:3084"],[data-node-id="148:3085"])::after{content:"";position:absolute;top:0;bottom:0;left:var(--archive-rule-x,0px);width:calc(1px / var(--page-scale));background:#ccc;pointer-events:none}
+/* Enlarge each background around its own center, independently of its drift. */
+#community .community-flower{scale:1.3;opacity:.55}
+#community .community-flower[data-source-layer="148:5929"]{transform-origin:87% 62%}
+#community .community-flower[data-source-layer="148:5936"]{transform-origin:14% 23%}
+#community .community-flower[data-source-layer="148:5943"]{transform-origin:47% 91%}
+#thank-you .ending-flower{animation:ending-flower-drift calc(var(--ending-flower-duration) / var(--motion-rate)) ease-in-out var(--ending-flower-delay) infinite;animation-play-state:paused}
+#thank-you .ending-flower.flower-moving{animation-play-state:running}
+@keyframes ending-flower-drift{0%,100%{translate:0 0;rotate:0deg}35%{translate:var(--ending-flower-x) var(--ending-flower-y);rotate:2deg}70%{translate:calc(var(--ending-flower-x) * -.6) calc(var(--ending-flower-y) * .45);rotate:-1.5deg}}
+@media(prefers-reduced-motion:reduce){#thank-you .ending-flower{animation:none;translate:none;rotate:none}}
+@media print{#thank-you .ending-flower{animation:none;translate:none;rotate:none}}

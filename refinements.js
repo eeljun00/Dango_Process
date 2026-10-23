@@ -218,4 +218,29 @@
   watch(candy,()=>{candy.classList.add('jumping');candyShadow.classList.add('jumping');},()=>{candy.classList.remove('jumping');candyShadow.classList.remove('jumping');});
  }
 
+ // Replace zero-width CSS border corners with clean paths, keeping both reveal clocks.
+ const surveyCanvas=q('#research .design-canvas');
+ if(surveyCanvas){
+  const canvasRect=surveyCanvas.getBoundingClientRect(),scale=canvasRect.width/1920.375;
+  for(const id of ['148:7481','148:7479']){
+   const branch=byId(id);if(!branch)continue;branch.classList.add('survey-connector-branch');
+   const r=branch.getBoundingClientRect(),width=r.width/scale,height=r.height/scale,junction=1920.375/2-(r.left-canvasRect.left)/scale;
+   const svg=document.createElementNS('http://www.w3.org/2000/svg','svg'),path=document.createElementNS(svg.namespaceURI,'path');
+   svg.setAttribute('viewBox',`0 0 ${width} ${height}`);svg.setAttribute('aria-hidden','true');svg.classList.add('survey-connector-art');
+   const left=id==='148:7481';
+   path.setAttribute('d',left?`M0 1 H${junction-99} A99 99 0 0 1 ${junction} 100 V${height}`:`M${width} 1 H${junction+99} A99 99 0 0 0 ${junction} 100 V${height}`);
+   path.setAttribute('fill','none');path.setAttribute('stroke','#ff4444');path.setAttribute('stroke-width','2');svg.append(path);branch.replaceChildren(svg);
+  }
+ }
+ // Only the foreground archive card paints dividers; align their edges to device pixels.
+ const archiveRules=['148:3084','148:3085'].map(byId).filter(Boolean);
+ function snapArchiveRules(){
+  const scale=parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--page-scale'))||1,dpr=devicePixelRatio||1;
+  archiveRules.forEach(n=>{const x=n.getBoundingClientRect().left;n.style.setProperty('--archive-rule-x',`${(Math.round(x*dpr)/dpr-x)/scale}px`);});
+ }
+ snapArchiveRules();window.addEventListener('resize',snapArchiveRules,{passive:true});document.fonts.ready.then(snapArchiveRules);
+ // The two original blurred flower fields drift while the closing page is visible.
+ const endingFlowers=['148:4754','148:4755'].map(byId).filter(Boolean);
+ endingFlowers.forEach((n,i)=>{n.classList.add('ending-flower');n.style.setProperty('--ending-flower-duration',`${[16,21][i]}s`);n.style.setProperty('--ending-flower-delay',`${[-3,-9][i]}s`);n.style.setProperty('--ending-flower-x',`${[35,-42][i]}px`);n.style.setProperty('--ending-flower-y',`${[-26,32][i]}px`);});
+ watch(q('#thank-you'),()=>endingFlowers.forEach(n=>n.classList.add('flower-moving')),()=>endingFlowers.forEach(n=>n.classList.remove('flower-moving')));
 })();
