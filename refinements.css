@@ -201,8 +201,8 @@
 /* Match the Design System card's 165px outer margin. */
 #logo-grid [data-node-id="148:2842"]{width:795px}
 #logo-grid [data-node-id="148:2844"]{left:calc(50% - 91px)}
-/* Stop the gradient at the first/third onboarding screens' inner side edges. */
-#onboarding [data-node-id="148:4727"]{left:229.24px;width:1037.78px;overflow:clip}
+/* Include the complete gray frame edges in the pink bottom fade. */
+#onboarding [data-node-id="148:4727"]{left:223.24px;width:1049.78px;overflow:clip}
 /* Remove the duplicate source dividers and paint two equal screen-space rules. */
 #walk-archive :is([data-node-id="I148:2991;1263:25110"],[data-node-id="I148:2991;1263:25111"]){visibility:hidden}
 #walk-archive :is([data-node-id="148:3084"],[data-node-id="148:3085"]){overflow:visible}
@@ -235,11 +235,20 @@
 @media(prefers-reduced-motion:reduce){.bubble-pop-background{animation:none;opacity:1;scale:1}}
 @media print{.bubble-pop-background{animation:none;opacity:1;scale:1}}
 
-/* End the dotted guide before the login phone, preserving its left-to-right reveal. */
-#onboarding [data-node-id="148:4730"] .r520{right:130px}
+/* Connect the dotted guide to the login phone side, with no line inside its screen. */
+#onboarding [data-node-id="148:4730"] .r520{right:46px}
 /* Cover restored wireframe screens as well as the original artwork at the bottom. */
 #wireframe [data-node-id="148:4721"]{z-index:30;pointer-events:none}
 /* Increase the current flower size by 1.5, then balance each authored color separately. */
 #community .community-flower{scale:2.325}
 #community .community-flower[data-source-layer="148:5936"]{opacity:.55}
 #community .community-flower[data-source-layer="148:5943"]{opacity:.96}
+
+/* Match the requested descriptions to the standard case-study copy. */
+#interview [data-node-id="148:4952"],#interview [data-node-id="148:4952"] p,#app-home [data-node-id="148:3488"],#research :is([data-node-id="148:7411"],[data-node-id="148:7412"],[data-node-id="148:7414"],[data-node-id="148:7415"]){font-size:24px;font-weight:500;line-height:36px;letter-spacing:-.48px;color:#666}
+/* Shift full-size flower planes; their independent swimming motion stays intact. */
+#community .community-flower[data-source-layer="148:5929"]{inset:0 -180px 0 180px;opacity:.5}
+#community .community-flower[data-source-layer="148:5936"]{inset:0 -140px 0 140px}
+#community .community-flower[data-source-layer="148:5943"]{inset:-180px 0 180px}
+/* Trace the baked phone's tilted navigation card without covering its icons. */
+#active-walk [data-node-id="148:3190"]::after{content:"";position:absolute;left:43.3%;top:86%;width:49.5%;height:8.2%;box-sizing:border-box;border:1px solid #26364a18;border-radius:12px;transform:rotate(-16deg);transform-origin:top left;box-shadow:0 -2px 6px #26364a24;pointer-events:none}

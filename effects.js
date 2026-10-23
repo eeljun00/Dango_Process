@@ -61,9 +61,9 @@
  }
  // These authored artwork groups own their entrance independently of text reveals.
  const pinkLogo=q('#logo-grid [data-node-id="148:2842"]');
- if(pinkLogo){ownEntrance(pinkLogo);entrance([pinkLogo],{kind:'logo-application',duration:720,frames:[{opacity:0,translate:'36px 0'},{opacity:1,translate:'0 0'}]});}
+ if(pinkLogo){ownEntrance(pinkLogo);entrance([pinkLogo],{kind:'logo-application',duration:1200,frames:[{opacity:0,translate:'36px 0'},{opacity:1,translate:'0 0'}]});}
  const photoLogo=q('#logo [data-node-id="148:4748"]');
- if(photoLogo){ownEntrance(photoLogo);entrance([photoLogo],{kind:'logo-photo',duration:640,frames:[{opacity:0,translate:'-36px 0'},{opacity:1,translate:'0 0'}]});}
+ if(photoLogo){ownEntrance(photoLogo);entrance([photoLogo],{kind:'logo-photo',duration:1100,frames:[{opacity:0,translate:'-36px 0'},{opacity:1,translate:'0 0'}]});}
  // One observer starts the line first, then phones and dots on the same clock.
  const onboarding=['148:4724','148:4725','148:4726','148:4740','148:4741'].map(id=>q('#onboarding [data-node-id="'+id+'"]')).filter(Boolean);
  onboarding.forEach(ownEntrance);

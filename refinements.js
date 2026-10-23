@@ -244,7 +244,7 @@
  endingFlowers.forEach((n,i)=>{n.classList.add('ending-flower');n.style.setProperty('--ending-flower-duration',`${[16,21][i]}s`);n.style.setProperty('--ending-flower-delay',`${[-3,-9][i]}s`);n.style.setProperty('--ending-flower-x',`${[35,-42][i]}px`);n.style.setProperty('--ending-flower-y',`${[-26,32][i]}px`);});
  watch(q('#thank-you'),()=>endingFlowers.forEach(n=>n.classList.add('flower-moving')),()=>endingFlowers.forEach(n=>n.classList.remove('flower-moving')));
  // Align field captions with the corresponding input frame, including fractional instance offsets.
- const profileLabels=[['I148:3223;1288:21455','I148:3223;1288:21454'],['I148:3224;1288:21485','I148:3224;1288:21484'],['I148:3225;1288:21514','I148:3225;1288:21513'],['I148:3226;1288:21547','I148:3226;1288:21546']];
+ const profileLabels=[['I148:3223;1288:21455','I148:3223;1288:21454'],['I148:3224;1288:21485','I148:3224;1288:21484'],['I148:3225;1288:21514','I148:3225;1288:21513'],['I148:3226;1288:21547','I148:3226;1288:21546'],['I148:3227;1288:21580','I148:3227;1288:21578'],['I148:3228;1288:21612','I148:3228;1288:21611'],['I148:3229;1288:21658','I148:3229;1288:21641']];
  function alignProfileLabels(){
   const scale=parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--page-scale'))||1;
   profileLabels.forEach(([labelId,boxId])=>{const label=byId(labelId),box=byId(boxId);if(!label||!box)return;const left=parseFloat(getComputedStyle(label).left),delta=(box.getBoundingClientRect().left-label.getBoundingClientRect().left)/scale+4;if(Number.isFinite(left))label.style.left=(left+delta)+'px';});
