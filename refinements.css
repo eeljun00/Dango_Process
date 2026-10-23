@@ -316,3 +316,13 @@
  0%,100%{translate:0 0;rotate:-1deg}
  50%{translate:0 -14px;rotate:1.5deg}
 }
+
+/* Render the complete original mascot glyph without the rectangular clipping mask. */
+:is(#components,#wireframe,#app-home,#walk-planning,#walk-log,#walk-summary,#walk-archive,#community) [data-name="sound_detection_dog_barking"]>p{mask-image:none!important;-webkit-mask-image:none!important;position:absolute;inset:0;display:flex;align-items:center;justify-content:center;width:100%;height:100%;margin:0;line-height:1;font-size:36px;transform:none;translate:none!important;filter:none;opacity:1}
+#community [data-node-id="I148:6948;678:11003"] [data-node-id="I148:6948;678:11004"]{color:#FF4444}
+/* Transparent 3D artwork uses the existing composition and separate shadow. */
+#concept [data-node-id="148:2922"]>img,#branding [data-node-id="148:2316"]>img{object-fit:contain;object-position:center bottom;width:115%;left:-7.5%}
+@media(prefers-reduced-motion:no-preference){
+ #concept [data-node-id="148:2922"]>img,#branding [data-node-id="148:2316"]>img{transform-origin:50% 85%;animation:branding-character-breathe 4s ease-in-out infinite}
+}
+@keyframes branding-character-breathe{0%,100%{translate:0 0;rotate:-1deg}50%{translate:0 -12px;rotate:1deg}}
