@@ -250,9 +250,9 @@
 /* Shift full-size flower planes; their independent swimming motion stays intact. */
 #community .community-flower[data-source-layer="148:5929"]{inset:0 -180px 0 180px;opacity:.5}
 #community .community-flower[data-source-layer="148:5936"]{inset:0 -140px 0 140px}
-#community .community-flower[data-source-layer="148:5943"]{inset:-180px 0 180px}
-/* Trace the baked phone's tilted navigation card without covering its icons. */
-#active-walk [data-node-id="148:3190"]::after{content:"";position:absolute;left:43.3%;top:86%;width:49.5%;height:8.2%;box-sizing:border-box;border:1px solid #26364a18;border-radius:12px;transform:rotate(-16deg);transform-origin:top left;box-shadow:0 -2px 6px #26364a24;pointer-events:none}
+#community .community-flower[data-source-layer="148:5943"]{inset:-160px -20px 160px 20px}
+/* Follow the original navigation outline with shadow only; no new card or border. */
+#active-walk [data-node-id="148:3190"]::after{content:"";position:absolute;left:41.8%;top:86.5%;width:51.6%;height:7.5%;border:0;border-radius:10px;transform:rotate(-14.5deg);transform-origin:top left;box-shadow:0 1px 3px rgba(38,54,74,.055);pointer-events:none}
 
 /* Regular case-study headers use 30px label spacing and 15px description spacing.
    Speech-bubble copy and the separate Insight explanation keep their authored positions. */
