@@ -345,3 +345,21 @@
 @keyframes concept-balloon-float{0%,100%{translate:0 0;rotate:-.7deg}50%{translate:0 -22px;rotate:.7deg}}
 @keyframes concept-decoration-float{0%,100%{translate:0 0;rotate:-2deg}50%{translate:5px -18px;rotate:2deg}}
 @media(prefers-reduced-motion:reduce){#concept .concept-logo-balloon{translate:none;scale:1;transition:none}}
+
+/* Four distinct poses make a real alternating-foot walk cycle. */
+#concept [data-node-id="148:2921"]{left:50%;width:320px}
+#concept .dango-walk-animation{position:absolute;inset:0;pointer-events:none}
+#concept .dango-walk-poster{position:absolute;inset:0;left:-7.5%;width:115%;height:100%;object-fit:contain;object-position:center bottom}
+#concept .dango-walk-sprite{position:absolute;left:6.25%;top:10.25%;width:87.5%;height:87.5%;background-image:url('assets/generated/dango-walk-sprite-v1.png');background-size:200% 200%;background-repeat:no-repeat;visibility:hidden}
+@media(prefers-reduced-motion:no-preference){
+ #concept .walk-ready .dango-walk-sprite{visibility:visible;animation:dango-walk-frames .9s steps(1,end) infinite;animation-play-state:paused}
+ #concept .walk-ready.walk-in-view .dango-walk-sprite{animation-play-state:running}
+ #concept .walk-ready .dango-walk-poster{visibility:hidden}
+}
+@keyframes dango-walk-frames{
+ 0%,100%{background-position:0% 0%;translate:0 0}
+ 25%{background-position:100% 0%;translate:0 2.23px}
+ 50%{background-position:0% 100%;translate:0 24.56px}
+ 75%{background-position:100% 100%;translate:0 23.44px}
+}
+@media print{#concept .dango-walk-sprite{display:none}#concept .dango-walk-poster{visibility:visible!important}}

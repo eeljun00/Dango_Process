@@ -28,3 +28,20 @@
  reduced.addEventListener('change',stop);
  window.addEventListener('beforeprint',stop);
 })();
+
+/* Pause the walking frames outside the viewport; reduced motion uses the still pose. */
+(()=>{
+ 'use strict';
+ const walk=document.querySelector('#concept .dango-walk-animation');
+ if(!walk)return;
+ let visible=false;
+ const sync=()=>walk.classList.toggle('walk-in-view',visible&&!document.hidden);
+ if('IntersectionObserver' in window){
+  new IntersectionObserver(entries=>entries.forEach(entry=>{visible=entry.isIntersecting;sync();}),{threshold:.1}).observe(walk);
+ }else{visible=true;sync();}
+ document.addEventListener('visibilitychange',sync);
+ const sheet=new Image();
+ sheet.onload=()=>{walk.classList.add('walk-ready');walk.dataset.walkState='ready';};
+ sheet.onerror=()=>{walk.dataset.walkState='unavailable';};
+ sheet.src='assets/generated/dango-walk-sprite-v1.png';
+})();
