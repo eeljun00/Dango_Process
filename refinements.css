@@ -295,6 +295,24 @@
 #research :is([data-node-id="148:7411"],[data-node-id="148:7414"]){order:1}
 /* Both badges share typography, padding and corner radius. */
 #pain-point [data-node-id="148:4948"],#strategy [data-node-id="148:4768"],#strategy .insight-badge-label{font-family:Pretendard,sans-serif;font-size:24px;font-weight:700;line-height:29px;letter-spacing:0}
-#strategy [data-node-id="148:4768"]{display:flex;align-items:center;justify-content:center;left:calc(50% - .19px);top:174.28px;width:max-content;height:50px;padding:10px 30px;margin:0;transform:translateX(-50%);background:#D0E2FF;border-radius:20px}
+#strategy [data-node-id="148:4768"]{display:flex;align-items:center;justify-content:center;left:calc(50% - .19px);top:174.28px;width:max-content;height:50px;padding:10px 30px;margin:0;transform:translateX(-50%);background:#fff;border-radius:20px}
 #strategy .insight-badge-label{display:block}
 #thank-you [data-node-id="148:4760"]{color:#fff}
+
+/* Research badges and readable project navigation. */
+#pain-point [data-node-id="148:4947"]{background:#FF4444}
+#pain-point [data-node-id="148:4948"]{color:#fff}
+.nav-brand span,.nav-links{font-size:15px}
+.nav-brand span,.nav-links a{white-space:nowrap}
+@media(min-width:1024px) and (max-width:1199px){
+ .nav-brand span,.nav-links{font-size:14px}
+ .nav-links{gap:16px}
+}
+/* Move only the character artwork; preserve its original position and frame. */
+@media(prefers-reduced-motion:no-preference){
+ #strategy [data-node-id="148:4836"]>img{transform-origin:50% 85%;animation:insight-character-cheer 3.2s ease-in-out infinite}
+}
+@keyframes insight-character-cheer{
+ 0%,100%{translate:0 0;rotate:-1deg}
+ 50%{translate:0 -14px;rotate:1.5deg}
+}
