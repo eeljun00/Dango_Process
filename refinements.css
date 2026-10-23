@@ -280,10 +280,11 @@
 #thank-you .project-summary-contribution{grid-area:contribution}
 #thank-you .project-summary-tools{grid-area:tools}
 #thank-you .project-summary-ai{grid-area:ai}
-#thank-you .project-summary dt{margin:0 0 16px;font-size:20px;line-height:1.5;font-weight:600;letter-spacing:.8px}
+#thank-you .project-summary dt{margin:0 0 16px;font-size:24px;line-height:1.5;font-weight:500;letter-spacing:-.32px}
+#thank-you .project-summary-type dt{font-weight:600}
 #thank-you .project-summary dd{margin:0;font-size:24px;line-height:1.5;font-weight:400;letter-spacing:-.32px;overflow-wrap:normal;word-break:normal}
 #thank-you .project-contributions{margin:0;padding:0;list-style:none}
 #thank-you .project-contributions li{display:flex;align-items:baseline;gap:8px;padding:0;list-style:none;font-size:24px;line-height:1.5}
-#thank-you .project-contributions strong{font-size:24px;line-height:1.5;font-weight:500;font-variant-numeric:tabular-nums}
+#thank-you .project-contributions strong{font-size:24px;line-height:1.5;font-weight:400;font-variant-numeric:tabular-nums}
 #thank-you .project-summary-role dd span{white-space:nowrap}
 #intro :is([data-node-id="148:7568"],[data-node-id="148:7569"]){font-size:24px}
