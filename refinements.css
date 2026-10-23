@@ -273,19 +273,18 @@
 #community .case-heading .case-title{margin-bottom:var(--case-description-gap)}
 
 /* Four compact credit rows below the original closing title and artwork. */
-#thank-you .project-summary{position:absolute;z-index:1;left:165.5px;top:653.77px;width:1350px;margin:0;padding:0;display:grid;row-gap:28px;color:rgb(255 255 255 / .8);font-family:Pretendard,sans-serif}
+#thank-you .project-summary{position:absolute;z-index:1;left:165.5px;top:653.77px;width:1350px;margin:0;padding:0;display:grid;row-gap:28px;color:#fff;font-family:Pretendard,sans-serif}
 #thank-you .project-summary-item{display:grid;grid-template-columns:190px minmax(0,1fr);column-gap:32px;align-items:center;min-width:0;min-height:44px}
 #thank-you .project-summary dt{margin:0;font-size:24px;line-height:1.5;font-weight:500;letter-spacing:.3px}
-#thank-you .project-summary .project-summary-type dd{font-weight:600}
 #thank-you .project-summary dd{margin:0;font-size:24px;line-height:1.5;font-weight:400;letter-spacing:.3px;white-space:nowrap}
-#thank-you .project-contributions{display:flex;align-items:center;gap:24px;margin:0;padding:0;list-style:none}
-#thank-you .project-contributions li{display:flex;align-items:center;gap:24px;margin:0;padding:0;list-style:none}
-#thank-you .project-contributions li:not(:last-child)::after{content:"·"}
+#thank-you .credit-inline-list{display:flex;align-items:center;gap:0;margin:0;padding:0;list-style:none}
+#thank-you .credit-inline-list>li{display:flex;align-items:center;gap:0;margin:0;padding:0;list-style:none;white-space:nowrap}
+#thank-you .credit-inline-list>li:not(:last-child)::after{content:"·";flex:none;margin-inline:12px}
 #thank-you .project-tools{display:flex;align-items:center;gap:16px;margin:0;padding:0;list-style:none}
 #thank-you .project-tool{position:relative;display:flex;align-items:center;justify-content:center;width:44px;height:44px;margin:0;padding:0;list-style:none}
 #thank-you .project-tool>svg{display:block;width:40px;height:40px;overflow:visible}
 #thank-you .project-tool:focus-visible{outline:2px solid currentColor;outline-offset:4px;border-radius:6px}
-#thank-you .project-tool-name{position:absolute;top:calc(100% + 12px);left:50%;transform:translateX(-50%);padding:6px 10px;border-radius:6px;background:#665457;color:rgb(255 255 255 / .8);font-size:18px;line-height:1.5;font-weight:400;letter-spacing:0;white-space:nowrap;opacity:0;visibility:hidden;pointer-events:none;z-index:2}
+#thank-you .project-tool-name{position:absolute;top:calc(100% + 12px);left:50%;transform:translateX(-50%);padding:6px 10px;border-radius:6px;background:#665457;color:#fff;font-size:18px;line-height:1.5;font-weight:400;letter-spacing:0;white-space:nowrap;opacity:0;visibility:hidden;pointer-events:none;z-index:2}
 #thank-you .project-tool:hover .project-tool-name,#thank-you .project-tool:focus-visible .project-tool-name{opacity:1;visibility:visible}
 #intro :is([data-node-id="148:7568"],[data-node-id="148:7569"]){font-size:24px}
 
@@ -294,9 +293,10 @@
 #research :is([data-node-id="148:7410"],[data-node-id="148:7413"]){position:static;display:flex;align-items:center;gap:12px;left:auto;top:auto;transform:none}
 #research :is([data-node-id="148:7411"],[data-node-id="148:7412"],[data-node-id="148:7414"],[data-node-id="148:7415"]){position:static;left:auto;top:auto;transform:none}
 #research :is([data-node-id="148:7411"],[data-node-id="148:7414"]){order:1}
-/* The badge sits behind the original Insight text, preserving its title spacing. */
-#strategy [data-node-id="148:4768"]{isolation:isolate}
-#strategy [data-node-id="148:4768"]::before{content:"";position:absolute;z-index:-1;left:50%;top:50%;width:172px;height:50px;transform:translate(-50%,-50%);background:#fff;border-radius:20px;pointer-events:none}
-#thank-you [data-node-id="148:4760"]{color:rgb(255 255 255 / .8)}
+/* Both badges share typography, padding and corner radius. */
+#pain-point [data-node-id="148:4948"],#strategy [data-node-id="148:4768"],#strategy .insight-badge-label{font-family:Pretendard,sans-serif;font-size:24px;font-weight:700;line-height:29px;letter-spacing:0}
+#strategy [data-node-id="148:4768"]{display:flex;align-items:center;justify-content:center;left:calc(50% - .19px);top:174.28px;width:max-content;height:50px;padding:10px 30px;margin:0;transform:translateX(-50%);background:#fff;border-radius:20px}
+#strategy .insight-badge-label{display:block}
+#thank-you [data-node-id="148:4760"]{color:#fff}
 /* A live text layer shares the original phone image's coordinate system and entrance. */
 #intro .cover-phone-copy{position:absolute;height:113.72%;left:-50.64%;top:-6.86%;width:201.28%;max-width:none;overflow:visible;pointer-events:none}
