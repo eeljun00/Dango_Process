@@ -247,7 +247,7 @@
  const profileLabels=[['I148:3223;1288:21455','I148:3223;1288:21454'],['I148:3224;1288:21485','I148:3224;1288:21484'],['I148:3225;1288:21514','I148:3225;1288:21513'],['I148:3226;1288:21547','I148:3226;1288:21546']];
  function alignProfileLabels(){
   const scale=parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--page-scale'))||1;
-  profileLabels.forEach(([labelId,boxId])=>{const label=byId(labelId),box=byId(boxId);if(!label||!box)return;const left=parseFloat(getComputedStyle(label).left),delta=(box.getBoundingClientRect().left-label.getBoundingClientRect().left)/scale;if(Number.isFinite(left))label.style.left=(left+delta)+'px';});
+  profileLabels.forEach(([labelId,boxId])=>{const label=byId(labelId),box=byId(boxId);if(!label||!box)return;const left=parseFloat(getComputedStyle(label).left),delta=(box.getBoundingClientRect().left-label.getBoundingClientRect().left)/scale+4;if(Number.isFinite(left))label.style.left=(left+delta)+'px';});
  }
  alignProfileLabels();window.addEventListener('resize',alignProfileLabels,{passive:true});document.fonts.ready.then(alignProfileLabels);
  // Lettering remains still while only the two separate bubble backgrounds pop repeatedly.

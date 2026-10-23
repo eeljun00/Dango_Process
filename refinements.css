@@ -234,3 +234,12 @@
 @keyframes bubble-background-pop{0%,100%{opacity:0;scale:.72}12%{opacity:1;scale:1.06}22%,76%{opacity:1;scale:1}90%{opacity:0;scale:.94}}
 @media(prefers-reduced-motion:reduce){.bubble-pop-background{animation:none;opacity:1;scale:1}}
 @media print{.bubble-pop-background{animation:none;opacity:1;scale:1}}
+
+/* End the dotted guide before the login phone, preserving its left-to-right reveal. */
+#onboarding [data-node-id="148:4730"] .r520{right:130px}
+/* Cover restored wireframe screens as well as the original artwork at the bottom. */
+#wireframe [data-node-id="148:4721"]{z-index:30;pointer-events:none}
+/* Increase the current flower size by 1.5, then balance each authored color separately. */
+#community .community-flower{scale:2.325}
+#community .community-flower[data-source-layer="148:5936"]{opacity:.55}
+#community .community-flower[data-source-layer="148:5943"]{opacity:.96}
