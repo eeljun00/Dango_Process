@@ -53,7 +53,8 @@
 #strategy .opportunity-bullet::marker{font-size:.75em}
 /* The 302px Figma text frame must not include browser list padding or JSX list indents. */
 #strategy [data-node-id="148:4785"]{width:302px;padding:0}
-#strategy [data-node-id="148:4785"] .opportunity-bullet{margin-inline-start:0}
+#strategy [data-node-id="148:4843"]{padding:0}
+#strategy :is([data-node-id="148:4785"],[data-node-id="148:4843"]) .opportunity-bullet{margin-inline-start:0}
 .interview-card>div{max-width:100%}
 .character-marquee{--character-period:1603px;position:absolute;left:0;top:1810px;width:1920.375px;height:455px;overflow:clip;pointer-events:none}
 .character-track{display:flex;width:max-content;animation:character-loop calc(65s / var(--motion-rate)) linear infinite;animation-play-state:paused;will-change:transform}
@@ -252,3 +253,24 @@
 #community .community-flower[data-source-layer="148:5943"]{inset:-180px 0 180px}
 /* Trace the baked phone's tilted navigation card without covering its icons. */
 #active-walk [data-node-id="148:3190"]::after{content:"";position:absolute;left:43.3%;top:86%;width:49.5%;height:8.2%;box-sizing:border-box;border:1px solid #26364a18;border-radius:12px;transform:rotate(-16deg);transform-origin:top left;box-shadow:0 -2px 6px #26364a24;pointer-events:none}
+
+/* Regular case-study headers use 30px label spacing and 15px description spacing.
+   Speech-bubble copy and the separate Insight explanation keep their authored positions. */
+:root{--case-description-gap:15px}
+#research [data-node-id="148:7411"]{top:calc(230px + var(--case-description-gap))}
+#research [data-node-id="148:7412"]{top:calc(230px + var(--case-description-gap))}
+#research [data-node-id="148:7414"]{top:calc(230px + var(--case-description-gap))}
+#research [data-node-id="148:7415"]{top:calc(230px + var(--case-description-gap))}
+#interview [data-node-id="148:4952"]{top:calc(223.22px + var(--case-description-gap))}
+#strategy [data-node-id="148:4848"]{top:calc(1858.02px + var(--case-description-gap))}
+#strategy [data-node-id="148:4939"]{top:calc(3743.17px + var(--case-description-gap))}
+#branding [data-node-id="211:5095"]{top:calc(389.4px + var(--case-description-gap))}
+#app-home [data-node-id="148:3488"]{top:calc(250px + var(--case-description-gap))}
+#onboarding [data-node-id="148:4744"]{top:calc(220.08px + var(--case-description-gap))}
+#profile-setup [data-node-id="148:3221"]{top:calc(302.88px + var(--case-description-gap))}
+#walk-planning [data-node-id="212:5098"]{top:calc(285.92px + var(--case-description-gap))}
+#walk-log [data-node-id="148:3115"]{top:calc(195.97px + var(--case-description-gap))}
+#walk-summary [data-node-id="148:3155"]{top:calc(288px + var(--case-description-gap))}
+#walk-archive [data-node-id="148:2971"]{top:calc(439.69px + var(--case-description-gap))}
+#convenience [data-node-id="148:5473"]{top:calc(245.88px + var(--case-description-gap))}
+#community .case-heading .case-title{margin-bottom:var(--case-description-gap)}
