@@ -36,7 +36,7 @@
 .interview-card .reveal-text{opacity:var(--reveal-opacity,1);translate:none;filter:none;scale:1}
 .interview-row:hover .interview-track,.interview-row:focus-within .interview-track{animation-play-state:paused}
 @keyframes interview-right{from{transform:translateX(calc(-2 * var(--interview-period) + var(--marquee-start,0px)))}to{transform:translateX(calc(-1 * var(--interview-period) + var(--marquee-start,0px)))}}
-.ppippo-pop p{font-family:Impact,'Arial Black',sans-serif!important;font-style:italic;font-weight:900!important;text-transform:uppercase;-webkit-text-stroke:1.5px #ff6f6f;paint-order:stroke fill;text-shadow:2px 3px 0 #ff6f6f;transform-origin:30% 80%;animation:ppippo-cheer calc(3.8s / var(--motion-rate)) cubic-bezier(.22,1,.36,1) infinite}
+.ppippo-pop p{font-family:Impact,'Arial Black',sans-serif!important;font-style:italic;font-weight:900!important;text-transform:uppercase;-webkit-text-stroke:1.5px #ff6f6f;paint-order:stroke fill;text-shadow:2px 3px 0 #ff6f6f;transform-origin:30% 80%;animation:none}
 @keyframes ppippo-cheer{0%,55%,100%{translate:0 0;rotate:0deg;scale:1}8%{translate:0 -7px;rotate:-7deg;scale:1.12}17%{translate:0 1px;rotate:4deg;scale:1.02}26%{translate:0 -3px;rotate:-3deg;scale:1.07}36%{translate:0 0;rotate:0deg;scale:1}}
 .phone{background:#111!important;box-shadow:0 9px 24px #0000001f,0 0 0 2px #333!important}
 .case-heading.align-left .case-description{margin-left:0;margin-right:0}
@@ -69,3 +69,5 @@
 
 /* Alpha masks fade both moving interview rows into the surrounding background. */
 #interview .interview-row{-webkit-mask-image:linear-gradient(to right,transparent,#000 13%,#000 87%,transparent);mask-image:linear-gradient(to right,transparent,#000 13%,#000 87%,transparent)}
+
+.entry-motion-pending[data-entry-kind="cover-decoration"]{opacity:0}

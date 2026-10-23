@@ -218,3 +218,19 @@
 @keyframes ending-flower-drift{0%,100%{translate:0 0;rotate:0deg}35%{translate:var(--ending-flower-x) var(--ending-flower-y);rotate:2deg}70%{translate:calc(var(--ending-flower-x) * -.6) calc(var(--ending-flower-y) * .45);rotate:-1.5deg}}
 @media(prefers-reduced-motion:reduce){#thank-you .ending-flower{animation:none;translate:none;rotate:none}}
 @media print{#thank-you .ending-flower{animation:none;translate:none;rotate:none}}
+
+/* Equal logo panel heights; keep each composition centered inside the resized crop. */
+#logo [data-node-id="148:4748"],#logo-grid [data-node-id="148:2842"]{height:560px}
+#logo-grid [data-node-id="148:2844"]{top:calc(50% - 91px)}
+/* Match the case-study descriptions and soften the survey metadata further. */
+#research :is([data-node-id="148:7411"],[data-node-id="148:7412"],[data-node-id="148:7414"],[data-node-id="148:7415"]){font-size:24px;font-weight:500;line-height:1.5;color:#bfbfbf}
+#community .community-flower{scale:1.55;opacity:.78}
+#active-walk [data-node-id="148:3190"] img{filter:brightness(1.08)}
+.development-credit{position:absolute;left:830px;top:872.89px;width:460px;color:#fff;font:400 24px/36px Pretendard,sans-serif;letter-spacing:-.48px;z-index:1}
+.development-credit .credit-label{font-weight:500;white-space:nowrap}
+.development-credit .credit-tools{font-size:20px;opacity:.85}
+.bubble-pop-background{animation:bubble-background-pop calc(3.8s / var(--motion-rate)) cubic-bezier(.22,1,.36,1) infinite;animation-play-state:paused;transform-origin:85% 85%;pointer-events:none}
+.bubble-pop-background.bubble-moving{animation-play-state:running}
+@keyframes bubble-background-pop{0%,100%{opacity:0;scale:.72}12%{opacity:1;scale:1.06}22%,76%{opacity:1;scale:1}90%{opacity:0;scale:.94}}
+@media(prefers-reduced-motion:reduce){.bubble-pop-background{animation:none;opacity:1;scale:1}}
+@media print{.bubble-pop-background{animation:none;opacity:1;scale:1}}

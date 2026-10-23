@@ -18,7 +18,7 @@
  function entrance(nodes,{kind,duration,delay=0,delays,counts=[],anchor=nodes[0],easing='cubic-bezier(.22,1,.36,1)',frames,onStart,onSettle}={}){
   if(!nodes.length||!anchor)return;
   const timing=i=>delays?.[i]??i*delay;
-  nodes.forEach((n,i)=>{n.dataset.entryKind=kind;n.dataset.entryState='pending';n.style.setProperty('--entry-delay',`${dangoMotionTime(timing(i))}ms`);n.classList.add('entry-motion-pending');});
+  nodes.forEach((n,i)=>{n.dataset.entryKind=typeof kind==='function'?kind(n,i):kind;n.dataset.entryState='pending';n.style.setProperty('--entry-delay',`${dangoMotionTime(timing(i))}ms`);n.classList.add('entry-motion-pending');});
   const group={nodes,anchor,started:false,animations:[],observer:null};entryGroups.push(group);
   const finish=()=>{group.observer?.disconnect();nodes.forEach(n=>{n.classList.remove('entry-motion-pending');n.dataset.entryState='done';});counts.forEach(c=>{c.node.textContent=c.final+'%';c.node.style.removeProperty('width');});group.animations.forEach(a=>a.cancel());onSettle?.();};
   group.finish=finish;
@@ -31,7 +31,7 @@
     n.dataset.entryState='running';
     const counter=counts[i];
     if(counter){counter.node.textContent=counter.final+'%';counter.node.style.removeProperty('width');counter.node.style.width=getComputedStyle(counter.node).width;counter.node.textContent='0%';}
-    const a=n.animate(typeof frames==='function'?frames(n,i):frames,{duration:dangoMotionTime(duration),delay:dangoMotionTime(timing(i)),easing,fill:'both'});group.animations.push(a);
+    const a=n.animate(typeof frames==='function'?frames(n,i):frames,{duration:dangoMotionTime(typeof duration==='function'?duration(n,i):duration),delay:dangoMotionTime(timing(i)),easing,fill:'both'});group.animations.push(a);
     if(counter){const tick=()=>{if(n.dataset.entryState!=='running')return;const progress=Math.min(1,Math.max(0,a.effect.getComputedTiming().progress||0));counter.node.textContent=Math.round(counter.final*progress)+'%';requestAnimationFrame(tick);};requestAnimationFrame(tick);}
     a.onfinish=()=>{n.classList.remove('entry-motion-pending');n.dataset.entryState='done';if(counter){counter.node.textContent=counter.final+'%';counter.node.style.removeProperty('width');}a.cancel();};
    });
@@ -44,19 +44,39 @@
  }
  const cover=q('#intro [data-node-id="148:7503"]');
  if(cover){ownEntrance(cover);entrance([cover],{kind:'cover',duration:950,easing:'cubic-bezier(.18,.85,.28,1.18)',frames:[{opacity:0,translate:'0 28px',scale:.92},{opacity:1,translate:'0 0',scale:1}]});}
+ // Reuse the original ornament groups; a full-canvas shell preserves percentage coordinates.
+ const introCanvas=q('#intro .design-canvas'),introArt=introCanvas?.firstElementChild;
+ if(introArt){
+  const base=introCanvas.getBoundingClientRect(),scale=base.width/1920.375;
+  ['148:7527','148:7533','148:7541','148:7542','148:7545','148:7549','148:7557','148:7564','148:7565'].forEach((id,i)=>{
+   const art=q('[data-node-id="'+id+'"]',introArt);if(!art)return;
+   const bounds=[art,...qa('[data-node-id]',art)].map(n=>n.getBoundingClientRect()).filter(r=>r.width>0&&r.height>0);if(!bounds.length)return;
+   const x=(Math.min(...bounds.map(r=>r.left))-base.left)/scale,y=(Math.min(...bounds.map(r=>r.top))-base.top)/scale;
+   const right=(Math.max(...bounds.map(r=>r.right))-base.left)/scale,bottom=(Math.max(...bounds.map(r=>r.bottom))-base.top)/scale;
+   const shell=document.createElement('div');shell.className='cover-decoration-entrance';shell.dataset.coverDecoration=id;
+   Object.assign(shell.style,{position:'absolute',inset:'0',pointerEvents:'none',transformOrigin:`${(x+right)/2}px ${(y+bottom)/2}px`});art.before(shell);shell.append(art);
+   const trigger=document.createElement('span');trigger.setAttribute('aria-hidden','true');Object.assign(trigger.style,{position:'absolute',left:x+'px',top:y+'px',width:'1px',height:'1px',visibility:'hidden',pointerEvents:'none'});introArt.append(trigger);
+   entrance([shell],{kind:'cover-decoration',anchor:trigger,duration:650,delays:[i%3*50],easing:'cubic-bezier(.18,.85,.28,1.18)',frames:[{opacity:0,scale:.72,translate:`${x<960?-14:14}px 12px`},{opacity:1,scale:1,translate:'0 0'}]});
+  });
+ }
  // These authored artwork groups own their entrance independently of text reveals.
  const pinkLogo=q('#logo-grid [data-node-id="148:2842"]');
  if(pinkLogo){ownEntrance(pinkLogo);entrance([pinkLogo],{kind:'logo-application',duration:720,frames:[{opacity:0,translate:'36px 0'},{opacity:1,translate:'0 0'}]});}
  const photoLogo=q('#logo [data-node-id="148:4748"]');
  if(photoLogo){ownEntrance(photoLogo);entrance([photoLogo],{kind:'logo-photo',duration:640,frames:[{opacity:0},{opacity:1}]});}
+ // One observer starts the line first, then phones and dots on the same clock.
  const onboarding=['148:4724','148:4725','148:4726','148:4740','148:4741'].map(id=>q('#onboarding [data-node-id="'+id+'"]')).filter(Boolean);
  onboarding.forEach(ownEntrance);
- entrance(onboarding,{kind:'onboarding-phone',duration:640,delays:[0,120,240,360,360],frames:[{opacity:0,translate:'0 18px'},{opacity:1,translate:'0 0'}]});
- // The exported line's parent has zero height; reveal its three-pixel inner box.
  const onboardingLine=q('#onboarding [data-node-id="148:4730"] .r520');
- if(onboardingLine)entrance([onboardingLine],{kind:'onboarding-line',anchor:onboarding[0],duration:1000,delays:[80],easing:'linear',frames:[{clipPath:'inset(0 100% 0 0)'},{clipPath:'inset(0 0% 0 0)'}]});
  const onboardingDots=['148:4732','148:4733','148:4735','148:4736','148:4738','148:4739'].map(id=>q('#onboarding [data-node-id="'+id+'"]')).filter(Boolean);
- entrance(onboardingDots,{kind:'onboarding-dot',anchor:onboarding[0],duration:130,delays:[220,220,530,530,840,840],frames:[{opacity:0},{opacity:1}]});
+ if(onboardingLine&&onboarding.length===5){
+  const trigger=document.createElement('span');trigger.className='onboarding-sequence-trigger';trigger.setAttribute('aria-hidden','true');
+  Object.assign(trigger.style,{position:'absolute',left:'0',top:'0',width:'1px',height:'1px',visibility:'hidden',pointerEvents:'none'});onboardingLine.parentElement.append(trigger);
+  entrance([onboardingLine,...onboarding,...onboardingDots],{anchor:trigger,
+   kind:(n,i)=>i===0?'onboarding-line':i<=5?'onboarding-phone':'onboarding-dot',
+   duration:(n,i)=>i===0?560:i<=5?640:130,delays:[0,80,200,320,440,440,78,78,252,252,426,426],
+   frames:(n,i)=>i===0?[{clipPath:'inset(0 100% 0 0)'},{clipPath:'inset(0 0% 0 0)'}]:i<=5?[{opacity:0,translate:'0 18px'},{opacity:1,translate:'0 0'}]:[{opacity:0},{opacity:1}],easing:'linear'});
+ }
  // Overview owns the six leaf capsules; overview.js handles their bounded physics.
  const capsules=['148:7519','148:7517','148:7515','148:7506','148:7511','148:7513'].map(id=>q(`#intro [data-node-id="${id}"]`)).filter(Boolean);
  capsules.forEach(ownEntrance);
@@ -205,7 +225,7 @@
    frames:[{opacity:0,translate:'-10px 0'},{opacity:1,translate:'0 0'}]});
  });
  refreshStep3B();
- q('[data-node-id="148:2319"]')?.classList.add('ppippo-pop');
+ const cheer=q('[data-node-id="148:2319"]');if(cheer){ownEntrance(cheer);cheer.classList.add('ppippo-pop');}
  // Keep each distinct interview once per period; repeat the complete row for a seamless marquee.
  const interview=q('#interview .design-canvas');
  const cards=qa('[data-node-id]',interview).filter(n=>getComputedStyle(n).position==='absolute'&&getComputedStyle(n).display==='flex'&&getComputedStyle(n).backgroundColor==='rgb(255, 255, 255)'&&parseFloat(getComputedStyle(n).top)>400);
