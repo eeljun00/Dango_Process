@@ -321,8 +321,27 @@
 :is(#components,#wireframe,#app-home,#walk-planning,#walk-log,#walk-summary,#walk-archive,#community) [data-name="sound_detection_dog_barking"]>p{mask-image:none!important;-webkit-mask-image:none!important;position:absolute;inset:0;display:flex;align-items:center;justify-content:center;width:100%;height:100%;margin:0;line-height:1;font-size:36px;transform:none;translate:none!important;filter:none;opacity:1}
 #community [data-node-id="I148:6948;678:11003"] [data-node-id="I148:6948;678:11004"]{color:#FF4444}
 /* Transparent 3D artwork uses the existing composition and separate shadow. */
-#concept [data-node-id="148:2922"]>img,#branding [data-node-id="148:2316"]>img{object-fit:contain;object-position:center bottom;width:115%;left:-7.5%}
+#concept [data-node-id="148:2922"]>img{object-fit:contain;object-position:center bottom;width:115%;left:-7.5%}
 @media(prefers-reduced-motion:no-preference){
- #concept [data-node-id="148:2922"]>img,#branding [data-node-id="148:2316"]>img{transform-origin:50% 85%;animation:branding-character-breathe 4s ease-in-out infinite}
+ #concept [data-node-id="148:2922"]>img{transform-origin:50% 85%;animation:branding-character-breathe 4s ease-in-out infinite}
 }
-@keyframes branding-character-breathe{0%,100%{translate:0 0;rotate:-1deg}50%{translate:0 -12px;rotate:1deg}}
+@keyframes branding-character-breathe{0%,100%{translate:0 0;rotate:-1deg}50%{translate:0 -3px;rotate:.5deg}}
+
+/* A soft contact shadow replaces the detached solid ellipse. */
+#concept [data-node-id="148:2921"]{left:calc(50% + 22px);top:1548px;transform:translateX(-50%);width:360px;height:44px;background:radial-gradient(ellipse 22% 34% at 27% 50%,rgb(80 60 70 / .15),transparent 100%),radial-gradient(ellipse 22% 34% at 73% 50%,rgb(80 60 70 / .15),transparent 100%),radial-gradient(ellipse closest-side,rgb(80 60 70 / .07),transparent 100%)}
+#concept [data-node-id="148:2921"]>img{visibility:hidden}
+#concept .concept-logo-balloon{position:absolute;left:244px;top:190px;width:1432px;height:470px;display:block;appearance:none;background:transparent;border:0;padding:0;cursor:pointer;translate:var(--balloon-x,0px) var(--balloon-y,0px);transition:translate .6s ease,scale .5s ease;touch-action:manipulation}
+#concept .concept-logo-balloon>img{display:block;width:100%;height:100%;object-fit:contain;pointer-events:none}
+#concept .concept-logo-balloon:hover{scale:1.018}
+#concept .concept-logo-balloon:active{scale:.99}
+@media(prefers-reduced-motion:no-preference){
+ #concept .concept-logo-balloon>img{animation:concept-balloon-float 5.6s ease-in-out infinite;animation-play-state:paused}
+ #concept :is(.f439,.f472,.f438,.f441){animation:concept-decoration-float 7s ease-in-out infinite;animation-play-state:paused}
+ #concept .f439{animation-delay:-2s}
+ #concept .f472{animation-delay:-4s}
+ #concept .f441{animation-delay:-3s}
+ #concept.concept-in-view :is(.concept-logo-balloon>img,.f439,.f472,.f438,.f441){animation-play-state:running}
+}
+@keyframes concept-balloon-float{0%,100%{translate:0 0;rotate:-.7deg}50%{translate:0 -22px;rotate:.7deg}}
+@keyframes concept-decoration-float{0%,100%{translate:0 0;rotate:-2deg}50%{translate:5px -18px;rotate:2deg}}
+@media(prefers-reduced-motion:reduce){#concept .concept-logo-balloon{translate:none;scale:1;transition:none}}
