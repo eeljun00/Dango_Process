@@ -79,9 +79,9 @@
 @media(prefers-reduced-motion:reduce){.cover-decoration-popcorn{animation:none;translate:none;rotate:none;scale:1}}
 @media print{.cover-decoration-popcorn{animation:none;translate:none;rotate:none;scale:1}}
 
-/* Preserve the lower edge and the physics arena while the tall cover becomes a true circle. */
-#intro .cover-circle-morph{height:calc(3564px - 1492px * var(--cover-round-progress,0));top:calc(148px + 1492px * var(--cover-round-progress,0))}
-.walk-save-highlight{background-image:linear-gradient(#ffc2c2,#ffc2c2);background-repeat:no-repeat;background-position:left 88%;background-size:0% .46em;transition:background-size 1.2s ease .8s}
-.walk-save-highlight.is-highlighted{background-size:100% .46em}
-@media(prefers-reduced-motion:reduce){#intro .cover-circle-morph{height:3564px;top:148px}.walk-save-highlight{background-size:100% .46em;transition:none}}
-@media print{#intro .cover-circle-morph{height:3564px;top:148px}.walk-save-highlight{background-size:100% .46em;transition:none}}
+/* The authored cover stays still; only the Vision circle changes on scroll. */
+#strategy .vision-circle-morph{width:calc(2865px - 665px * var(--vision-round-progress,0));height:calc(2865px - 665px * var(--vision-round-progress,0));top:calc(1305.15px + 665px * var(--vision-round-progress,0))}
+.walk-save-highlight{background-image:linear-gradient(#ffd6d6,#ffd6d6);background-repeat:no-repeat;background-position:left center;background-size:0% 1.1em;transition:background-size 1s ease .35s}
+.walk-save-highlight.is-highlighted{background-size:100% 1.1em}
+@media(prefers-reduced-motion:reduce){#strategy .vision-circle-morph{width:2865px;height:2865px;top:1305.15px}.walk-save-highlight{background-size:100% 1.1em;transition:none}}
+@media print{#strategy .vision-circle-morph{width:2865px;height:2865px;top:1305.15px}.walk-save-highlight{background-size:100% 1.1em;transition:none}}
