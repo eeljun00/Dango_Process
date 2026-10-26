@@ -44,6 +44,36 @@
  }
  const cover=q('#intro [data-node-id="148:7503"]');
  if(cover){ownEntrance(cover);entrance([cover],{kind:'cover',duration:950,easing:'cubic-bezier(.18,.85,.28,1.18)',frames:[{opacity:0,translate:'0 28px',scale:.92},{opacity:1,translate:'0 0',scale:1}]});}
+ // The cover closes into a circle around the Overview, keeping the capsule floor fixed.
+ const coverCanvas=q('#intro .design-canvas'),coverCircle=q('#intro [data-node-id="148:7501"]');
+ if(coverCanvas&&coverCircle){
+  coverCircle.classList.add('cover-circle-morph');
+  let roundFrame=0,lastRound=-1;
+  const updateRound=()=>{
+   roundFrame=0;
+   const rect=coverCanvas.getBoundingClientRect(),scale=rect.width/coverCanvas.offsetWidth;
+   const progress=reduced.matches?0:Math.min(1,Math.max(0,(-rect.top/scale-450)/1050));
+   const round=progress*progress*(3-2*progress);
+   if(round!==lastRound){coverCircle.style.setProperty('--cover-round-progress',round.toFixed(4));lastRound=round;}
+  };
+  const scheduleRound=()=>{if(!roundFrame)roundFrame=requestAnimationFrame(updateRound);};
+  window.addEventListener('scroll',scheduleRound,{passive:true});
+  window.addEventListener('resize',scheduleRound,{passive:true});
+  window.addEventListener('pageshow',scheduleRound);
+  reduced.addEventListener('change',scheduleRound);
+  updateRound();
+ }
+ // A selective marker follows the copy entrance; the words retain their authored typography.
+ const saveHighlight=q('.walk-save-highlight');
+ if(saveHighlight){
+  const showHighlight=()=>saveHighlight.classList.add('is-highlighted');
+  if(reduced.matches||!('IntersectionObserver'in window))showHighlight();
+  else{
+   const observer=new IntersectionObserver(entries=>{if(entries.some(entry=>entry.isIntersecting)){showHighlight();observer.disconnect();}},{threshold:.35,rootMargin:'0px 0px -12% 0px'});
+   observer.observe(saveHighlight.closest('p'));
+  }
+  reduced.addEventListener('change',()=>{if(reduced.matches)showHighlight();});
+ }
  // Reuse the original ornament groups; a full-canvas shell preserves percentage coordinates.
  const introCanvas=q('#intro .design-canvas'),introArt=introCanvas?.firstElementChild;
  if(introArt){

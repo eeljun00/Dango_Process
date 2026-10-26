@@ -78,3 +78,10 @@
 @keyframes cover-decoration-popcorn{0%,24%,100%{translate:0 0;rotate:0deg;scale:1}5%{translate:0 1px;rotate:0deg;scale:1.015 .985}11%{translate:var(--popcorn-x) calc(-1 * var(--popcorn-rise));rotate:var(--popcorn-tilt);scale:1.025}18%{translate:0 1px;rotate:0deg;scale:.99 1.005}23%{translate:0 0;rotate:0deg;scale:1}}
 @media(prefers-reduced-motion:reduce){.cover-decoration-popcorn{animation:none;translate:none;rotate:none;scale:1}}
 @media print{.cover-decoration-popcorn{animation:none;translate:none;rotate:none;scale:1}}
+
+/* Preserve the lower edge and the physics arena while the tall cover becomes a true circle. */
+#intro .cover-circle-morph{height:calc(3564px - 1492px * var(--cover-round-progress,0));top:calc(148px + 1492px * var(--cover-round-progress,0))}
+.walk-save-highlight{background-image:linear-gradient(#ffc2c2,#ffc2c2);background-repeat:no-repeat;background-position:left 88%;background-size:0% .46em;transition:background-size 1.2s ease .8s}
+.walk-save-highlight.is-highlighted{background-size:100% .46em}
+@media(prefers-reduced-motion:reduce){#intro .cover-circle-morph{height:3564px;top:148px}.walk-save-highlight{background-size:100% .46em;transition:none}}
+@media print{#intro .cover-circle-morph{height:3564px;top:148px}.walk-save-highlight{background-size:100% .46em;transition:none}}
