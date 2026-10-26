@@ -52,3 +52,14 @@ body,h1,h2,h3,p,ul,ol{margin:0}body{background:#fff;min-width:768px;width:var(--
  .menu-toggle{display:block;margin-left:auto}
  .back-top{right:16px;bottom:16px}
 }
+
+/* A viewport-sized control follows the opening screen, independently of the artwork canvas. */
+.cover-scroll-cue{position:fixed;z-index:21;left:50%;bottom:max(24px,env(safe-area-inset-bottom));display:flex;flex-direction:column;align-items:center;gap:8px;min-width:54px;padding:6px;background:transparent;color:#777;font-size:15px;font-weight:500;line-height:20px;transform:translateX(-50%);opacity:0;visibility:hidden;translate:0 5px;transition:opacity .3s ease,translate .3s ease,visibility 0s .3s;cursor:pointer}
+.cover-scroll-cue.is-visible{opacity:1;visibility:visible;translate:0 0;transition-delay:0s}
+.cover-scroll-cue:hover{color:#666}
+.cover-scroll-mouse{position:relative;display:block;width:30px;height:50px;border:2px solid currentColor;border-radius:24px}
+.cover-scroll-dot{position:absolute;left:50%;top:9px;width:5px;height:5px;border-radius:50%;background:currentColor;transform:translateX(-50%);animation:cover-scroll-drop 1.6s ease-in-out infinite;animation-play-state:paused}
+.cover-scroll-cue.is-visible .cover-scroll-dot{animation-play-state:running}
+@keyframes cover-scroll-drop{0%{opacity:0;translate:0 0}18%{opacity:1;translate:0 2px}75%{opacity:.8;translate:0 19px}95%,100%{opacity:0;translate:0 21px}}
+@media(prefers-reduced-motion:reduce){.cover-scroll-cue{transition:none;translate:none}.cover-scroll-dot{animation:none;opacity:1;translate:none}}
+@media print{.cover-scroll-cue{display:none}}
