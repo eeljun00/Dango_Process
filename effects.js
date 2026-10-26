@@ -51,10 +51,15 @@
   if(!canvas||!surface)return;
   section.classList.add('round-scroll-stage');
   surface.classList.add('round-scroll-surface',`${kind}-round-surface`);
-  let frame=0,lastOffset=-1,lastProgress=-1,lastLength=-1;
-  const render=()=>{
+  // Morph the whole edge as a continuous Bezier arc, rather than rounding only its corners.
+  const ns='http://www.w3.org/2000/svg',mask=document.createElementNS(ns,'svg'),defs=document.createElementNS(ns,'defs'),clip=document.createElementNS(ns,'clipPath'),edge=document.createElementNS(ns,'path');
+  mask.setAttribute('width','0');mask.setAttribute('height','0');mask.setAttribute('aria-hidden','true');mask.style.position='absolute';
+  clip.id=`dango-round-${kind}`;clip.setAttribute('clipPathUnits','objectBoundingBox');clip.append(edge);defs.append(clip);mask.append(defs);section.append(mask);
+  surface.style.clipPath=`url(#${clip.id})`;
+  let frame=0,lastOffset=-1,lastProgress=-1,lastLength=-1,shownProgress=null,lastTime=0;
+  const render=now=>{
    frame=0;
-   const length=reduced.matches?0:Math.round(Math.min(860,Math.max(420,innerHeight*.72)));
+   const length=reduced.matches?0:Math.round(Math.min(1040,Math.max(480,innerHeight*.9)));
    if(length!==lastLength){section.style.setProperty('--round-hold-length',`${length}px`);lastLength=length;}
    const rect=section.getBoundingClientRect(),scale=canvas.getBoundingClientRect().width/1920.375;
    const readingLine=innerHeight*(kind==='vision'?.86:.43);
@@ -62,17 +67,28 @@
    const offset=Math.max(0,Math.min(length,scrollY-start));
    const phase=length?offset/length:1;
    const drawing=Math.max(0,Math.min(1,(phase-.12)/.72));
-   const progress=drawing*drawing*(3-2*drawing);
+   const target=drawing*drawing*drawing*(drawing*(drawing*6-15)+10);
+   const dt=lastTime?Math.max(1,Math.min(64,now-lastTime)):16.67;lastTime=now;
+   if(shownProgress===null||reduced.matches||phase<=0||phase>=1)shownProgress=target;
+   else shownProgress+=(target-shownProgress)*(1-Math.exp(-dt/95));
+   if(Math.abs(target-shownProgress)<.0002)shownProgress=target;
+   const progress=shownProgress;
    if(offset!==lastOffset){section.style.setProperty('--round-hold-offset',`${offset.toFixed(3)}px`);lastOffset=offset;}
-   if(progress!==lastProgress){surface.style.setProperty('--round-progress',progress.toFixed(4));lastProgress=progress;}
+   if(progress!==lastProgress){
+    surface.style.setProperty('--round-progress',progress.toFixed(4));
+    const half=.5*progress,control=.223858*progress;
+    edge.setAttribute('d',kind==='character'?`M0 1 L0 ${half} C0 ${control} .223858 0 .5 0 C.776142 0 1 ${control} 1 ${half} L1 1 Z`:`M0 0 L1 0 L1 ${1-half} C1 ${1-control} .776142 1 .5 1 C.223858 1 0 ${1-control} 0 ${1-half} Z`);
+    lastProgress=progress;
+   }
    section.dataset.roundState=reduced.matches?'static':phase<=0?'before':phase>=1?'after':'drawing';
+   if(progress!==target&&!reduced.matches)frame=requestAnimationFrame(render);
   };
   const schedule=()=>{if(!frame)frame=requestAnimationFrame(render);};
   window.addEventListener('scroll',schedule,{passive:true});
   window.addEventListener('resize',schedule,{passive:true});
   window.addEventListener('pageshow',schedule);
   reduced.addEventListener('change',schedule);
-  render();
+  render(performance.now());
  }
  roundScrollStage('#strategy','[data-node-id="148:4764"]','vision',4170.15);
  roundScrollStage('#branding','[data-node-id="148:2307"]','character',679.4);
