@@ -47,6 +47,9 @@
  // Reuse the original ornament groups; a full-canvas shell preserves percentage coordinates.
  const introCanvas=q('#intro .design-canvas'),introArt=introCanvas?.firstElementChild;
  if(introArt){
+  const popcornIds=['148:7533','148:7527','148:7549','148:7557'];
+  const popcornTargets=new Map();
+  const popcornObserver=new IntersectionObserver(entries=>entries.forEach(entry=>popcornTargets.get(entry.target)?.classList.toggle('is-popcorn-visible',entry.isIntersecting)),{rootMargin:'0px 0px -8% 0px'});
   const base=introCanvas.getBoundingClientRect(),scale=base.width/1920.375;
   ['148:7527','148:7533','148:7541','148:7542','148:7545','148:7549','148:7557','148:7564','148:7565'].forEach((id,i)=>{
    const art=q('[data-node-id="'+id+'"]',introArt);if(!art)return;
@@ -56,6 +59,17 @@
    const shell=document.createElement('div');shell.className='cover-decoration-entrance';shell.dataset.coverDecoration=id;
    Object.assign(shell.style,{position:'absolute',inset:'0',pointerEvents:'none',transformOrigin:`${(x+right)/2}px ${(y+bottom)/2}px`});art.before(shell);shell.append(art);
    const trigger=document.createElement('span');trigger.setAttribute('aria-hidden','true');Object.assign(trigger.style,{position:'absolute',left:x+'px',top:y+'px',width:'1px',height:'1px',visibility:'hidden',pointerEvents:'none'});introArt.append(trigger);
+   const popcornIndex=popcornIds.indexOf(id);
+   if(popcornIndex!==-1){
+    // A second full-canvas layer keeps the authored percentage positions and entrance intact.
+    const hop=document.createElement('div');hop.className='cover-decoration-popcorn';
+    Object.assign(hop.style,{position:'absolute',inset:'0',transformOrigin:shell.style.transformOrigin});
+    hop.style.setProperty('--popcorn-delay',`${popcornIndex*.45}s`);
+    hop.style.setProperty('--popcorn-rise',`${[8,6,9,6][popcornIndex]}px`);
+    hop.style.setProperty('--popcorn-x',`${[-1,1,1,-1][popcornIndex]}px`);
+    hop.style.setProperty('--popcorn-tilt',`${[-3,2,3,-2][popcornIndex]}deg`);
+    art.before(hop);hop.append(art);popcornTargets.set(trigger,shell);popcornObserver.observe(trigger);
+   }
    entrance([shell],{kind:'cover-decoration',anchor:trigger,duration:650,delays:[i%3*50],easing:'cubic-bezier(.18,.85,.28,1.18)',frames:[{opacity:0,scale:.72,translate:`${x<960?-14:14}px 12px`},{opacity:1,scale:1,translate:'0 0'}]});
   });
  }
