@@ -93,3 +93,42 @@ if ('IntersectionObserver' in window) {
  cue.addEventListener('click',()=>window.scrollBy({top:Math.round(window.innerHeight*.8),behavior:dangoReducedMotion.matches?'instant':'smooth'}));
  sync();
 })();
+
+// Ease desktop wheel scrolling across the whole case study, preserving native input surfaces.
+(()=>{
+ const desktop=matchMedia('(hover:hover) and (pointer:fine)');
+ let frame=0,target=scrollY,position=scrollY,last=0;
+ const stop=()=>{cancelAnimationFrame(frame);frame=0;target=position=scrollY;last=0;};
+ const nativeSurface=element=>{
+  if(element.closest('input,textarea,select,[contenteditable]:not([contenteditable="false"]),dialog,[role="dialog"]'))return true;
+  for(let node=element;node&&node!==document.body&&node!==document.documentElement;node=node.parentElement){
+   if(node.scrollHeight>node.clientHeight+1&&/(auto|scroll|overlay)/.test(getComputedStyle(node).overflowY))return true;
+  }
+  return false;
+ };
+ const tick=now=>{
+  const dt=Math.min(64,Math.max(1,now-last));last=now;
+  target=Math.min(target,Math.max(0,document.documentElement.scrollHeight-innerHeight));
+  position+=(target-position)*(1-Math.exp(-dt/70));
+  if(Math.abs(target-position)<.5){scrollTo({top:target,behavior:'instant'});frame=0;target=position=scrollY;return;}
+  scrollTo({top:position,behavior:'instant'});frame=requestAnimationFrame(tick);
+ };
+ window.addEventListener('wheel',event=>{
+  const element=event.target instanceof Element?event.target:document.documentElement;
+  if(event.defaultPrevented||!event.cancelable||dangoReducedMotion.matches||!desktop.matches||event.ctrlKey||event.metaKey||event.shiftKey||Math.abs(event.deltaX)>Math.abs(event.deltaY)||nativeSurface(element)){stop();return;}
+  const delta=event.deltaY*(event.deltaMode===1?16:event.deltaMode===2?innerHeight:1);
+  if(!delta)return;
+  if(!frame){target=position=scrollY;last=performance.now();}
+  if((target-scrollY)*delta<0)target=scrollY;
+  const next=Math.max(0,Math.min(document.documentElement.scrollHeight-innerHeight,target+delta));
+  if(next===target)return;
+  event.preventDefault();target=next;
+  if(!frame){scrollTo({top:position,behavior:'instant'});frame=requestAnimationFrame(tick);}
+ },{passive:false});
+ ['pointerdown','touchstart','keydown','click'].forEach(type=>document.addEventListener(type,stop,{capture:true,passive:true}));
+ window.addEventListener('resize',stop,{passive:true});
+ window.addEventListener('blur',stop);
+ document.addEventListener('visibilitychange',()=>{if(document.hidden)stop();});
+ dangoReducedMotion.addEventListener('change',stop);
+ desktop.addEventListener('change',stop);
+})();
