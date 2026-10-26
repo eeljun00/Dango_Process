@@ -59,10 +59,10 @@
   let frame=0,lastOffset=-1,lastProgress=-1,lastLength=-1,shownProgress=null,lastTime=0;
   const render=now=>{
    frame=0;
-   const length=reduced.matches?0:Math.round(Math.min(1040,Math.max(480,innerHeight*.9)));
+   const length=reduced.matches?0:Math.round(kind==='cover'?Math.min(900,Math.max(500,innerHeight*.85)):Math.min(1040,Math.max(480,innerHeight*.9)));
    if(length!==lastLength){section.style.setProperty('--round-hold-length',`${length}px`);lastLength=length;}
    const rect=section.getBoundingClientRect(),scale=canvas.getBoundingClientRect().width/1920.375;
-   const readingLine=innerHeight*(kind==='vision'?.86:.43);
+   const readingLine=kind==='cover'?0:innerHeight*(kind==='vision'?.86:.43);
    const start=rect.top+scrollY+boundaryLocal*scale-readingLine;
    const offset=Math.max(0,Math.min(length,scrollY-start));
    const phase=length?offset/length:1;
@@ -76,8 +76,15 @@
    if(offset!==lastOffset){section.style.setProperty('--round-hold-offset',`${offset.toFixed(3)}px`);lastOffset=offset;}
    if(progress!==lastProgress){
     surface.style.setProperty('--round-progress',progress.toFixed(4));
+    if(kind==='cover'){
+     // The original 2072px-wide capsule stays anchored at its bottom while its whole top edge curves.
+     section.style.setProperty('--cover-round-progress',progress.toFixed(4));
+     const half=1036*progress/(3712-148*progress),control=half*.447716;
+     edge.setAttribute('d',`M0 ${half} C0 ${control} .223858 0 .5 0 C.776142 0 1 ${control} 1 ${half} L1 ${1-half} C1 ${1-control} .776142 1 .5 1 C.223858 1 0 ${1-control} 0 ${1-half} Z`);
+    }else{
     const half=.5*progress,control=.223858*progress;
     edge.setAttribute('d',kind==='character'?`M0 1 L0 ${half} C0 ${control} .223858 0 .5 0 C.776142 0 1 ${control} 1 ${half} L1 1 Z`:`M0 0 L1 0 L1 ${1-half} C1 ${1-control} .776142 1 .5 1 C.223858 1 0 ${1-control} 0 ${1-half} Z`);
+    }
     lastProgress=progress;
    }
    section.dataset.roundState=reduced.matches?'static':phase<=0?'before':phase>=1?'after':'drawing';
@@ -90,6 +97,7 @@
   reduced.addEventListener('change',schedule);
   render(performance.now());
  }
+ roundScrollStage('#intro','[data-node-id="148:7501"]','cover',0);
  roundScrollStage('#strategy','[data-node-id="148:4764"]','vision',4170.15);
  roundScrollStage('#branding','[data-node-id="148:2307"]','character',679.4);
  // A full-height pink box draws in on scroll and resets after the copy leaves the viewport.

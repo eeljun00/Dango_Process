@@ -25,3 +25,20 @@
 /* Keep the original 768px dialog size and coordinates on narrower viewports. */
 .compact-layout .quick-demo-dialog{width:480px;max-width:none;left:144px;right:auto;margin-inline:0}
 @media(prefers-reduced-motion:no-preference){.quick-demo-dialog[open]{animation:quick-demo-in .2s ease-out}@keyframes quick-demo-in{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}}
+
+
+/* All six start light; a fast single-item tour owns only the circle fill. */
+#convenience .quick-demo-trigger :is(.r1307,.r1322){background-color:#ffb1b1;transition:background-color .14s ease}
+#convenience .quick-demo-trigger.is-quick-highlight :is(.r1307,.r1322){background-color:#ff6f6f}
+.chat-arrival-row.is-chat-waiting>.r1236{opacity:0}
+.chat-arrival-card{opacity:0;translate:0 12px;scale:.98;transform-origin:left bottom}
+.chat-arrival-time{opacity:0}
+.is-chat-arrived .chat-arrival-card{opacity:1;translate:0 0;scale:1;transition:opacity .28s ease,translate .48s cubic-bezier(.2,.8,.2,1),scale .48s cubic-bezier(.2,.8,.2,1)}
+.is-chat-arrived .chat-arrival-time{opacity:1;transition:opacity .25s ease .2s}
+.chat-typing{display:none;position:absolute;left:44px;top:6px;width:54px;height:29px;align-items:center;justify-content:center;gap:5px;border-radius:14px;background:#f2f2f2}
+.is-chat-typing .chat-typing{display:flex}
+.chat-typing span{width:5px;height:5px;border-radius:50%;background:#a0a0a0;animation:chat-typing-dot .8s ease-in-out infinite}
+.chat-typing span:nth-child(2){animation-delay:.12s}.chat-typing span:nth-child(3){animation-delay:.24s}
+@keyframes chat-typing-dot{0%,60%,100%{translate:0 0;opacity:.5}30%{translate:0 -3px;opacity:1}}
+@media(prefers-reduced-motion:reduce){#convenience .quick-demo-trigger :is(.r1307,.r1322){transition:none}.chat-arrival-card,.chat-arrival-time{opacity:1;translate:none;scale:1;transition:none!important}.chat-arrival-row.is-chat-waiting>.r1236{opacity:1}.chat-typing{display:none!important}.chat-typing span{animation:none}}
+@media print{#convenience .quick-demo-trigger :is(.r1307,.r1322){background-color:#ffb1b1}.chat-arrival-card,.chat-arrival-time{opacity:1;translate:none;scale:1;transition:none!important}.chat-arrival-row.is-chat-waiting>.r1236{opacity:1}.chat-typing{display:none!important}.chat-typing span{animation:none}}

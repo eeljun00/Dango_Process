@@ -94,3 +94,10 @@
 #branding .character-round-surface{background:#fff;border-radius:0}
 @media(prefers-reduced-motion:reduce){.round-scroll-stage{height:calc(var(--section-height) * var(--page-scale))}.round-scroll-stage>.design-canvas{translate:none}.round-scroll-surface{background:none!important;border-radius:0!important;clip-path:none!important}.round-scroll-surface>img{opacity:1}}
 @media print{.round-scroll-stage{height:calc(var(--section-height) * var(--page-scale))}.round-scroll-stage>.design-canvas{translate:none}.round-scroll-surface{background:none!important;border-radius:0!important;clip-path:none!important}.round-scroll-surface>img{opacity:1}}
+
+
+/* Cover starts as a full pink plane; native scroll reveals its original white surround. */
+#intro .cover-round-surface{top:calc(148px * var(--round-progress,0));height:calc(3712px - 148px * var(--round-progress,0));border-radius:0}
+#intro.round-scroll-stage :is([data-node-id="148:7568"],[data-node-id="148:7569"]){color:rgb(255 calc(255 - 144 * var(--cover-round-progress,1)) calc(255 - 144 * var(--cover-round-progress,1)))}
+@media(prefers-reduced-motion:reduce){#intro .cover-round-surface{background:linear-gradient(#ffd6d6,#ff6f6f)!important;top:148px;height:3564px;border-radius:10000px!important;clip-path:none!important}#intro.round-scroll-stage :is([data-node-id="148:7568"],[data-node-id="148:7569"]){color:#ff6f6f}}
+@media print{#intro .cover-round-surface{background:linear-gradient(#ffd6d6,#ff6f6f)!important;top:148px;height:3564px;border-radius:10000px!important;clip-path:none!important}#intro.round-scroll-stage :is([data-node-id="148:7568"],[data-node-id="148:7569"]){color:#ff6f6f}}

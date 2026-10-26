@@ -51,4 +51,61 @@
  }
  function open(kind,label,node){cleanup();opener=node;body.replaceChildren();setStatus('');dialog.querySelector('h2').textContent=label;dialog.dataset.action=kind;if(kind==='camera'||kind==='album')photos(kind);else if(kind==='location')locationDemo();else if(kind==='profile')profileDemo();else if(kind==='voice')voiceDemo();else scheduleDemo();dialog.showModal();}
  for(const [id,kind,label]of items){const node=section.querySelector('[data-node-id="148:'+id+'"]');if(!node)continue;node.classList.add('quick-demo-trigger');node.tabIndex=0;node.setAttribute('role','button');node.setAttribute('aria-label',label+' 데모 열기');node.setAttribute('aria-haspopup','dialog');const activate=e=>{if(e.type==='keydown'&&!['Enter',' '].includes(e.key))return;e.preventDefault();e.stopImmediatePropagation();open(kind,label,node);};node.addEventListener('click',activate,true);node.addEventListener('keydown',activate,true);}
+ // Visual hover tour: only camera, location and voice take turns. Real hover/focus takes priority.
+ const quickPanel=section.querySelector('[data-node-id="148:5632"]');
+ const triggers=[...section.querySelectorAll('.quick-demo-trigger')];
+ const tour=['5850','5858','5867'].map(id=>section.querySelector('[data-node-id="148:'+id+'"]')).filter(Boolean);
+ let tourTimer=null,tourIndex=0,tourVisible=false,hovered=null;
+ const stopTour=()=>{clearTimeout(tourTimer);tourTimer=null;};
+ const selectQuick=node=>triggers.forEach(n=>n.classList.toggle('is-quick-highlight',n===node));
+ function runTour(){
+  stopTour();const focused=triggers.find(n=>n.contains(document.activeElement));
+  if(!tourVisible||document.hidden){selectQuick(null);return;}
+  const manual=dialog.open?opener:hovered||focused;
+  if(manual){selectQuick(manual);return;}
+  if(dangoReducedMotion.matches||!tour.length){selectQuick(null);return;}
+  selectQuick(tour[tourIndex]);tourTimer=setTimeout(()=>{tourIndex=(tourIndex+1)%tour.length;runTour()},560);
+ }
+ if(quickPanel){
+  if('IntersectionObserver'in window)new IntersectionObserver(entries=>{tourVisible=entries[0].isIntersecting;runTour()},{threshold:.2}).observe(quickPanel);
+  else{tourVisible=true;runTour();}
+  quickPanel.addEventListener('pointerover',e=>{const node=e.target.closest('.quick-demo-trigger');if(node&&node!==hovered){hovered=node;runTour();}});
+  quickPanel.addEventListener('pointerout',e=>{const next=e.relatedTarget?.closest?.('.quick-demo-trigger');if(hovered&&next!==hovered){hovered=next;runTour();}});
+  quickPanel.addEventListener('focusin',runTour);quickPanel.addEventListener('focusout',()=>queueMicrotask(runTour));
+  new MutationObserver(runTour).observe(dialog,{attributes:true,attributeFilter:['open']});
+  dangoReducedMotion.addEventListener('change',runTour);document.addEventListener('visibilitychange',runTour);
+  window.addEventListener('pagehide',stopTour);window.addEventListener('pageshow',runTour);
+ }
+ // A received appointment keeps its original layout: typing dots, then the card, then its timestamp.
+ const arrival=section.querySelector('[data-node-id="148:5568"]');
+ const card=arrival?.querySelector('[data-node-id="148:5575"]');
+ const stamp=arrival?.querySelector('[data-node-id="148:5603"]');
+ if(arrival&&card&&stamp){
+  arrival.classList.add('chat-arrival-row','is-chat-waiting');card.classList.add('chat-arrival-card');stamp.classList.add('chat-arrival-time');
+  [card,stamp].forEach(root=>[root,...root.querySelectorAll('.reveal-text')].forEach(n=>n.classList.remove('reveal-text','is-revealed')));
+  const dots=document.createElement('div');dots.className='chat-typing';dots.setAttribute('aria-hidden','true');dots.innerHTML='<span></span><span></span><span></span>';
+  card.parentElement.append(dots);
+  let arrivalTimer=null,arrivalState='waiting',arrivalPrinting=false;
+  const state=value=>{arrivalState=value;arrival.dataset.chatState=value;arrival.classList.toggle('is-chat-waiting',value==='waiting');arrival.classList.toggle('is-chat-typing',value==='typing');arrival.classList.toggle('is-chat-arrived',value==='arrived');};
+  const finishArrival=()=>{clearTimeout(arrivalTimer);arrivalTimer=null;state('arrived');};
+  const playArrival=()=>{if(arrivalState!=='waiting')return;if(dangoReducedMotion.matches){finishArrival();return;}state('typing');arrivalTimer=setTimeout(finishArrival,650);};
+  arrival.addEventListener('focusin',finishArrival);
+  if(dangoReducedMotion.matches||!('IntersectionObserver'in window))finishArrival();
+  else{
+   new IntersectionObserver(entries=>entries.forEach(entry=>{
+    if(dangoReducedMotion.matches||arrivalPrinting){finishArrival();return;}
+    if(entry.isIntersecting)playArrival();
+   }),{threshold:.25,rootMargin:'0px 0px -12% 0px'}).observe(arrival);
+   // A separate wide exit boundary rearms both directions only after the whole card is out of view.
+   new IntersectionObserver(entries=>entries.forEach(entry=>{
+    if(dangoReducedMotion.matches||arrivalPrinting||arrival.contains(document.activeElement)){finishArrival();return;}
+    if(!entry.isIntersecting){clearTimeout(arrivalTimer);arrivalTimer=null;state('waiting');}
+   }),{rootMargin:'100px 0px 100px 0px',threshold:0}).observe(arrival);
+  }
+  dangoReducedMotion.addEventListener('change',()=>{if(dangoReducedMotion.matches)finishArrival();});
+  document.addEventListener('visibilitychange',()=>{if(document.hidden&&arrivalState==='typing')finishArrival();});
+  window.addEventListener('beforeprint',()=>{arrivalPrinting=true;finishArrival();});window.addEventListener('afterprint',()=>{arrivalPrinting=false;});window.addEventListener('pagehide',finishArrival);
+  state(arrivalState);
+ }
+
 })();
