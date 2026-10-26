@@ -79,9 +79,17 @@
 @media(prefers-reduced-motion:reduce){.cover-decoration-popcorn{animation:none;translate:none;rotate:none;scale:1}}
 @media print{.cover-decoration-popcorn{animation:none;translate:none;rotate:none;scale:1}}
 
-/* The authored cover stays still; only the Vision circle changes on scroll. */
-#strategy .vision-circle-morph{width:calc(2865px - 665px * var(--vision-round-progress,0));height:calc(2865px - 665px * var(--vision-round-progress,0));top:calc(1305.15px + 665px * var(--vision-round-progress,0))}
 .walk-save-highlight{background-image:linear-gradient(#ffd6d6,#ffd6d6);background-repeat:no-repeat;background-position:left center;background-size:0% 1.1em;transition:background-size 1s ease .35s}
 .walk-save-highlight.is-highlighted{background-size:100% 1.1em}
-@media(prefers-reduced-motion:reduce){#strategy .vision-circle-morph{width:2865px;height:2865px;top:1305.15px}.walk-save-highlight{background-size:100% 1.1em;transition:none}}
-@media print{#strategy .vision-circle-morph{width:2865px;height:2865px;top:1305.15px}.walk-save-highlight{background-size:100% 1.1em;transition:none}}
+@media(prefers-reduced-motion:reduce){.walk-save-highlight{background-size:100% 1.1em;transition:none}}
+@media print{.walk-save-highlight{background-size:100% 1.1em;transition:none}}
+
+/* Native document scrolling drives a finite hold: flat edge, round edge, then the next content. */
+.round-scroll-stage{height:calc(var(--section-height) * var(--page-scale) + var(--round-hold-length,0px))}
+.round-scroll-stage>.design-canvas{translate:0 var(--round-hold-offset,0px)}
+.round-scroll-surface{pointer-events:none}
+.round-scroll-surface>img{opacity:0}
+#strategy .vision-round-surface{background:linear-gradient(to bottom,#fff4cd 0%,#ffe5d2 40.8654%,#ffd6d6 100%);border-radius:0 0 calc(1432.5px * var(--round-progress,0)) calc(1432.5px * var(--round-progress,0))}
+#branding .character-round-surface{background:#fff;border-radius:calc(1036px * var(--round-progress,0)) calc(1036px * var(--round-progress,0)) 0 0}
+@media(prefers-reduced-motion:reduce){.round-scroll-stage{height:calc(var(--section-height) * var(--page-scale))}.round-scroll-stage>.design-canvas{translate:none}.round-scroll-surface{background:none!important;border-radius:0!important}.round-scroll-surface>img{opacity:1}}
+@media print{.round-scroll-stage{height:calc(var(--section-height) * var(--page-scale))}.round-scroll-stage>.design-canvas{translate:none}.round-scroll-surface{background:none!important;border-radius:0!important}.round-scroll-surface>img{opacity:1}}

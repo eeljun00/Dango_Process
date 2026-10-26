@@ -44,26 +44,38 @@
  }
  const cover=q('#intro [data-node-id="148:7503"]');
  if(cover){ownEntrance(cover);entrance([cover],{kind:'cover',duration:950,easing:'cubic-bezier(.18,.85,.28,1.18)',frames:[{opacity:0,translate:'0 28px',scale:.92},{opacity:1,translate:'0 0',scale:1}]});}
- // Tighten the existing Vision circle as the Vision copy enters the viewport.
- const visionCanvas=q('#strategy .design-canvas'),visionCircle=q('#strategy [data-node-id="148:4764"]');
- if(visionCanvas&&visionCircle){
-  visionCircle.classList.add('vision-circle-morph');
-  let roundFrame=0,lastRound=-1;
-  const updateRound=()=>{
-   roundFrame=0;
-   const rect=visionCanvas.getBoundingClientRect(),scale=rect.width/visionCanvas.offsetWidth;
-   const titleTop=rect.top+3612.17*scale;
-   const progress=reduced.matches?0:Math.min(1,Math.max(0,(innerHeight*.85-titleTop)/(innerHeight*.6)));
-   const round=progress*progress*(3-2*progress);
-   if(round!==lastRound){visionCircle.style.setProperty('--vision-round-progress',round.toFixed(4));lastRound=round;}
+ // Spend a short native scroll range drawing each boundary before the artwork moves on.
+ function roundScrollStage(sectionSelector,surfaceSelector,kind,boundaryLocal){
+  const section=q(sectionSelector);if(!section)return;
+  const canvas=q('.design-canvas',section),surface=q(surfaceSelector,section);
+  if(!canvas||!surface)return;
+  section.classList.add('round-scroll-stage');
+  surface.classList.add('round-scroll-surface',`${kind}-round-surface`);
+  let frame=0,lastOffset=-1,lastProgress=-1,lastLength=-1;
+  const render=()=>{
+   frame=0;
+   const length=reduced.matches?0:Math.round(Math.min(860,Math.max(420,innerHeight*.72)));
+   if(length!==lastLength){section.style.setProperty('--round-hold-length',`${length}px`);lastLength=length;}
+   const rect=section.getBoundingClientRect(),scale=canvas.getBoundingClientRect().width/1920.375;
+   const readingLine=innerHeight*(kind==='vision'?.86:.43);
+   const start=rect.top+scrollY+boundaryLocal*scale-readingLine;
+   const offset=Math.max(0,Math.min(length,scrollY-start));
+   const phase=length?offset/length:1;
+   const drawing=Math.max(0,Math.min(1,(phase-.12)/.72));
+   const progress=drawing*drawing*(3-2*drawing);
+   if(offset!==lastOffset){section.style.setProperty('--round-hold-offset',`${offset.toFixed(3)}px`);lastOffset=offset;}
+   if(progress!==lastProgress){surface.style.setProperty('--round-progress',progress.toFixed(4));lastProgress=progress;}
+   section.dataset.roundState=reduced.matches?'static':phase<=0?'before':phase>=1?'after':'drawing';
   };
-  const scheduleRound=()=>{if(!roundFrame)roundFrame=requestAnimationFrame(updateRound);};
-  window.addEventListener('scroll',scheduleRound,{passive:true});
-  window.addEventListener('resize',scheduleRound,{passive:true});
-  window.addEventListener('pageshow',scheduleRound);
-  reduced.addEventListener('change',scheduleRound);
-  updateRound();
+  const schedule=()=>{if(!frame)frame=requestAnimationFrame(render);};
+  window.addEventListener('scroll',schedule,{passive:true});
+  window.addEventListener('resize',schedule,{passive:true});
+  window.addEventListener('pageshow',schedule);
+  reduced.addEventListener('change',schedule);
+  render();
  }
+ roundScrollStage('#strategy','[data-node-id="148:4764"]','vision',4170.15);
+ roundScrollStage('#branding','[data-node-id="148:2307"]','character',679.4);
  // A full-height pink box draws in on scroll and resets after the copy leaves the viewport.
  const saveHighlight=q('.walk-save-highlight');
  if(saveHighlight){
