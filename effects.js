@@ -157,7 +157,7 @@
  if(chart)ownEntrance(chart); // Labels and percentages stay still while only the colored bars fill.
  const bars=['148:7452','148:7457','148:7463','148:7469'].map(id=>q(`#research [data-node-id="${id}"]`)).filter(Boolean);
  const counts=['148:7455','148:7461','148:7467','148:7473'].map(id=>q(`#research [data-node-id="${id}"]`)).filter(Boolean).map(node=>{const final=parseInt(node.textContent,10);node.setAttribute('aria-label',final+'%');node.classList.add('research-count');if(!reduced.matches){node.style.width=getComputedStyle(node).width;node.textContent='0%';}return{node,final};});
- entrance(bars,{kind:'bar',duration:850,delay:130,counts,anchor:chart,frames:[{clipPath:'inset(0 100% 0 0)'},{clipPath:'inset(0 0% 0 0)'}]});
+ entrance(bars,{kind:'bar',duration:1800,delay:130,counts,anchor:chart,easing:'cubic-bezier(.4,0,.2,1)',frames:[{clipPath:'inset(0 100% 0 0)'},{clipPath:'inset(0 0% 0 0)'}]});
  const keywordCard=q('#research [data-node-id="148:7419"]');
  const keywords=keywordCard?qa('.f149',keywordCard):[];keywords.forEach(ownEntrance);
  entrance(keywords,{kind:'keyword',duration:600,delay:100,anchor:keywordCard,frames:[{opacity:0,translate:'0 12px'},{opacity:1,translate:'0 0'}]});
