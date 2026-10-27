@@ -98,6 +98,7 @@
 
 /* The pink cover rises behind a rolling waterline while its artwork stays in place. */
 #intro .cover-round-surface{--cover-bottom-depth:650px;top:0;height:3712px;border-radius:0}
+#intro [data-node-id="148:7504"]{opacity:.45}
 #intro.round-scroll-stage :is([data-node-id="148:7568"],[data-node-id="148:7569"]){color:#FF6F6F}
 @media(prefers-reduced-motion:reduce){#intro .cover-round-surface{background:linear-gradient(#ffd6d6,#ff6f6f)!important;top:0;height:3712px;border-radius:0!important;clip-path:url(#dango-round-cover)!important}#intro.round-scroll-stage :is([data-node-id="148:7568"],[data-node-id="148:7569"]){color:#ff6f6f}}
 @media print{#intro .cover-round-surface{background:linear-gradient(#ffd6d6,#ff6f6f)!important;top:0;height:3712px;border-radius:0!important;clip-path:url(#dango-round-cover)!important}#intro.round-scroll-stage :is([data-node-id="148:7568"],[data-node-id="148:7569"]){color:#ff6f6f}}
