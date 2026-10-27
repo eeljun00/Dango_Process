@@ -22,3 +22,8 @@ These third-party licenses cover only their respective fonts and library. They d
 Before publishing this repository or enabling GitHub Pages, the project owner should confirm the right to redistribute the team design and credited work, pet and other photographs, map imagery, smartphone mockups, illustrations, and icons. Existing credits are retained; credit alone is not proof of permission. These assets have not been relicensed or replaced during repository preparation.
 
 Local browser demo data, photos selected through file pickers, microphone recordings, and stored demo posts are not source assets bundled into this repository.
+
+## Footer tool marks
+
+- **Photoshop / Illustrator**: Letter outlines from Adobe’s official product icons. Product tile backgrounds are replaced by the portfolio’s shared frame; lettering is recolored white and proportionally scaled. These marks belong to Adobe. Sources: https://www.adobe.com/cc-shared/assets/img/product-icons/svg/photoshop-40.svg and https://www.adobe.com/cc-shared/assets/img/product-icons/svg/illustrator.svg.
+- **JavaScript**: Letter outlines from Simple Icons 12.0.0, with its background square replaced by the same shared frame. Source: https://cdn.jsdelivr.net/npm/simple-icons@12.0.0/icons/javascript.svg. CC0 1.0; see [included license](assets/vendor/simple-icons-LICENSE.md).
