@@ -75,11 +75,12 @@
    const progress=shownProgress;
    if(offset!==lastOffset){section.style.setProperty('--round-hold-offset',`${offset.toFixed(3)}px`);lastOffset=offset;}
    if(progress!==lastProgress){
-    surface.style.setProperty('--round-progress',progress.toFixed(4));
+    const curveProgress=kind==='cover'?1-progress:progress;
+    surface.style.setProperty('--round-progress',curveProgress.toFixed(4));
     if(kind==='cover'){
-     // The original 2072px-wide capsule stays anchored at its bottom while its whole top edge curves.
-     section.style.setProperty('--cover-round-progress',progress.toFixed(4));
-     const half=1036*progress/(3712-148*progress),control=half*.447716;
+     // Scroll fills the opening from its original capsule to a full pink plane, with the bottom anchored.
+     section.style.setProperty('--cover-round-progress',curveProgress.toFixed(4));
+     const half=1036*curveProgress/(3712-148*curveProgress),control=half*.447716;
      edge.setAttribute('d',`M0 ${half} C0 ${control} .223858 0 .5 0 C.776142 0 1 ${control} 1 ${half} L1 ${1-half} C1 ${1-control} .776142 1 .5 1 C.223858 1 0 ${1-control} 0 ${1-half} Z`);
     }else{
     const half=.5*progress,control=.223858*progress;
