@@ -21,8 +21,8 @@
   return{x:(r.left-base.left)/scale,y:(r.top-base.top)/scale,w:r.width/scale,h:r.height/scale};
  }
  function floorAt(x){
-  const dx=Math.max(0,Math.abs(x-arena.cx)-(arena.w/2-arena.radius));
-  return arena.bottom-arena.radius+Math.sqrt(Math.max(0,arena.radius**2-dx**2));
+  const dx=(x-arena.cx)/arena.radius;
+  return arena.bottom-arena.depth+arena.depth*Math.sqrt(Math.max(0,1-dx**2));
  }
  // All four rotated artwork corners stay inside the curve, without cropping the text.
  function contain(item){
@@ -90,12 +90,12 @@
  function prepare(){
   if(engine||staticOnly||reduced.matches||!nodes[0].getBoundingClientRect().width)return;
   const r=localRect(circle),copy=canvas.querySelector('[data-node-id="148:7523"]'),text=localRect(copy);
-  arena={cx:r.x+r.w/2,w:r.w,bottom:r.y+r.h,radius:Math.min(r.w,r.h)/2,left:Math.max(0,r.x),right:Math.min(canvas.offsetWidth,r.x+r.w),top:text.y+text.h+90};
+  arena={cx:r.x+r.w/2,w:r.w,bottom:r.y+r.h,radius:Math.min(r.w,r.h)/2,depth:parseFloat(getComputedStyle(circle).getPropertyValue('--cover-bottom-depth'))||Math.min(r.w,r.h)/2,left:Math.max(0,r.x),right:Math.min(canvas.offsetWidth,r.x+r.w),top:text.y+text.h+90};
   engine=Engine.create({enableSleeping:true,positionIterations:8,velocityIterations:8});engine.gravity.y=.75;engine.timing.timeScale=dangoMotionRate;
-  const walls=[],thickness=80,cy=arena.bottom-arena.radius;
+  const walls=[],thickness=80,cy=arena.bottom-arena.depth;
   for(let i=0;i<56;i++){
-   const a=i*Math.PI/56,b=(i+1)*Math.PI/56,m=(a+b)/2,rad=arena.radius-8;
-   const x1=arena.cx+rad*Math.cos(a),y1=cy+rad*Math.sin(a),x2=arena.cx+rad*Math.cos(b),y2=cy+rad*Math.sin(b);
+   const a=i*Math.PI/56,b=(i+1)*Math.PI/56,m=(a+b)/2,rad=arena.radius-8,depth=arena.depth-8;
+   const x1=arena.cx+rad*Math.cos(a),y1=cy+depth*Math.sin(a),x2=arena.cx+rad*Math.cos(b),y2=cy+depth*Math.sin(b);
    walls.push(Bodies.rectangle((x1+x2)/2+Math.cos(m)*thickness/2,(y1+y2)/2+Math.sin(m)*thickness/2,Math.hypot(x2-x1,y2-y1)+4,thickness,{isStatic:true,angle:Math.atan2(y2-y1,x2-x1),friction:.35,restitution:.3}));
   }
   walls.push(Bodies.rectangle(arena.cx,arena.top-40,arena.w,80,{isStatic:true}));

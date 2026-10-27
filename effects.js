@@ -45,7 +45,7 @@
  const cover=q('#intro [data-node-id="148:7503"]');
  if(cover){ownEntrance(cover);entrance([cover],{kind:'cover',duration:950,easing:'cubic-bezier(.18,.85,.28,1.18)',frames:[{opacity:0,translate:'0 28px',scale:.92},{opacity:1,translate:'0 0',scale:1}]});}
  // A scroll-driven liquid surface rises and rolls sideways; no idle animation or input interception.
- function coverWaterPath(fill){
+ function coverWaterPath(fill,depth){
   const tau=Math.PI*2,level=380-440*fill,amplitude=48*Math.pow(1-fill,.75),phase=tau*fill,height=3712,segments=18;
   const front=x=>level+amplitude*(Math.sin(tau*1.5*x-phase)+.18*Math.sin(tau*3*x+phase*.65));
   const slope=x=>amplitude*(tau*1.5*Math.cos(tau*1.5*x-phase)+.18*tau*3*Math.cos(tau*3*x+phase*.65));
@@ -54,8 +54,8 @@
    const x0=(i-1)/segments,x1=i/segments,step=(x1-x0)/3;
    path+=` C${x0+step} ${(front(x0)+slope(x0)*step)/height} ${x1-step} ${(front(x1)-slope(x1)*step)/height} ${x1} ${front(x1)/height}`;
   }
-  // Preserve the original 2072px-wide capsule's circular lower edge.
-  const radius=1036/height;
+  // A shallower lower arc keeps the overview decorations inside the pink background.
+  const radius=depth/height;
   return path+` L1 ${1-radius} A.5 ${radius} 0 0 1 0 ${1-radius} Z`;
  }
  // Spend a short native scroll range drawing each boundary before the artwork moves on.
@@ -70,6 +70,7 @@
   mask.setAttribute('width','0');mask.setAttribute('height','0');mask.setAttribute('aria-hidden','true');mask.style.position='absolute';
   clip.id=`dango-round-${kind}`;clip.setAttribute('clipPathUnits','objectBoundingBox');clip.append(edge);defs.append(clip);mask.append(defs);section.append(mask);
   surface.style.clipPath=`url(#${clip.id})`;
+  const coverDepth=kind==='cover'?parseFloat(getComputedStyle(surface).getPropertyValue('--cover-bottom-depth'))||1036:0;
   let frame=0,lastOffset=-1,lastProgress=-1,lastLength=-1,shownProgress=null,lastTime=0,stagePrinting=false;
   const render=now=>{
    frame=0;
@@ -96,7 +97,7 @@
     if(kind==='cover'){
      section.style.setProperty('--cover-round-progress',curveProgress.toFixed(4));
      section.dataset.coverFill=drawProgress.toFixed(4);
-     edge.setAttribute('d',coverWaterPath(drawProgress));
+     edge.setAttribute('d',coverWaterPath(drawProgress,coverDepth));
     }else{
     const half=.5*progress,control=.223858*progress;
     edge.setAttribute('d',kind==='character'?`M0 1 L0 ${half} C0 ${control} .223858 0 .5 0 C.776142 0 1 ${control} 1 ${half} L1 1 Z`:`M0 0 L1 0 L1 ${1-half} C1 ${1-control} .776142 1 .5 1 C.223858 1 0 ${1-control} 0 ${1-half} Z`);
