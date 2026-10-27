@@ -83,11 +83,12 @@ if ('IntersectionObserver' in window) {
 (()=>{
  const cue=document.querySelector('.cover-scroll-cue');if(!cue)return;
  let ready=false;
- const sync=()=>cue.classList.toggle('is-visible',ready&&window.scrollY<80&&!document.hidden);
+ const sync=()=>{const intro=document.querySelector('#intro'),hold=parseFloat(getComputedStyle(intro).getPropertyValue('--round-hold-length'))||0;cue.classList.toggle('is-visible',ready&&window.scrollY<(hold>0?hold+1:80)&&!document.hidden);};
  const reveal=()=>{ready=true;sync();};
  const timer=setTimeout(reveal,dangoReducedMotion.matches?0:1600);
  window.addEventListener('scroll',sync,{passive:true});
  window.addEventListener('pageshow',sync);
+ window.addEventListener('resize',()=>requestAnimationFrame(sync),{passive:true});
  document.addEventListener('visibilitychange',sync);
  dangoReducedMotion.addEventListener('change',()=>{if(dangoReducedMotion.matches){clearTimeout(timer);reveal();}});
  cue.addEventListener('click',()=>window.scrollBy({top:Math.round(window.innerHeight*.8),behavior:dangoReducedMotion.matches?'instant':'smooth'}));

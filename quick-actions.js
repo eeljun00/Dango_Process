@@ -83,6 +83,7 @@
  if(arrival&&card&&stamp){
   arrival.classList.add('chat-arrival-row','is-chat-waiting');card.classList.add('chat-arrival-card');stamp.classList.add('chat-arrival-time');
   [card,stamp].forEach(root=>[root,...root.querySelectorAll('.reveal-text')].forEach(n=>n.classList.remove('reveal-text','is-revealed')));
+  const composer=section.querySelector('[data-node-id="148:5615"]');composer?.classList.remove('reveal-text','is-revealed');
   const dots=document.createElement('div');dots.className='chat-typing';dots.setAttribute('aria-hidden','true');dots.innerHTML='<span></span><span></span><span></span>';
   card.parentElement.append(dots);
   let arrivalTimer=null,arrivalState='waiting',arrivalPrinting=false;

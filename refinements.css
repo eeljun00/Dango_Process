@@ -318,7 +318,7 @@
 }
 
 /* Render the complete original mascot glyph without the rectangular clipping mask. */
-:is(#components,#wireframe,#app-home,#walk-planning,#walk-log,#walk-summary,#walk-archive,#community) [data-name="sound_detection_dog_barking"]>p{mask-image:none!important;-webkit-mask-image:none!important;position:absolute;inset:0;display:flex;align-items:center;justify-content:center;width:100%;height:100%;margin:0;line-height:1;font-size:36px;transform:none;translate:none!important;filter:none;opacity:1}
+:is(#components,#wireframe,#app-home,#walk-planning,#walk-log,#walk-summary,#walk-archive,#community) [data-name="sound_detection_dog_barking"]>p{mask-image:none!important;-webkit-mask-image:none!important;position:absolute;inset:auto;left:20%;top:8.75%;display:flex;align-items:center;justify-content:center;width:60%;height:60%;margin:0;line-height:1;font-size:calc(36px * var(--my-nav-scale,1));transform:none;translate:none!important;filter:none;opacity:1}
 #community [data-node-id="I148:6948;678:11003"] [data-node-id="I148:6948;678:11004"]{color:#FF4444}
 /* Transparent 3D artwork uses the existing composition and separate shadow. */
 #concept [data-node-id="148:2922"]>img{object-fit:contain;object-position:center bottom;width:115%;left:-7.5%}
@@ -363,3 +363,8 @@
  75%{background-position:100% 100%;translate:0 23.44px}
 }
 @media print{#concept .dango-walk-sprite{display:none}#concept .dango-walk-poster{visibility:visible!important}}
+
+
+/* Walk screens use the original selected-walk accent; the other labels remain inactive. */
+:is(#walk-planning,#walk-archive) [data-name="하단바"] :is([data-name="1"],[data-name="2"],[data-name="4"],[data-name="5"])>p{color:#bfbfbf}
+:is(#walk-planning,#walk-archive) [data-name="하단바"] [data-name="3"]>p{color:#ff6f6f}

@@ -263,4 +263,9 @@
   shadow.innerHTML='<defs><filter id="walk-navigation-shadow-filter" x="-10%" y="-20%" width="120%" height="140%" color-interpolation-filters="sRGB"><feGaussianBlur in="SourceAlpha" stdDeviation="1.5" result="soft"/><feOffset in="soft" dy="1.5" result="offset"/><feFlood flood-color="#26364a" flood-opacity=".085" result="color"/><feComposite in="color" in2="offset" operator="in" result="shadow"/><feComposite in="shadow" in2="SourceAlpha" operator="out"/></filter></defs><path d="M237.22 707.99 Q234.38 700.51 242.08 698.33 L502.41 624.32 Q510.10 622.13 512.53 629.76 L525.56 670.80 Q527.98 678.42 520.31 680.71 L264.31 756.87 Q256.64 759.15 253.80 751.67 Z" fill="#000" filter="url(#walk-navigation-shadow-filter)"/>';
   walkPhone.append(shadow);
  }
+ // The original nav icon frame is 24/40 of each item, including its scaled instances.
+ qa('[data-name="sound_detection_dog_barking"]>p').forEach(glyph=>{
+  const item=glyph.closest('[data-name="5"]');if(!item)return;
+  const height=parseFloat(getComputedStyle(item).height);if(height>0)glyph.style.setProperty('--my-nav-scale',String(height/40));
+ });
 })();
