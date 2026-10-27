@@ -46,7 +46,7 @@
  if(cover){ownEntrance(cover);entrance([cover],{kind:'cover',duration:950,easing:'cubic-bezier(.18,.85,.28,1.18)',frames:[{opacity:0,translate:'0 28px',scale:.92},{opacity:1,translate:'0 0',scale:1}]});}
  // A scroll-driven liquid surface rises and rolls sideways; no idle animation or input interception.
  function coverWaterPath(fill,depth){
-  const tau=Math.PI*2,level=580-640*fill,amplitude=48*Math.pow(1-fill,.75),phase=tau*fill,height=3712,segments=18;
+  const tau=Math.PI*2,level=380-440*fill,amplitude=48*Math.pow(1-fill,.75),phase=tau*fill,height=3712,segments=18;
   const front=x=>level+amplitude*(Math.sin(tau*1.5*x-phase)+.18*Math.sin(tau*3*x+phase*.65));
   const slope=x=>amplitude*(tau*1.5*Math.cos(tau*1.5*x-phase)+.18*tau*3*Math.cos(tau*3*x+phase*.65));
   let path=`M0 ${front(0)/height}`;
