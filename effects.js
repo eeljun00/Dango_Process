@@ -44,6 +44,18 @@
  }
  const cover=q('#intro [data-node-id="148:7503"]');
  if(cover){ownEntrance(cover);entrance([cover],{kind:'cover',duration:950,easing:'cubic-bezier(.18,.85,.28,1.18)',frames:[{opacity:0,translate:'0 28px',scale:.92},{opacity:1,translate:'0 0',scale:1}]});}
+ // A scroll-driven liquid surface rises and rolls sideways; no idle animation or input interception.
+ function coverWaterPath(fill){
+  const tau=Math.PI*2,level=220-280*fill,amplitude=32*Math.pow(1-fill,.75),phase=tau*fill,height=3712,segments=18;
+  const front=x=>level+amplitude*(Math.sin(tau*1.5*x-phase)+.18*Math.sin(tau*3*x+phase*.65));
+  const slope=x=>amplitude*(tau*1.5*Math.cos(tau*1.5*x-phase)+.18*tau*3*Math.cos(tau*3*x+phase*.65));
+  let path=`M0 ${front(0)/height}`;
+  for(let i=1;i<=segments;i++){
+   const x0=(i-1)/segments,x1=i/segments,step=(x1-x0)/3;
+   path+=` C${x0+step} ${(front(x0)+slope(x0)*step)/height} ${x1-step} ${(front(x1)-slope(x1)*step)/height} ${x1} ${front(x1)/height}`;
+  }
+  return path+' L1 1 L0 1 Z';
+ }
  // Spend a short native scroll range drawing each boundary before the artwork moves on.
  function roundScrollStage(sectionSelector,surfaceSelector,kind,boundaryLocal){
   const section=q(sectionSelector);if(!section)return;
@@ -56,10 +68,11 @@
   mask.setAttribute('width','0');mask.setAttribute('height','0');mask.setAttribute('aria-hidden','true');mask.style.position='absolute';
   clip.id=`dango-round-${kind}`;clip.setAttribute('clipPathUnits','objectBoundingBox');clip.append(edge);defs.append(clip);mask.append(defs);section.append(mask);
   surface.style.clipPath=`url(#${clip.id})`;
-  let frame=0,lastOffset=-1,lastProgress=-1,lastLength=-1,shownProgress=null,lastTime=0;
+  let frame=0,lastOffset=-1,lastProgress=-1,lastLength=-1,shownProgress=null,lastTime=0,stagePrinting=false;
   const render=now=>{
    frame=0;
-   const length=reduced.matches?0:Math.round(kind==='cover'?Math.min(900,Math.max(500,innerHeight*.85)):Math.min(1040,Math.max(480,innerHeight*.9)));
+   const frozen=reduced.matches||stagePrinting;
+   const length=frozen?0:Math.round(kind==='cover'?Math.min(900,Math.max(500,innerHeight*.85)):Math.min(1040,Math.max(480,innerHeight*.9)));
    if(length!==lastLength){section.style.setProperty('--round-hold-length',`${length}px`);lastLength=length;}
    const rect=section.getBoundingClientRect(),scale=canvas.getBoundingClientRect().width/1920.375;
    const readingLine=kind==='cover'?0:innerHeight*(kind==='vision'?.86:.43);
@@ -69,33 +82,35 @@
    const drawing=Math.max(0,Math.min(1,(phase-.12)/.72));
    const target=drawing*drawing*drawing*(drawing*(drawing*6-15)+10);
    const dt=lastTime?Math.max(1,Math.min(64,now-lastTime)):16.67;lastTime=now;
-   if(shownProgress===null||reduced.matches||phase<=0||phase>=1)shownProgress=target;
+   if(shownProgress===null||frozen||phase<=0||phase>=1)shownProgress=target;
    else shownProgress+=(target-shownProgress)*(1-Math.exp(-dt/95));
    if(Math.abs(target-shownProgress)<.0002)shownProgress=target;
    const progress=shownProgress;
    if(offset!==lastOffset){section.style.setProperty('--round-hold-offset',`${offset.toFixed(3)}px`);lastOffset=offset;}
-   if(progress!==lastProgress){
-    const curveProgress=kind==='cover'?1-progress:progress;
+   const drawProgress=kind==='cover'&&frozen?0:progress;
+   if(drawProgress!==lastProgress){
+    const curveProgress=kind==='cover'?1-drawProgress:drawProgress;
     surface.style.setProperty('--round-progress',curveProgress.toFixed(4));
     if(kind==='cover'){
-     // Scroll fills the opening from its original capsule to a full pink plane, with the bottom anchored.
      section.style.setProperty('--cover-round-progress',curveProgress.toFixed(4));
-     const half=1036*curveProgress/(3712-148*curveProgress),control=half*.447716;
-     edge.setAttribute('d',`M0 ${half} C0 ${control} .223858 0 .5 0 C.776142 0 1 ${control} 1 ${half} L1 ${1-half} C1 ${1-control} .776142 1 .5 1 C.223858 1 0 ${1-control} 0 ${1-half} Z`);
+     section.dataset.coverFill=drawProgress.toFixed(4);
+     edge.setAttribute('d',coverWaterPath(drawProgress));
     }else{
     const half=.5*progress,control=.223858*progress;
     edge.setAttribute('d',kind==='character'?`M0 1 L0 ${half} C0 ${control} .223858 0 .5 0 C.776142 0 1 ${control} 1 ${half} L1 1 Z`:`M0 0 L1 0 L1 ${1-half} C1 ${1-control} .776142 1 .5 1 C.223858 1 0 ${1-control} 0 ${1-half} Z`);
     }
-    lastProgress=progress;
+    lastProgress=drawProgress;
    }
-   section.dataset.roundState=reduced.matches?'static':phase<=0?'before':phase>=1?'after':'drawing';
-   if(progress!==target&&!reduced.matches)frame=requestAnimationFrame(render);
+   section.dataset.roundState=frozen?'static':phase<=0?'before':phase>=1?'after':'drawing';
+   if(progress!==target&&!frozen)frame=requestAnimationFrame(render);
   };
   const schedule=()=>{if(!frame)frame=requestAnimationFrame(render);};
   window.addEventListener('scroll',schedule,{passive:true});
   window.addEventListener('resize',schedule,{passive:true});
   window.addEventListener('pageshow',schedule);
   reduced.addEventListener('change',schedule);
+  window.addEventListener('beforeprint',()=>{stagePrinting=true;render(performance.now());});
+  window.addEventListener('afterprint',()=>{stagePrinting=false;schedule();});
   render(performance.now());
  }
  roundScrollStage('#intro','[data-node-id="148:7501"]','cover',0);
