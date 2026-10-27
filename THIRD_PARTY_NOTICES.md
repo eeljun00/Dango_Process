@@ -25,6 +25,9 @@ Local browser demo data, photos selected through file pickers, microphone record
 
 ## Footer tool marks
 
+- **HTML5**: Official W3C HTML5 Logo (white, with wordmark), by W3C. Creative Commons Attribution 3.0 Unported: https://creativecommons.org/licenses/by/3.0/. Source: https://www.w3.org/html/logo/downloads/HTML5_1Color_White.svg. Original path geometry and tonal opacity are retained; the mark is uniformly scaled and centered within the portfolio frame. Official collection: https://www.w3.org/html/logo/.
+- **CSS**: Official CSS logo lettering by Javi Aguilar and the CSS-Next Community Group, from https://github.com/CSS-Next/logo.css/blob/main/css.dark.svg. CC0 1.0; see [included license](assets/vendor/css-logo-LICENSE.txt). Original letter paths are retained, uniformly scaled and centered; the tile background is replaced by the portfolio's shared frame and the lettering remains white. Guidelines: https://github.com/CSS-Next/logo.css#logo-usage-guidelines.
+
 - **Photoshop / Illustrator**: Letter outlines from Adobe’s official product icons. Product tile backgrounds are replaced by the portfolio’s shared frame; lettering is recolored white and proportionally scaled. These marks belong to Adobe. Sources: https://www.adobe.com/cc-shared/assets/img/product-icons/svg/photoshop-40.svg and https://www.adobe.com/cc-shared/assets/img/product-icons/svg/illustrator.svg.
 - **JavaScript**: Letter outlines from Simple Icons 12.0.0, with its background square replaced by the same shared frame. Source: https://cdn.jsdelivr.net/npm/simple-icons@12.0.0/icons/javascript.svg. CC0 1.0; see [included license](assets/vendor/simple-icons-LICENSE.md).
 - **Google Gemini**: Brand sparkle from Simple Icons 12.0.0, recolored white and scaled into the common frame. Source: https://cdn.jsdelivr.net/npm/simple-icons@12.0.0/icons/googlegemini.svg. CC0 1.0; see [included license](assets/vendor/simple-icons-LICENSE.md).
