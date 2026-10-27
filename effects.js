@@ -54,7 +54,9 @@
    const x0=(i-1)/segments,x1=i/segments,step=(x1-x0)/3;
    path+=` C${x0+step} ${(front(x0)+slope(x0)*step)/height} ${x1-step} ${(front(x1)-slope(x1)*step)/height} ${x1} ${front(x1)/height}`;
   }
-  return path+' L1 1 L0 1 Z';
+  // Preserve the original 2072px-wide capsule's circular lower edge.
+  const radius=1036/height;
+  return path+` L1 ${1-radius} A.5 ${radius} 0 0 1 0 ${1-radius} Z`;
  }
  // Spend a short native scroll range drawing each boundary before the artwork moves on.
  function roundScrollStage(sectionSelector,surfaceSelector,kind,boundaryLocal){
