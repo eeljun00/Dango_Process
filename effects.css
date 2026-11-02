@@ -21,7 +21,7 @@
 .reveal-text{--motion-x:0px;--motion-y:16px;translate:var(--motion-x) var(--motion-y);transition:none}
 .reveal-text[data-reveal="soft"]{--motion-y:0px;filter:blur(3px)}
 .reveal-text[data-reveal="left"]{--motion-x:-18px;--motion-y:0px}
-.reveal-text[data-reveal="down"]{--motion-y:-14px}
+
 .reveal-text[data-reveal="scale"]{--motion-y:0px;scale:.985;transform-origin:center}
 .reveal-text.is-revealed{translate:0 0;filter:blur(0);scale:1;transition:opacity calc(.7s / var(--motion-rate)) cubic-bezier(.2,.65,.3,1) var(--reveal-delay,0ms),translate calc(.8s / var(--motion-rate)) cubic-bezier(.2,.65,.3,1) var(--reveal-delay,0ms),filter calc(.7s / var(--motion-rate)) ease var(--reveal-delay,0ms),scale calc(.8s / var(--motion-rate)) ease var(--reveal-delay,0ms)}
 .motion-item{opacity:0;translate:var(--enter-x,0px) var(--enter-y,12px);scale:var(--enter-scale,1)}
@@ -30,22 +30,20 @@
 .paw-step.motion-visible{transition-duration:calc(.975s / var(--motion-rate)),calc(1.2s / var(--motion-rate)),calc(1.2s / var(--motion-rate))}
 .interview-row{position:absolute;left:0;right:0;overflow:clip;padding:5px 0;isolation:isolate}
 .interview-track{display:flex;gap:20px;width:max-content;animation:interview-right calc(var(--marquee-duration,64s) / var(--motion-rate)) linear infinite;will-change:transform}
-.interview-row[data-direction="left"] .interview-track{animation-direction:reverse}
+
 .interview-group{display:flex;gap:20px;align-items:stretch;flex:none}
 .interview-card{position:relative!important;left:auto!important;top:auto!important;transform:none!important;flex:0 0 684px;width:684px!important;height:202px!important;padding:40px 60px;gap:10px;box-sizing:border-box}
 .interview-card .reveal-text{opacity:var(--reveal-opacity,1);translate:none;filter:none;scale:1}
 .interview-row:hover .interview-track,.interview-row:focus-within .interview-track{animation-play-state:paused}
 @keyframes interview-right{from{transform:translateX(calc(-2 * var(--interview-period) + var(--marquee-start,0px)))}to{transform:translateX(calc(-1 * var(--interview-period) + var(--marquee-start,0px)))}}
 .ppippo-pop p{font-family:Impact,'Arial Black',sans-serif!important;font-style:italic;font-weight:900!important;text-transform:uppercase;-webkit-text-stroke:1.5px #ff6f6f;paint-order:stroke fill;text-shadow:2px 3px 0 #ff6f6f;transform-origin:30% 80%;animation:none}
-@keyframes ppippo-cheer{0%,55%,100%{translate:0 0;rotate:0deg;scale:1}8%{translate:0 -7px;rotate:-7deg;scale:1.12}17%{translate:0 1px;rotate:4deg;scale:1.02}26%{translate:0 -3px;rotate:-3deg;scale:1.07}36%{translate:0 0;rotate:0deg;scale:1}}
-.phone{background:#111!important;box-shadow:0 9px 24px #0000001f,0 0 0 2px #333!important}
-.case-heading.align-left .case-description{margin-left:0;margin-right:0}
+
 #walk-log [data-node-id="148:3118"]{left:50%;top:632px;transform:translateX(-50%);z-index:3}
 #walk-log [data-node-id="148:3116"]{border-color:transparent}
 #walk-log [data-node-id="I148:3116;1418:22729"]{visibility:hidden}
-.reveal-text[data-reveal="down"]{transition-delay:var(--type-delay,0ms)}
+.reveal-text[data-reveal="down"]{--motion-y:-14px;transition-delay:0ms}
 .original-section p[role="button"]:focus-visible{outline:2px solid #ff6f6f;outline-offset:4px}
-.original-section .source-button{appearance:none;background:transparent;color:inherit;text-align:inherit;font:inherit;padding:0;cursor:pointer}
+
 .original-section [role="button"]{cursor:pointer}
 .nav-brand span{letter-spacing:.7px}
 
@@ -90,7 +88,6 @@
 #branding .character-round-surface{background:#fff;border-radius:0}
 @media(prefers-reduced-motion:reduce){.round-scroll-stage{height:calc(var(--section-height) * var(--page-scale))}.round-scroll-stage>.design-canvas{translate:none}.round-scroll-surface{background:none!important;border-radius:0!important;clip-path:none!important}.round-scroll-surface>img{opacity:1}}
 @media print{.round-scroll-stage{height:calc(var(--section-height) * var(--page-scale))}.round-scroll-stage>.design-canvas{translate:none}.round-scroll-surface{background:none!important;border-radius:0!important;clip-path:none!important}.round-scroll-surface>img{opacity:1}}
-
 
 /* The pink cover rises behind a rolling waterline while its artwork stays in place. */
 #intro .cover-round-surface{--cover-bottom-depth:650px;clip-path:url(#dango-round-cover)}

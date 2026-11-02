@@ -15,12 +15,12 @@
  function ownEntrance(root){
   [root,...qa('.reveal-text',root)].forEach(n=>n.classList.remove('reveal-text','is-revealed'));
  }
- function entrance(nodes,{kind,duration,delay=0,delays,counts=[],anchor=nodes[0],easing='cubic-bezier(.22,1,.36,1)',frames,onStart,onSettle}={}){
+ function entrance(nodes,{kind,duration,delay=0,delays,counts=[],anchor=nodes[0],easing='cubic-bezier(.22,1,.36,1)',frames,onStart,onSettle,onComplete}={}){
   if(!nodes.length||!anchor)return;
   const timing=i=>delays?.[i]??i*delay;
-  nodes.forEach((n,i)=>{n.dataset.entryKind=typeof kind==='function'?kind(n,i):kind;n.dataset.entryState='pending';n.style.setProperty('--entry-delay',`${dangoMotionTime(timing(i))}ms`);n.classList.add('entry-motion-pending');});
+  nodes.forEach((n,i)=>{n.dataset.entryKind=typeof kind==='function'?kind(n,i):kind;n.dataset.entryState='pending';n.classList.add('entry-motion-pending');});
   const group={nodes,anchor,started:false,animations:[],observer:null};entryGroups.push(group);
-  const finish=()=>{group.observer?.disconnect();nodes.forEach(n=>{n.classList.remove('entry-motion-pending');n.dataset.entryState='done';});counts.forEach(c=>{c.node.textContent=c.final+'%';c.node.style.removeProperty('width');});group.animations.forEach(a=>a.cancel());onSettle?.();};
+  const finish=()=>{group.observer?.disconnect();nodes.forEach(n=>{n.classList.remove('entry-motion-pending');n.dataset.entryState='done';});counts.forEach(c=>{c.node.textContent=c.final+'%';c.node.style.removeProperty('width');});group.animations.forEach(a=>a.cancel());onSettle?.();onComplete?.();};
   group.finish=finish;
   const play=()=>{
    if(group.started)return;group.started=true;group.observer?.disconnect();
@@ -33,7 +33,7 @@
     if(counter){counter.node.textContent=counter.final+'%';counter.node.style.removeProperty('width');counter.node.style.width=getComputedStyle(counter.node).width;counter.node.textContent='0%';}
     const a=n.animate(typeof frames==='function'?frames(n,i):frames,{duration:dangoMotionTime(typeof duration==='function'?duration(n,i):duration),delay:dangoMotionTime(timing(i)),easing,fill:'both'});group.animations.push(a);
     if(counter){const tick=()=>{if(n.dataset.entryState!=='running')return;const progress=Math.min(1,Math.max(0,a.effect.getComputedTiming().progress||0));counter.node.textContent=Math.round(counter.final*progress)+'%';requestAnimationFrame(tick);};requestAnimationFrame(tick);}
-    a.onfinish=()=>{n.classList.remove('entry-motion-pending');n.dataset.entryState='done';if(counter){counter.node.textContent=counter.final+'%';counter.node.style.removeProperty('width');}a.cancel();};
+    a.onfinish=()=>{n.classList.remove('entry-motion-pending');n.dataset.entryState='done';if(counter){counter.node.textContent=counter.final+'%';counter.node.style.removeProperty('width');}a.cancel();if(onComplete&&nodes.every(node=>node.dataset.entryState==='done'))onComplete();};
    });
   };
   if(reduced.matches||!('IntersectionObserver'in window)){finish();return group;}
@@ -160,7 +160,7 @@
     hop.style.setProperty('--popcorn-tilt',`${[-3,2,3,-2][popcornIndex]}deg`);
     art.before(hop);hop.append(art);popcornTargets.set(trigger,shell);popcornObserver.observe(trigger);
    }
-   entrance([shell],{kind:'cover-decoration',anchor:trigger,duration:650,delays:[i%3*50],easing:'cubic-bezier(.18,.85,.28,1.18)',frames:[{opacity:0,scale:.72,translate:`${x<960?-14:14}px 12px`},{opacity:1,scale:1,translate:'0 0'}]});
+   entrance([shell],{kind:'cover-decoration',anchor:trigger,duration:650,delays:[i%3*50],easing:'cubic-bezier(.18,.85,.28,1.18)',frames:[{opacity:0,scale:.72,translate:`${x<960?-14:14}px 12px`},{opacity:1,scale:1,translate:'0 0'}],onComplete:()=>{if(popcornIndex===-1)trigger.remove();}});
   });
  }
  // These authored artwork groups own their entrance independently of text reveals.
@@ -194,9 +194,6 @@
  const keywordCard=q('#research [data-node-id="148:7419"]');
  const keywords=keywordCard?qa('.f149',keywordCard):[];keywords.forEach(ownEntrance);
  entrance(keywords,{kind:'keyword',duration:600,delay:100,anchor:keywordCard,frames:[{opacity:0,translate:'0 12px'},{opacity:1,translate:'0 0'}]});
- // Mobile already uses a reading list, without graph bars or a divider. Animate only its existing keywords.
- const mobileKeywords=qa('#research .mobile-reading .reading-card li');mobileKeywords.forEach(ownEntrance);
- entrance(mobileKeywords,{kind:'keyword',duration:600,delay:100,anchor:mobileKeywords[0]?.closest('ul'),frames:[{opacity:0,translate:'0 12px'},{opacity:1,translate:'0 0'}]});
  const divider=['148:7481','148:7479'].map(id=>q(`#research [data-node-id="${id}"]`)).filter(Boolean);
  entrance(divider,{kind:'divider',duration:900,easing:'ease-in-out',frames:(n,i)=>[{clipPath:i?'inset(0 0 0 100%)':'inset(0 100% 0 0)'},{clipPath:'inset(0 0% 0 0%)'}]});
  // One observer and one row clock prevent the table from restarting halfway down.
@@ -214,7 +211,7 @@
   anchor.style.left=`${parseFloat(style.left)+parseFloat(style.width)/2+matrix.m41}px`;
   anchor.style.top=`${parseFloat(style.top)+parseFloat(style.height)/2+matrix.m42}px`;
   let parent=first.parentElement;while(parent&&getComputedStyle(parent).display==='contents')parent=parent.parentElement;
-  (first.offsetParent||parent).append(anchor); // The existing mobile reading view hides the desktop diagram.
+  (first.offsetParent||parent).append(anchor);
   const group={nodes,anchor,armed:true,animations:[],runs:0};scrollGroups.push(group);scrollTargets.set(anchor,group);
   const cancel=()=>{group.animations.forEach(a=>{a.onfinish=null;a.cancel();});group.animations=[];onSettle?.();};
   const pending=()=>nodes.forEach(n=>{n.dataset.entryKind=kind;n.dataset.entryState='pending';n.classList.add('entry-motion-pending');});
@@ -235,7 +232,7 @@
     a.onfinish=()=>{n.classList.remove('entry-motion-pending');n.dataset.entryState='done';a.onfinish=null;a.cancel();};
    });
   };
-  nodes.forEach((n,i)=>{n.style.setProperty('--entry-delay',`${time(delays?.[i]||0)}ms`);n.addEventListener('focusin',group.finish);});
+  nodes.forEach(n=>n.addEventListener('focusin',group.finish));
   pending();if(reduced.matches||!('IntersectionObserver'in window)||!Element.prototype.animate)group.finish();
   return group;
  }
@@ -258,7 +255,7 @@
  window.addEventListener('pageshow',()=>requestAnimationFrame(refreshStep3B));
  document.fonts.ready.then(refreshStep3B);
  // Restored scroll positions and large wheel jumps can skip the narrow observer band.
- // Inspect only these eleven fixed points once per scroll frame; ordinary upward entry still waits for 30%.
+ // Inspect the color-row anchors once per scroll frame; ordinary upward entry still waits for 30%.
  let viewFrame=0,lastViewY=scrollY,jumped=false;
  window.addEventListener('scroll',()=>{
   jumped=jumped||Math.abs(scrollY-lastViewY)>innerHeight*.30;lastViewY=scrollY;

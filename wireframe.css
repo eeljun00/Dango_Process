@@ -257,7 +257,7 @@
 #wireframe .wf2878{position:absolute;font-family:'SUIT', 'Pretendard', sans-serif;font-weight:700;left:calc(50% - 41.333333px/2);font-size:15px;text-align:center;top:calc(50% - 18.666667px/2 + 13.84px);letter-spacing:0.3px;transform:none;width:41.333333px;height:18.666667px;line-height:18.666667px;white-space:nowrap}
 #wireframe .wf2879{position:absolute;font-family:'SUIT', 'Pretendard', sans-serif;font-weight:500;left:calc(50% - 46.666667px/2 - 0.333333px);font-size:12px;top:calc(50% - 14.666667px/2 - 12.16px);letter-spacing:0.24px;width:46.666667px;height:14.666667px;transform:none;line-height:14.666667px;white-space:nowrap}
 #wireframe .wf2880{position:absolute;height:26px;left:90.053333px;top:29.493333px;width:0px;transform:none}
-#wireframe .wf2885{position:absolute;display:contents;left:calc(50% - 217px/2 - 35px);top:140.973333px;width:217px;height:18px;transform:none}
+#wireframe .wf2885{display:contents;position:absolute;background-color:#d9d9d9;height:18px;left:calc(50% - 217px/2 - 35px);border-bottom-left-radius:10px;border-top-left-radius:10px;top:140.973333px;width:217px;transform:none}
 #wireframe .wf2886{position:absolute;height:26.706667px;left:206.44px;top:136.613333px;width:0px;transform:none}
 #wireframe .wf2889{overflow-wrap:break-word;position:absolute;font-family:'SUIT', 'Pretendard', sans-serif;font-weight:500;line-height:28px;left:calc(50% - 137.333333px/2 + 46.44px);font-style:normal;font-size:11px;color:#999;top:calc(50% - 28px/2 - 318.693333px);letter-spacing:-0.22px;white-space:nowrap;width:137.333333px;height:28px;transform:none}
 #wireframe .wf2890{position:absolute;display:flex;align-items:center;justify-content:center;left:201.013333px;width:10.88px;height:10.88px;top:121.373333px;transform:none}
@@ -302,7 +302,7 @@
 #wireframe .wf2822{position:absolute;background-color:#bfbfbf;align-content:stretch;display:flex;flex-direction:column;align-items:center;justify-content:center;left:calc(50% - 31.826667px/2 + 0.373333px);overflow:clip;border-radius:50px;width:31.826667px;height:31.826667px;top:calc(50% - 31.826667px/2 - 21px);transform:none;padding:0px}
 #wireframe .wf2825{position:absolute;background-color:#bfbfbf;align-content:stretch;display:flex;flex-direction:column;align-items:center;justify-content:center;left:calc(50% - 31.826667px/2 + 78.68px);overflow:clip;border-radius:50px;width:31.826667px;height:31.826667px;top:calc(50% - 31.826667px/2 - 21px);transform:none;padding:0px}
 #wireframe .wf2884{position:absolute;background-color:#f2f2f2;height:18px;left:calc(50% - 288px/2 + 0.506667px);border-radius:10px;top:140.973333px;width:288px;transform:none}
-#wireframe .wf2885{position:absolute;background-color:#d9d9d9;height:18px;left:calc(50% - 217px/2 - 35px);border-bottom-left-radius:10px;border-top-left-radius:10px;top:140.973333px;width:217px;transform:none}
+
 #wireframe .wf2888{position:absolute;background-color:white;height:25px;left:118.893333px;right:26.333333px;border-radius:10px;top:100.306667px;transform:none}
 #wireframe .wf2942{background-color:#bfbfbf;border-width:0;border-color:#999;border-style:solid;overflow:visible;position:relative;border-radius:0;width:100%;height:100%;left:0;top:0;transform:none}
 #wireframe .wf2948{overflow-wrap:break-word;position:absolute;font-family:'SUIT', 'Pretendard', sans-serif;font-weight:500;line-height:12px;left:232px;font-style:normal;font-size:10px;color:#bfbfbf;top:154.133333px;white-space:nowrap;width:44px;height:12px;transform:none}

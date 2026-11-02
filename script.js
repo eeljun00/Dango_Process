@@ -46,10 +46,10 @@ if ('IntersectionObserver' in window) {
     textObserver.unobserve(entry.target);
    });
  }, { rootMargin: '0px 0px -4% 0px', threshold: 0 });
- const sections = $$('.design-section, main > .case-section');
+ const sections = $$('.design-section');
  const textBlocks = $$('main p, main h1, main h2, main h3, main li').filter(element => {
   if (!element.textContent.trim() || element.closest('[aria-hidden="true"]')) return false;
-  return element.closest('.mobile-reading, .case-section, .lower-section') || parseFloat(getComputedStyle(element).fontSize) >= 20 || [...element.children].some(child => parseFloat(getComputedStyle(child).fontSize) >= 20);
+  return element.closest('.lower-section') || parseFloat(getComputedStyle(element).fontSize) >= 20 || [...element.children].some(child => parseFloat(getComputedStyle(child).fontSize) >= 20);
  });
  function showAll(){
   sections.forEach(section => section.classList.add('is-visible'));

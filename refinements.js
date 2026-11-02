@@ -26,8 +26,6 @@
   for(let copy=0;copy<2;copy++){const duplicate=group.cloneNode(true);duplicate.inert=true;duplicate.setAttribute('aria-hidden','true');qa('[data-node-id],[id]',duplicate).forEach(n=>{n.removeAttribute('data-node-id');n.removeAttribute('id');});track.append(duplicate);}
   row.append(track);branding.append(row);
   watch(row,()=>row.classList.add('in-view'),()=>row.classList.remove('in-view'));
-  const mobileStrip=q('#branding .mobile-reading .character-strip');
-  if(mobileStrip){const mobileRow=row.cloneNode(true);mobileRow.classList.add('character-marquee-mobile');mobileRow.classList.remove('in-view');qa('[data-node-id],[id]',mobileRow).forEach(n=>{n.removeAttribute('data-node-id');n.removeAttribute('id');});const scale=document.createElement('div');scale.className='character-mobile-scale';scale.append(mobileRow.firstElementChild);mobileRow.append(scale);mobileStrip.replaceWith(mobileRow);watch(mobileRow,()=>mobileRow.classList.add('in-view'),()=>mobileRow.classList.remove('in-view'));}
  }
  // Animate the 14 original gray SVG paths, without slicing the logo or inventing guide lines.
  const grid=byId('148:2853'),gridImage=grid&&q('img',grid);

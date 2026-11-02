@@ -18,17 +18,17 @@
 #walk-summary [data-node-id="I148:3160;1189:19638"]{position:absolute;width:90px;height:30px;left:calc(50% - 90px/2 - 0.2px);top:34.19px;font-weight:500;font-size:24px;line-height:30px;text-align:center;color:#111111;transform:none}
 #walk-summary [data-node-id="I148:3160;1189:19640"]{position:absolute;width:130px;height:19px;left:calc(50% - 130px/2 - 0px);top:525.62px;font-weight:400;font-size:15.6px;line-height:19px;color:#BFBFBF;transform:none}
 #walk-summary [data-node-id="I148:3160;1189:19642"]{position:absolute;width:223.2px;height:39.6px;left:calc(50% - 223.2px/2 - 0.2px);top:194.62px;background:#FFECEC;border-radius:60px;transform:none}
-#walk-summary [data-node-id="I148:3160;1189:19643"]{position:absolute;width:10.8px;height:10.8px;left:calc(50% - 10.8px/2 + 5.2px);top:230.63px;background:#FFECEC;transform:rotate(-180deg)}
+#walk-summary [data-node-id="I148:3160;1189:19643"]{position:absolute;width:10.8px;height:10.8px;left:calc(50% - 10.8px/2 + 5.2px);top:230.63px}
 #walk-summary [data-node-id="I148:3160;1189:19644"]{position:absolute;width:173px;height:34px;left:calc(50% - 173px/2 + 0.3px);top:198.22px;font-weight:500;font-size:14.4px;line-height:34px;text-align:center;color:#FF9999;transform:none}
 #walk-summary [data-node-id="I148:3160;1189:19646"]{position:absolute;width:151.2px;height:54px;left:calc(50% - 151.2px/2 + 96.1px);top:calc(50% - 54px/2 + 148.13px);background:#FF9999;border:1.2px solid #FF9999;border-radius:12px;transform:none}
 #walk-summary [data-node-id="I148:3160;1189:19647"]{position:absolute;width:162px;height:54px;left:26.7px;top:453.93px;background:#FFFFFF;border:1.2px solid #D9D9D9;border-radius:12px;transform:none}
-#walk-summary [data-node-id="I148:3160;1189:19649"]{position:absolute;width:128.8px;height:23.13px;left:137.34px;top:414.9px;background:#EAEAEA;transform:none}
+#walk-summary [data-node-id="I148:3160;1189:19649"]{position:absolute;width:128.8px;height:23.13px;left:137.34px;top:414.9px}
 #walk-summary [data-node-id="I148:3160;1189:19651"]{position:absolute;width:146.15px;height:170.86px;left:128.11px;top:267.18px;transform:none}
 #walk-summary [data-node-id="I148:3160;1189:19653"]{position:absolute;width:165.6px;height:175.76px;left:121.8px;top:249.83px;transform:none}
 #walk-summary [data-node-id="I148:3160;1189:19649"],#walk-summary [data-node-id="I148:3160;1189:19643"]{background:transparent;transform:none}
 /* Reuse the existing branding lettering treatment inside the original bubble asset. */
-#onboarding [data-node-id="I148:4740;1258:22646"]{left:100.26px;top:342px;width:56.48px;height:18px;transform:none;pointer-events:none}
-#onboarding [data-node-id="I148:4740;1258:22646"] p{width:56.48px;height:18px;line-height:18px;white-space:nowrap;font-family:Impact,'Arial Black',sans-serif;font-size:14px;font-style:italic;font-weight:900;text-transform:uppercase;-webkit-text-stroke:.65px #ff6f6f;paint-order:stroke fill;text-shadow:.6px .8px 0 #ff6f6f}
+#onboarding [data-node-id="I148:4740;1258:22646"]{transform:none;pointer-events:none;left:107.5px;top:342px;width:42px;height:18px}
+#onboarding [data-node-id="I148:4740;1258:22646"] p{height:18px;line-height:18px;white-space:nowrap;font-family:Impact,'Arial Black',sans-serif;font-style:italic;font-weight:900;text-transform:uppercase;paint-order:stroke fill;width:42px;font-size:11px;-webkit-text-stroke:.45px #ff6f6f;text-shadow:.3px .4px 0 #ff6f6f}
 
 /* Figma's border sits inside the frame without changing its children's origin. */
 #onboarding [data-name^="온보딩"]{border:0;box-shadow:inset 0 0 0 6px #e0e0e0}
@@ -62,8 +62,7 @@
 .character-slot{position:relative;flex:0 0 var(--pose-width);width:var(--pose-width);height:455px}
 .character-content{position:absolute;left:0;top:-1810px;width:1920.375px;height:2614px}
 .character-marquee.in-view .character-track{animation-play-state:running}
-.character-marquee-mobile{position:relative;left:auto;top:auto;width:100%;height:210px}
-.character-mobile-scale{width:max-content;height:455px;scale:.45;transform-origin:top left}
+
 @keyframes character-loop{from{transform:translateX(calc(-1 * var(--character-period)))}to{transform:translateX(0)}}
 .logo-guide-svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
 #walk-planning .planning-search-button{gap:7.2px}
@@ -169,8 +168,7 @@
 /* The missing loading-glyph font must not expose its source placeholder. */
 #app-home [data-node-id="I148:3512;1128:12418;612:1315"] .r210{display:none}
 /* Keep the rotated cheer inside the existing yellow balloon with breathing room. */
-#onboarding [data-node-id="I148:4740;1258:22646"]{left:107.5px;top:342px;width:42px;height:18px}
-#onboarding [data-node-id="I148:4740;1258:22646"] p{width:42px;font-size:11px;-webkit-text-stroke:.45px #ff6f6f;text-shadow:.3px .4px 0 #ff6f6f}
+
 .confetti-piece{position:absolute;inset:0;pointer-events:none;will-change:translate,rotate,scale,opacity}
 .confetti-source-hidden{visibility:hidden}
 
@@ -179,7 +177,7 @@
 #app-home .home-search-spinner{position:relative;left:auto;top:auto;flex:0 0 15.408px;width:15.408px;height:15.408px}
 /* Extend just the guide paths; the logo artwork and panel positions remain authored. */
 #logo-grid{overflow:visible;z-index:1}
-#logo-grid [data-node-id="148:2842"]{border-radius:30px;z-index:2}
+#logo-grid [data-node-id="148:2842"]{border-radius:30px;z-index:2;width:795px}
 #logo-grid .logo-guide-svg{overflow:visible}
 
 /* Match the lower filter chips to the upper row's 12px type and 13px side padding. */
@@ -196,12 +194,12 @@
 @media print{.archive-jump-character,.archive-jump-shadow{animation:none;translate:none;scale:1}}
 
 /* Survey metadata has one lighter gray; the connector has no residual corner edges. */
-#research :is([data-node-id="148:7411"],[data-node-id="148:7412"],[data-node-id="148:7414"],[data-node-id="148:7415"]){color:#999}
+
 #research .survey-connector-branch{border:0}
 #research .survey-connector-art{display:block;position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
 /* Match the Design System card's 165px outer margin. */
-#logo-grid [data-node-id="148:2842"]{width:795px}
-#logo-grid [data-node-id="148:2844"]{left:calc(50% - 91px)}
+
+#logo-grid [data-node-id="148:2844"]{left:calc(50% - 91px);top:calc(50% - 91px)}
 /* Include the complete gray frame edges in the pink bottom fade. */
 #onboarding [data-node-id="148:4727"]{left:223.24px;width:1049.78px;overflow:clip}
 /* Remove the duplicate source dividers and paint two equal screen-space rules. */
@@ -210,10 +208,10 @@
 #walk-archive :is([data-node-id="148:3084"],[data-node-id="148:3085"]) img{display:none}
 #walk-archive :is([data-node-id="148:3084"],[data-node-id="148:3085"])::after{content:"";position:absolute;top:0;bottom:0;left:var(--archive-rule-x,0px);width:calc(1px / var(--page-scale));background:#ccc;pointer-events:none}
 /* Enlarge each background around its own center, independently of its drift. */
-#community .community-flower{scale:1.3;opacity:.55}
-#community .community-flower[data-source-layer="148:5929"]{transform-origin:87% 62%}
-#community .community-flower[data-source-layer="148:5936"]{transform-origin:14% 23%}
-#community .community-flower[data-source-layer="148:5943"]{transform-origin:47% 91%}
+
+#community .community-flower[data-source-layer="148:5929"]{transform-origin:87% 62%;inset:0 -180px 0 180px;opacity:.5}
+#community .community-flower[data-source-layer="148:5936"]{transform-origin:14% 23%;opacity:.55;inset:0 -140px 0 140px}
+#community .community-flower[data-source-layer="148:5943"]{transform-origin:47% 91%;opacity:.96;inset:-160px -20px 160px 20px}
 #thank-you .ending-flower{animation:ending-flower-drift calc(var(--ending-flower-duration) / var(--motion-rate)) ease-in-out var(--ending-flower-delay) infinite;animation-play-state:paused}
 #thank-you .ending-flower.flower-moving{animation-play-state:running}
 @keyframes ending-flower-drift{0%,100%{translate:0 0;rotate:0deg}35%{translate:var(--ending-flower-x) var(--ending-flower-y);rotate:2deg}70%{translate:calc(var(--ending-flower-x) * -.6) calc(var(--ending-flower-y) * .45);rotate:-1.5deg}}
@@ -222,10 +220,10 @@
 
 /* Equal logo panel heights; keep each composition centered inside the resized crop. */
 #logo [data-node-id="148:4748"],#logo-grid [data-node-id="148:2842"]{height:560px}
-#logo-grid [data-node-id="148:2844"]{top:calc(50% - 91px)}
+
 /* Match the case-study descriptions and soften the survey metadata further. */
-#research :is([data-node-id="148:7411"],[data-node-id="148:7412"],[data-node-id="148:7414"],[data-node-id="148:7415"]){font-size:24px;font-weight:500;line-height:1.5;color:#bfbfbf}
-#community .community-flower{scale:1.55;opacity:.78}
+
+#community .community-flower{opacity:.78}
 #active-walk [data-node-id="148:3190"] img{filter:brightness(1.08)}
 .bubble-pop-background{animation:bubble-background-pop calc(3.8s / var(--motion-rate)) cubic-bezier(.22,1,.36,1) infinite;animation-play-state:paused;transform-origin:85% 85%;pointer-events:none}
 .bubble-pop-background.bubble-moving{animation-play-state:running}
@@ -239,15 +237,11 @@
 #wireframe [data-node-id="148:4721"]{z-index:30;pointer-events:none}
 /* Increase the current flower size by 1.5, then balance each authored color separately. */
 #community .community-flower{scale:2.325}
-#community .community-flower[data-source-layer="148:5936"]{opacity:.55}
-#community .community-flower[data-source-layer="148:5943"]{opacity:.96}
 
 /* Match the requested descriptions to the standard case-study copy. */
 #interview [data-node-id="148:4952"],#interview [data-node-id="148:4952"] p,#app-home [data-node-id="148:3488"],#research :is([data-node-id="148:7411"],[data-node-id="148:7412"],[data-node-id="148:7414"],[data-node-id="148:7415"]){font-size:24px;font-weight:500;line-height:36px;letter-spacing:-.48px;color:#666}
 /* Shift full-size flower planes; their independent swimming motion stays intact. */
-#community .community-flower[data-source-layer="148:5929"]{inset:0 -180px 0 180px;opacity:.5}
-#community .community-flower[data-source-layer="148:5936"]{inset:0 -140px 0 140px}
-#community .community-flower[data-source-layer="148:5943"]{inset:-160px -20px 160px 20px}
+
 /* A perspective-matched, shadow-only path follows the original raster navigation. */
 #active-walk .walk-navigation-shadow{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
 
@@ -328,7 +322,7 @@
 @keyframes branding-character-breathe{0%,100%{translate:0 0;rotate:-1deg}50%{translate:0 -3px;rotate:.5deg}}
 
 /* A soft contact shadow replaces the detached solid ellipse. */
-#concept [data-node-id="148:2921"]{left:calc(50% + 22px);top:1548px;transform:translateX(-50%);width:360px;height:44px;background:radial-gradient(ellipse 22% 34% at 27% 50%,rgb(80 60 70 / .15),transparent 100%),radial-gradient(ellipse 22% 34% at 73% 50%,rgb(80 60 70 / .15),transparent 100%),radial-gradient(ellipse closest-side,rgb(80 60 70 / .07),transparent 100%)}
+#concept [data-node-id="148:2921"]{top:1548px;transform:translateX(-50%);height:44px;background:radial-gradient(ellipse 22% 34% at 27% 50%,rgb(80 60 70 / .15),transparent 100%),radial-gradient(ellipse 22% 34% at 73% 50%,rgb(80 60 70 / .15),transparent 100%),radial-gradient(ellipse closest-side,rgb(80 60 70 / .07),transparent 100%);left:50%;width:320px}
 #concept [data-node-id="148:2921"]>img{visibility:hidden}
 #concept .concept-logo-balloon{position:absolute;left:244px;top:190px;width:1432px;height:470px;display:block;appearance:none;background:transparent;border:0;padding:0;cursor:pointer;translate:var(--balloon-x,0px) var(--balloon-y,0px);transition:translate .6s ease,scale .5s ease;touch-action:manipulation}
 #concept .concept-logo-balloon>img{display:block;width:100%;height:100%;object-fit:contain;pointer-events:none}
@@ -347,7 +341,7 @@
 @media(prefers-reduced-motion:reduce){#concept .concept-logo-balloon{translate:none;scale:1;transition:none}}
 
 /* Four distinct poses make a real alternating-foot walk cycle. */
-#concept [data-node-id="148:2921"]{left:50%;width:320px}
+
 #concept .dango-walk-animation{position:absolute;inset:0;pointer-events:none}
 #concept .dango-walk-poster{position:absolute;inset:0;left:-7.5%;width:115%;height:100%;object-fit:contain;object-position:center bottom}
 #concept .dango-walk-sprite{position:absolute;left:6.25%;top:10.25%;width:87.5%;height:87.5%;background-image:url('assets/generated/dango-walk-sprite-v1.png');background-size:200% 200%;background-repeat:no-repeat;visibility:hidden}
@@ -363,7 +357,6 @@
  75%{background-position:100% 100%;translate:0 23.44px}
 }
 @media print{#concept .dango-walk-sprite{display:none}#concept .dango-walk-poster{visibility:visible!important}}
-
 
 /* Walk screens use the original selected-walk accent; the other labels remain inactive. */
 :is(#walk-planning,#walk-archive) [data-name="하단바"] :is([data-name="1"],[data-name="2"],[data-name="4"],[data-name="5"])>p{color:#bfbfbf}

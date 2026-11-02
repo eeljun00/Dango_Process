@@ -6,15 +6,7 @@
 #community .community-original-top{position:absolute;left:574px;top:469px;width:158px;font:600 22px/26px Pretendard,sans-serif;color:#111}
 #community .community-post-title{position:absolute;left:1044px;top:1281px;width:125px;font:600 22px/26px Pretendard,sans-serif;text-align:center;color:#111;white-space:nowrap}
 #community .community-post-description{position:absolute;left:944px;top:2032px;width:327px;font:500 20px/30px Pretendard,sans-serif;text-align:center;letter-spacing:-.4px;color:#666;white-space:nowrap}
-#community .phone-slot[data-screen-kind="community"]{--device-h:1080px!important;height:1080px}
-#community .phone-slot[data-screen-kind="post"]{--device-h:678.681px!important}
-#community .phone{background:transparent!important;box-shadow:none!important;border:0;border-radius:0;overflow:visible}
-#community .phone:before{display:none}
-#community .phone:after{content:'';display:block;position:absolute;left:0;top:0;right:auto;bottom:auto;width:325.275px;height:678.681px;background:url('assets/bb1c1.webp') center/contain no-repeat;pointer-events:none;z-index:8;border:0;border-radius:0;box-shadow:none}
-#community .phone-screen{left:19px;right:auto;top:17px;bottom:auto;width:286.57px;height:644.78px;border-radius:20px}
-#community [data-screen-kind="community"] .phone-screen{height:1062.996px;border-radius:20px}
-#community .phone-ui{--ui-scale:.7960278!important}
-#community .device-island{display:none}
+
 #community .case-callout{width:294px}
 #community .case-callout h3{font-weight:700;color:#ff6f6f;margin-bottom:20px}
 #community .case-callout p{font-size:20px;line-height:30px;letter-spacing:-.4px}
@@ -39,7 +31,6 @@
 #community .community-saved-detail [data-node-id="148:7030"]{overflow:auto}
 #community .community-saved-detail [data-node-id="148:7031"]{width:100%;line-height:14.328px;white-space:pre-wrap;overflow-wrap:anywhere}
 #community .community-saved-detail [data-node-id="148:7031"] img{display:block;width:100%;height:auto;margin-top:8px}
-
 
 #community .cn0{overflow-wrap:break-word;font-family:'SF Pro', 'Pretendard', sans-serif;font-weight:590;line-height:19.702px;position:relative;flex-shrink:0;font-size:14.33px;color:black;text-align:center;white-space:nowrap}
 #community .cn1{align-content:stretch;display:flex;flex:1 0 0;height:19.702px;align-items:center;min-width:1px;padding-top:1.791px;position:relative}
