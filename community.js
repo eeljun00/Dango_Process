@@ -96,7 +96,7 @@
  try{const draft=JSON.parse(localStorage.getItem(draftKey)||'null');if(draft){for(const [name,f]of [['title',title],['body',body],['place',place]])if(typeof draft[name]==='string'&&clean(draft[name]))f.set(draft[name]);topic=categories.indexOf(draft.topic);if(topic>=0)category.textContent=categories[topic];}}catch{}
  const photo=q('148:7379'),counter=q('148:7380'),input=document.createElement('input');input.type='file';input.accept='image/*';input.multiple=true;input.hidden=true;write.append(input);let files=[];
  activate(photo,'사진 추가',()=>input.click());input.addEventListener('change',event=>{
-  // This native screen owns uploads; the generic phone demo expects a label wrapper.
+  // Keep attachment selection local to the community screen.
   event.stopPropagation();
   files=[...input.files].filter(f=>/^image\/(png|jpe?g|webp|gif|avif)$/i.test(f.type)).slice(0,3);counter.textContent=files.length+'/3';photo.querySelector('.community-upload-preview')?.remove();
   if(files[0]){const img=document.createElement('img');img.className='community-upload-preview';img.alt='추가한 사진';const url=URL.createObjectURL(files[0]);img.onload=img.onerror=()=>URL.revokeObjectURL(url);img.src=url;photo.prepend(img);}

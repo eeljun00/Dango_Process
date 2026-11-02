@@ -23,8 +23,6 @@ toggle.addEventListener('click',()=>{menu.hidden=!menu.hidden;toggle.setAttribut
 $$('a',menu).forEach(a=>a.addEventListener('click',closeMenu));document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMenu();});
 const navigationObserver=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting)$$('.nav-links a').forEach(link=>{if(link.hash===`#${entry.target.id}`)link.setAttribute('aria-current','location');else link.removeAttribute('aria-current');});}),{rootMargin:'-10% 0px -65% 0px'});
 $$('.nav-links a').forEach(link=>{const section=$(link.hash);if(section)navigationObserver.observe(section);});
-// Portfolio artwork is static. Only explicit app-demo controls register click handlers.
-$('.asset-dialog')?.remove();
 // Keep authored artwork at every supported width; no flattened reading views or cloned controls.
 // Copyable color tokens are genuine buttons, and remain operable from the keyboard.
 function toast(message){$('.toast')?.remove();const element=document.createElement('div');element.className='toast';element.setAttribute('role','status');element.textContent=message;document.body.append(element);setTimeout(()=>element.remove(),2200);}
@@ -51,7 +49,6 @@ if ('IntersectionObserver' in window) {
  const sections = $$('.design-section, main > .case-section');
  const textBlocks = $$('main p, main h1, main h2, main h3, main li').filter(element => {
   if (!element.textContent.trim() || element.closest('[aria-hidden="true"]')) return false;
-  if(element.closest('.phone-ui,.rating-dialog'))return false;
   return element.closest('.mobile-reading, .case-section, .lower-section') || parseFloat(getComputedStyle(element).fontSize) >= 20 || [...element.children].some(child => parseFloat(getComputedStyle(child).fontSize) >= 20);
  });
  function showAll(){
