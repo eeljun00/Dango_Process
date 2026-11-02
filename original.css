@@ -530,7 +530,7 @@
 .r529{position:absolute;display:flex;inset:32.08% 41.54% 65.19% 56.9%;align-items:center;justify-content:center}
 .r530{position:absolute;display:flex;inset:32.77% 41.93% 65.87% 57.29%;align-items:center;justify-content:center}
 .r531{position:absolute;display:contents;inset:32.08% 41.54% 65.19% 56.9%}
-.r532{position:absolute;display:contents;left:219.59px;top:352.93px}
+.r532{position:absolute;inset:0;pointer-events:none}
 .r533{position:absolute;height:19.389px;left:calc(25% + 74.42px);top:555.55px;width:107.247px}
 .r534{position:absolute;left:calc(62.5% - 35.12px);width:155.114px;height:155.114px;top:385.77px;transform:translate(-50%, 0px)}
 .r535{position:absolute;height:155.38%;left:-19.18%;max-width:none;top:-25.38%;width:138.36%}

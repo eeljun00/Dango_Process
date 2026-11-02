@@ -168,18 +168,20 @@
  if(pinkLogo){ownEntrance(pinkLogo);entrance([pinkLogo],{kind:'logo-application',duration:1200,frames:[{opacity:0,translate:'36px 0'},{opacity:1,translate:'0 0'}]});}
  const photoLogo=q('#logo [data-node-id="148:4748"]');
  if(photoLogo){ownEntrance(photoLogo);entrance([photoLogo],{kind:'logo-photo',duration:1100,frames:[{opacity:0,translate:'-36px 0'},{opacity:1,translate:'0 0'}]});}
- // One observer starts the line first, then phones and dots on the same clock.
+ // One left-to-right wipe reveals the authored dashes and markers together.
  const onboarding=['148:4724','148:4725','148:4726','148:4740','148:4741'].map(id=>q('#onboarding [data-node-id="'+id+'"]')).filter(Boolean);
  onboarding.forEach(ownEntrance);
- const onboardingLine=q('#onboarding [data-node-id="148:4730"] .r520');
- const onboardingDots=['148:4732','148:4733','148:4735','148:4736','148:4738','148:4739'].map(id=>q('#onboarding [data-node-id="'+id+'"]')).filter(Boolean);
- if(onboardingLine&&onboarding.length===5){
-  const trigger=document.createElement('span');trigger.className='onboarding-sequence-trigger';trigger.setAttribute('aria-hidden','true');
-  Object.assign(trigger.style,{position:'absolute',left:'0',top:'0',width:'1px',height:'1px',visibility:'hidden',pointerEvents:'none'});onboardingLine.parentElement.append(trigger);
-  entrance([onboardingLine,...onboarding,...onboardingDots],{anchor:trigger,
-   kind:(n,i)=>i===0?'onboarding-line':i<=5?'onboarding-phone':'onboarding-dot',
-   duration:(n,i)=>i===0?560:i<=5?640:130,delays:[0,80,200,320,440,440,78,78,252,252,426,426],
-   frames:(n,i)=>i===0?[{clipPath:'inset(0 100% 0 0)'},{clipPath:'inset(0 0% 0 0)'}]:i<=5?[{opacity:0,translate:'0 18px'},{opacity:1,translate:'0 0'}]:[{opacity:0},{opacity:1}],easing:'linear'});
+ const onboardingLine=q('#onboarding [data-node-id="148:4729"]');
+ const onboardingStroke=q('#onboarding [data-node-id="148:4730"] .r520');
+ if(onboardingLine&&onboardingStroke&&onboarding.length===5){
+  ownEntrance(onboardingLine);
+  const canvas=onboardingLine.closest('.design-canvas').getBoundingClientRect(),stroke=onboardingStroke.getBoundingClientRect(),scale=canvas.width/1920.375;
+  const clip=x=>`inset(0 calc(100% - ${x}px) 0 0)`;
+  const start=clip((stroke.left-canvas.left)/scale),end=clip((stroke.right-canvas.left)/scale);
+  entrance([onboardingLine,...onboarding],{anchor:onboarding[0],
+   kind:(n,i)=>i===0?'onboarding-line':'onboarding-phone',
+   duration:(n,i)=>i===0?1000:640,delays:[0,140,460,780,1000,1000],
+   frames:(n,i)=>i===0?[{clipPath:start},{clipPath:end}]:[{opacity:0,translate:'0 18px'},{opacity:1,translate:'0 0'}],easing:'linear'});
  }
  // Overview owns the six leaf capsules; overview.js handles their bounded physics.
  const capsules=['148:7519','148:7517','148:7515','148:7506','148:7511','148:7513'].map(id=>q(`#intro [data-node-id="${id}"]`)).filter(Boolean);
