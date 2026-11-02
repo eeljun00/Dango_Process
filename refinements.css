@@ -362,10 +362,10 @@
 :is(#walk-planning,#walk-archive) [data-name="하단바"] :is([data-name="1"],[data-name="2"],[data-name="4"],[data-name="5"])>p{color:#bfbfbf}
 :is(#walk-planning,#walk-archive) [data-name="하단바"] [data-name="3"]>p{color:#ff6f6f}
 
-/* The comparison columns share their original row positions and equal 130px cells. */
-#strategy [data-node-id="148:4896"]{--comparison-column-x:220px}
-#strategy [data-node-id="148:4901"]{--comparison-column-x:350px}
-#strategy [data-node-id="148:4906"]{--comparison-column-x:480px}
-#strategy [data-node-id="148:4911"]{--comparison-column-x:610px}
-#strategy :is([data-node-id="148:4896"],[data-node-id="148:4901"],[data-node-id="148:4906"],[data-node-id="148:4911"])>p{left:var(--comparison-column-x);width:130px;line-height:40px;text-align:center;transform:translateX(-50%)}
+/* The comparison columns share their original row positions and compact 110px cells. */
+#strategy [data-node-id="148:4896"]{--comparison-column-x:250px}
+#strategy [data-node-id="148:4901"]{--comparison-column-x:360px}
+#strategy [data-node-id="148:4906"]{--comparison-column-x:470px}
+#strategy [data-node-id="148:4911"]{--comparison-column-x:580px}
+#strategy :is([data-node-id="148:4896"],[data-node-id="148:4901"],[data-node-id="148:4906"],[data-node-id="148:4911"])>p{left:var(--comparison-column-x);width:110px;line-height:40px;text-align:center;transform:translateX(-50%)}
 #strategy :is([data-node-id="148:4896"],[data-node-id="148:4901"],[data-node-id="148:4906"],[data-node-id="148:4911"])>p:first-child{line-height:24px}
