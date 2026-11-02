@@ -350,7 +350,7 @@
  const destinations={'산책하기':'walk-planning','다음':'profile-setup','프로필 생성 완료':'app-home','산책 종료':'walk-log','기록하기':'walk-archive','산책 기록 작성':'walk-log'};
  function activate(node,action){node.setAttribute('role','button');node.tabIndex=0;const run=e=>{e.preventDefault();e.stopPropagation();action();};node.addEventListener('click',run);node.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' ')run(e);});}
  const go=id=>q('#'+id)?.scrollIntoView({behavior:reduced.matches?'instant':'smooth',block:'start'});
- qa('.original-section p').forEach(n=>{if(n.closest('#walk-log'))return;const text=n.textContent.trim();if(destinations[text])activate(n,()=>go(destinations[text]));else if(/^(카카오 로그인|네이버 로그인|Google 로그인|이메일 로그인|가입하기)$/.test(text))activate(n,()=>go('profile-setup'));});
+ qa('.original-section p').forEach(n=>{if(n.closest('#walk-log'))return;const text=n.textContent.trim();if(text==='다음'&&n.closest('#onboarding [data-name^="온보딩"]'))return;if(destinations[text])activate(n,()=>go(destinations[text]));else if(/^(카카오 로그인|네이버 로그인|Google 로그인|이메일 로그인|가입하기)$/.test(text))activate(n,()=>go('profile-setup'));});
  if(feedback){
   // Ratings are an automatic visual demonstration, without click or keyboard selection.
   qa('p',feedback).filter(n=>['별로','보통','만족','저장','닫기','다음에 할게요'].includes(n.textContent.trim())).forEach(n=>{n.removeAttribute('role');n.removeAttribute('tabindex');n.style.cursor='default';});

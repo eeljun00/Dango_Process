@@ -20,7 +20,8 @@ topButton.addEventListener('click',()=>{window.scrollTo({top:0,behavior:dangoRed
 const menu=$('#mobile-menu'),toggle=$('.menu-toggle');
 function closeMenu(){menu.hidden=true;toggle.setAttribute('aria-expanded','false');toggle.textContent='목차 +';}
 toggle.addEventListener('click',()=>{menu.hidden=!menu.hidden;toggle.setAttribute('aria-expanded',String(!menu.hidden));toggle.textContent=menu.hidden?'목차 +':'닫기 −';});
-$$('a',menu).forEach(a=>a.addEventListener('click',closeMenu));document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMenu();});
+$$('a',menu).forEach(a=>a.addEventListener('click',closeMenu));document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!menu.hidden){const returnFocus=menu.contains(document.activeElement);closeMenu();if(returnFocus)toggle.focus();}});
+matchMedia('(min-width:1024px)').addEventListener('change',event=>{if(event.matches)closeMenu();});
 const navigationObserver=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting)$$('.nav-links a').forEach(link=>{if(link.hash===`#${entry.target.id}`)link.setAttribute('aria-current','location');else link.removeAttribute('aria-current');});}),{rootMargin:'-10% 0px -65% 0px'});
 $$('.nav-links a').forEach(link=>{const section=$(link.hash);if(section)navigationObserver.observe(section);});
 // Keep authored artwork at every supported width; no flattened reading views or cloned controls.
