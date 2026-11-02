@@ -1,35 +1,8 @@
-/* Closed by default; the original six-icon composition is unchanged. */
-#convenience .quick-demo-trigger{cursor:pointer;pointer-events:auto}
-.quick-demo-dialog{box-sizing:border-box;width:min(480px,calc(100vw - 32px));max-height:calc(100dvh - 32px);margin:auto;padding:28px;border:1px solid #eee;border-radius:24px;background:#fff;color:#111;box-shadow:0 20px 80px #0003;font:400 16px/1.5 Pretendard,sans-serif;overflow:auto}
-.quick-demo-dialog::backdrop{background:#0006;backdrop-filter:blur(3px)}
-.quick-demo-dialog .quick-demo-header{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:20px}
-.quick-demo-dialog h2{font-size:24px;line-height:1.3;font-weight:700;margin:0}
-.quick-demo-dialog h3{font-size:18px;margin:0 0 8px}
-.quick-demo-dialog p{margin:0 0 16px;color:#666}
-.quick-demo-dialog button{border:1px solid #ddd;border-radius:12px;padding:11px 16px;background:#fff;font:inherit;cursor:pointer;color:#333}
-.quick-demo-dialog button:hover{border-color:#ff6f6f;color:#c74747}
-.quick-demo-dialog button:disabled{opacity:.5;cursor:wait}
-.quick-demo-dialog .quick-demo-close{border:0;padding:2px 8px;font-size:28px;line-height:1}
-.quick-demo-dialog .quick-demo-primary{background:#ff6f6f;border-color:#ff6f6f;color:#fff}
-.quick-demo-dialog .quick-demo-primary:hover{background:#e65b5b;color:#fff}
-.quick-demo-dialog .quick-demo-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
-.quick-demo-dialog label{display:block;margin:14px 0 0;color:#444;font-size:14px}
-.quick-demo-dialog input:not([type=file]),.quick-demo-dialog textarea{box-sizing:border-box;display:block;width:100%;border:1px solid #ddd;border-radius:10px;padding:12px;margin-top:6px;background:#fff;color:#111;font:400 16px/1.4 Pretendard,sans-serif;min-width:0}
-.quick-demo-dialog textarea{min-height:84px;resize:vertical}
-.quick-demo-dialog .quick-demo-preview{margin-top:18px;padding:16px;background:#fff5f5;border:1px solid #ffe0e0;border-radius:16px;overflow-wrap:anywhere}
-.quick-demo-dialog .quick-demo-preview img{width:100%;height:auto;max-height:280px;object-fit:contain;border-radius:10px}
-.quick-demo-dialog .quick-demo-preview p:last-child{margin-bottom:0}
-.quick-demo-dialog audio{display:block;width:100%;margin-top:16px}
-.quick-demo-dialog .quick-demo-status{min-height:24px;margin:16px 0 0;font-size:14px;color:#666}
-.quick-demo-dialog :focus-visible{outline:3px solid #be4141;outline-offset:3px}
-/* Keep the original 768px dialog size and coordinates on narrower viewports. */
-.compact-layout .quick-demo-dialog{width:480px;max-width:none;left:144px;right:auto;margin-inline:0}
-@media(prefers-reduced-motion:no-preference){.quick-demo-dialog[open]{animation:quick-demo-in .2s ease-out}@keyframes quick-demo-in{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}}
-
-
+/* The six icons are visual examples; hovering and clicking open no dialog. */
+#convenience .quick-action-icon{cursor:default;pointer-events:auto}
 /* All six start light; a fast single-item tour owns only the circle fill. */
-#convenience .quick-demo-trigger :is(.r1307,.r1322){background-color:#ffb1b1;transition:background-color .14s ease}
-#convenience .quick-demo-trigger.is-quick-highlight :is(.r1307,.r1322){background-color:#ff6f6f}
+#convenience .quick-action-icon :is(.r1307,.r1322){background-color:#ffb1b1;transition:background-color .14s ease}
+#convenience .quick-action-icon.is-quick-highlight :is(.r1307,.r1322){background-color:#ff6f6f}
 .chat-arrival-row.is-chat-waiting>.r1236{opacity:0}
 .chat-arrival-card{opacity:0;translate:0 12px;scale:.98;transform-origin:left bottom}
 .chat-arrival-time{opacity:0}
@@ -40,8 +13,8 @@
 .chat-typing span{width:5px;height:5px;border-radius:50%;background:#a0a0a0;animation:chat-typing-dot .8s ease-in-out infinite}
 .chat-typing span:nth-child(2){animation-delay:.12s}.chat-typing span:nth-child(3){animation-delay:.24s}
 @keyframes chat-typing-dot{0%,60%,100%{translate:0 0;opacity:.5}30%{translate:0 -3px;opacity:1}}
-@media(prefers-reduced-motion:reduce){#convenience .quick-demo-trigger :is(.r1307,.r1322){transition:none}.chat-arrival-card,.chat-arrival-time{opacity:1;translate:none;scale:1;transition:none!important}.chat-arrival-row.is-chat-waiting>.r1236{opacity:1}.chat-typing{display:none!important}.chat-typing span{animation:none}}
-@media print{#convenience .quick-demo-trigger :is(.r1307,.r1322){background-color:#ffb1b1}.chat-arrival-card,.chat-arrival-time{opacity:1;translate:none;scale:1;transition:none!important}.chat-arrival-row.is-chat-waiting>.r1236{opacity:1}.chat-typing{display:none!important}.chat-typing span{animation:none}}
+@media(prefers-reduced-motion:reduce){#convenience .quick-action-icon :is(.r1307,.r1322){transition:none}.chat-arrival-card,.chat-arrival-time{opacity:1;translate:none;scale:1;transition:none!important}.chat-arrival-row.is-chat-waiting>.r1236{opacity:1}.chat-typing{display:none!important}.chat-typing span{animation:none}}
+@media print{#convenience .quick-action-icon :is(.r1307,.r1322){background-color:#ffb1b1}.chat-arrival-card,.chat-arrival-time{opacity:1;translate:none;scale:1;transition:none!important}.chat-arrival-row.is-chat-waiting>.r1236{opacity:1}.chat-typing{display:none!important}.chat-typing span{animation:none}}
 
 
 /* Keep the received-card timestamp on its lower edge and the composer copy still. */
