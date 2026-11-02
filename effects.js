@@ -271,6 +271,8 @@
  });
  window.addEventListener('beforeprint',()=>{printing=true;scrollGroups.forEach(g=>g.finish());});
  window.addEventListener('afterprint',()=>{printing=false;refreshStep3B();});
+ // The comparison table keeps its authored rows together under the section fade.
+ const comparison=q('#strategy [data-node-id="148:4893"]');if(comparison)ownEntrance(comparison);
  // The chart starts all app entrances together as its panel enters the viewport.
  // Their original centering transforms, coordinates, axes and rings remain authored.
  const panel=q('#strategy [data-node-id="148:4855"]');

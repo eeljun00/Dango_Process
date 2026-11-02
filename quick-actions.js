@@ -51,27 +51,23 @@
  }
  function open(kind,label,node){cleanup();opener=node;body.replaceChildren();setStatus('');dialog.querySelector('h2').textContent=label;dialog.dataset.action=kind;if(kind==='camera'||kind==='album')photos(kind);else if(kind==='location')locationDemo();else if(kind==='profile')profileDemo();else if(kind==='voice')voiceDemo();else scheduleDemo();dialog.showModal();}
  for(const [id,kind,label]of items){const node=section.querySelector('[data-node-id="148:'+id+'"]');if(!node)continue;node.classList.add('quick-demo-trigger');node.tabIndex=0;node.setAttribute('role','button');node.setAttribute('aria-label',label+' 데모 열기');node.setAttribute('aria-haspopup','dialog');const activate=e=>{if(e.type==='keydown'&&!['Enter',' '].includes(e.key))return;e.preventDefault();e.stopImmediatePropagation();open(kind,label,node);};node.addEventListener('click',activate,true);node.addEventListener('keydown',activate,true);}
- // Visual hover tour: only camera, location and voice take turns. Real hover/focus takes priority.
+ // Camera, location and voice keep taking turns while hovered or focused.
  const quickPanel=section.querySelector('[data-node-id="148:5632"]');
  const triggers=[...section.querySelectorAll('.quick-demo-trigger')];
  const tour=['5850','5858','5867'].map(id=>section.querySelector('[data-node-id="148:'+id+'"]')).filter(Boolean);
- let tourTimer=null,tourIndex=0,tourVisible=false,hovered=null;
+ let tourTimer=null,tourIndex=0,tourVisible=false;
  const stopTour=()=>{clearTimeout(tourTimer);tourTimer=null;};
  const selectQuick=node=>triggers.forEach(n=>n.classList.toggle('is-quick-highlight',n===node));
  function runTour(){
-  stopTour();const focused=triggers.find(n=>n.contains(document.activeElement));
+  stopTour();
   if(!tourVisible||document.hidden){selectQuick(null);return;}
-  const manual=dialog.open?opener:hovered||focused;
-  if(manual){selectQuick(manual);return;}
+  if(dialog.open){selectQuick(opener);return;}
   if(dangoReducedMotion.matches||!tour.length){selectQuick(null);return;}
   selectQuick(tour[tourIndex]);tourTimer=setTimeout(()=>{tourIndex=(tourIndex+1)%tour.length;runTour()},560);
  }
  if(quickPanel){
   if('IntersectionObserver'in window)new IntersectionObserver(entries=>{tourVisible=entries[0].isIntersecting;runTour()},{threshold:.2}).observe(quickPanel);
   else{tourVisible=true;runTour();}
-  quickPanel.addEventListener('pointerover',e=>{const node=e.target.closest('.quick-demo-trigger');if(node&&node!==hovered){hovered=node;runTour();}});
-  quickPanel.addEventListener('pointerout',e=>{const next=e.relatedTarget?.closest?.('.quick-demo-trigger');if(hovered&&next!==hovered){hovered=next;runTour();}});
-  quickPanel.addEventListener('focusin',runTour);quickPanel.addEventListener('focusout',()=>queueMicrotask(runTour));
   new MutationObserver(runTour).observe(dialog,{attributes:true,attributeFilter:['open']});
   dangoReducedMotion.addEventListener('change',runTour);document.addEventListener('visibilitychange',runTour);
   window.addEventListener('pagehide',stopTour);window.addEventListener('pageshow',runTour);
