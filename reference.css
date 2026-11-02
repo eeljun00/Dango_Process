@@ -1,5 +1,5 @@
 .f0{background-color:white;position:relative;width:100%;height:100%}
-.f1{position:absolute;background-image:linear-gradient(to bottom, var(--from) var(--from-pos,0%), var(--to) var(--to-pos,100%));--from:#ffd6d6;height:3564px;left:calc(50% - 0.06px);border-radius:10000px;--to:#ff6f6f;top:148px;width:2072px;transform:translate(-50%, 0px)}
+.f1{position:absolute;background-image:linear-gradient(to bottom, var(--from) var(--from-pos,0%), var(--to) var(--to-pos,100%));--from:#ffd6d6;height:3712px;left:calc(50% - 0.06px);border-radius:0;--to:#ff6f6f;top:0;width:2072px;transform:translate(-50%, 0px)}
 .f2{position:absolute;height:1177.041px;left:calc(50% - 0.19px);top:calc(50% - 415.97px);width:1209.239px;transform:translate(-50%, -50%)}
 .f3{position:absolute;display:block;inset:0px;max-width:none;width:100%;height:100%}
 .f4{overflow-wrap:break-word;position:absolute;background-clip:text;background-image:linear-gradient(to bottom, var(--from) var(--from-pos,0%), var(--to) var(--to-pos,100%));font-family:'Cafe24 Meongi B', 'Pretendard', sans-serif;font-weight:400;--from-pos:40.556%;--from:white;line-height:normal;left:calc(50% - 537.56px);font-style:normal;font-size:360px;color:transparent;--to-pos:126.81%;--to:#ffd6d6;top:424.37px;white-space:nowrap}

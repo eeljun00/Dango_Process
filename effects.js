@@ -66,9 +66,16 @@
   section.classList.add('round-scroll-stage');
   surface.classList.add('round-scroll-surface',`${kind}-round-surface`);
   // Morph the whole edge as a continuous Bezier arc, rather than rounding only its corners.
-  const ns='http://www.w3.org/2000/svg',mask=document.createElementNS(ns,'svg'),defs=document.createElementNS(ns,'defs'),clip=document.createElementNS(ns,'clipPath'),edge=document.createElementNS(ns,'path');
-  mask.setAttribute('width','0');mask.setAttribute('height','0');mask.setAttribute('aria-hidden','true');mask.style.position='absolute';
-  clip.id=`dango-round-${kind}`;clip.setAttribute('clipPathUnits','objectBoundingBox');clip.append(edge);defs.append(clip);mask.append(defs);section.append(mask);
+  const ns='http://www.w3.org/2000/svg',clipId=`dango-round-${kind}`;
+  // Reuse the cover's first-paint clip instead of replacing its initial shape.
+  let clip=q(`#${clipId}`,section);
+  if(!clip){
+   const mask=document.createElementNS(ns,'svg'),defs=document.createElementNS(ns,'defs');clip=document.createElementNS(ns,'clipPath');
+   mask.setAttribute('width','0');mask.setAttribute('height','0');mask.setAttribute('aria-hidden','true');mask.style.position='absolute';
+   clip.id=clipId;clip.setAttribute('clipPathUnits','objectBoundingBox');defs.append(clip);mask.append(defs);section.append(mask);
+  }
+  let edge=q('path',clip);
+  if(!edge){edge=document.createElementNS(ns,'path');clip.append(edge);}
   surface.style.clipPath=`url(#${clip.id})`;
   const coverDepth=kind==='cover'?parseFloat(getComputedStyle(surface).getPropertyValue('--cover-bottom-depth'))||1036:0;
   let frame=0,lastOffset=-1,lastProgress=-1,lastLength=-1,shownProgress=null,lastTime=0,stagePrinting=false;
@@ -92,10 +99,7 @@
    if(offset!==lastOffset){section.style.setProperty('--round-hold-offset',`${offset.toFixed(3)}px`);lastOffset=offset;}
    const drawProgress=kind==='cover'&&frozen?0:progress;
    if(drawProgress!==lastProgress){
-    const curveProgress=kind==='cover'?1-drawProgress:drawProgress;
-    surface.style.setProperty('--round-progress',curveProgress.toFixed(4));
     if(kind==='cover'){
-     section.style.setProperty('--cover-round-progress',curveProgress.toFixed(4));
      section.dataset.coverFill=drawProgress.toFixed(4);
      edge.setAttribute('d',coverWaterPath(drawProgress,coverDepth));
     }else{
