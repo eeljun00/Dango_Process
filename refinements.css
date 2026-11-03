@@ -362,10 +362,13 @@
 :is(#walk-planning,#walk-archive) [data-name="하단바"] :is([data-name="1"],[data-name="2"],[data-name="4"],[data-name="5"])>p{color:#bfbfbf}
 :is(#walk-planning,#walk-archive) [data-name="하단바"] [data-name="3"]>p{color:#ff6f6f}
 
-/* The comparison columns share their original row positions and compact 110px cells. */
-#strategy [data-node-id="148:4896"]{--comparison-column-x:250px}
-#strategy [data-node-id="148:4901"]{--comparison-column-x:360px}
-#strategy [data-node-id="148:4906"]{--comparison-column-x:470px}
-#strategy [data-node-id="148:4911"]{--comparison-column-x:580px}
-#strategy :is([data-node-id="148:4896"],[data-node-id="148:4901"],[data-node-id="148:4906"],[data-node-id="148:4911"])>p{left:var(--comparison-column-x);width:110px;line-height:40px;text-align:center;transform:translateX(-50%)}
+/* Equal 110px visual insets, measured from the first icon to the final heading.
+   A 71.25px icon and 93.61px final heading leave 109.3925px between five column centres. */
+#strategy [data-node-id="148:4893"]{--comparison-start:145.625px;--comparison-step:109.3925px}
+#strategy [data-node-id="148:4896"]{--comparison-column-x:calc(var(--comparison-start) + var(--comparison-step))}
+#strategy [data-node-id="148:4901"]{--comparison-column-x:calc(var(--comparison-start) + 2 * var(--comparison-step))}
+#strategy [data-node-id="148:4906"]{--comparison-column-x:calc(var(--comparison-start) + 3 * var(--comparison-step))}
+#strategy [data-node-id="148:4911"]{--comparison-column-x:calc(var(--comparison-start) + 4 * var(--comparison-step))}
+#strategy :is([data-node-id="148:4918"],[data-node-id="148:4922"],[data-node-id="148:4926"],[data-node-id="148:4917"],[data-node-id="148:4924"],[data-node-id="148:4934"]){left:var(--comparison-start)}
+#strategy :is([data-node-id="148:4896"],[data-node-id="148:4901"],[data-node-id="148:4906"],[data-node-id="148:4911"])>p{left:var(--comparison-column-x);width:var(--comparison-step);line-height:40px;text-align:center;transform:translateX(-50%)}
 #strategy :is([data-node-id="148:4896"],[data-node-id="148:4901"],[data-node-id="148:4906"],[data-node-id="148:4911"])>p:first-child{line-height:24px}
