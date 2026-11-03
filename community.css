@@ -257,9 +257,7 @@
 #community .community-device-source{z-index:4}
 #community .community-detail-home{position:absolute;left:calc(50% - 143px);bottom:4px;width:286px;height:24px}
 #community .community-detail-home>div{position:absolute;left:calc(50% - 64.48px);bottom:7.16px;width:128.96px;height:4.48px;background:#000;border-radius:89.5531px}
-#community .community-source-layer:not(.community-device-source) .community-original-device{z-index:4}
 #community .community-list-source,#community .community-detail-source{z-index:2}
-#community .community-source-layer.community-device-source .community-original-device{z-index:4}
 
 /* Retain scrolling/editing for long drafts without a flashing scrollbar. */
 #community .community-write-source,#community .community-write-source *{scrollbar-width:none;-ms-overflow-style:none}
