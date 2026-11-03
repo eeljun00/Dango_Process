@@ -362,9 +362,9 @@
 :is(#walk-planning,#walk-archive) [data-name="하단바"] :is([data-name="1"],[data-name="2"],[data-name="4"],[data-name="5"])>p{color:#bfbfbf}
 :is(#walk-planning,#walk-archive) [data-name="하단바"] [data-name="3"]>p{color:#ff6f6f}
 
-/* Equal 110px visual insets, measured from the first icon to the final heading.
-   A 71.25px icon and 93.61px final heading leave 109.3925px between five column centres. */
-#strategy [data-node-id="148:4893"]{--comparison-start:145.625px;--comparison-step:109.3925px}
+/* Equal 60px visual insets, measured from the first icon to the final heading.
+   A 71.25px icon and 93.61px final heading leave 134.3925px between five column centres. */
+#strategy [data-node-id="148:4893"]{--comparison-start:95.625px;--comparison-step:134.3925px}
 #strategy [data-node-id="148:4896"]{--comparison-column-x:calc(var(--comparison-start) + var(--comparison-step))}
 #strategy [data-node-id="148:4901"]{--comparison-column-x:calc(var(--comparison-start) + 2 * var(--comparison-step))}
 #strategy [data-node-id="148:4906"]{--comparison-column-x:calc(var(--comparison-start) + 3 * var(--comparison-step))}
